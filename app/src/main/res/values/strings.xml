@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">Basil</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">This is the tabs portion of our project!</string>
     <string name="action_settings">Settings</string>
 
 </resources>
