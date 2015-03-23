@@ -1,26 +1,25 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 
-public class BudgetBuddy extends Activity {
+public class tabs extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_budget_buddy);
+        setContentView(R.layout.activity_tabs);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_budget_buddy, menu);
+        getMenuInflater().inflate(R.menu.menu_tabs, menu);
         return true;
     }
 
@@ -39,17 +38,15 @@ public class BudgetBuddy extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void logIn(View view){
-//        Intent intent = new Intent(this, login.class);
-//        startActivity(intent);
-    }
-
-    public void budgetView(View view){
+    public void equalSplit(View view){
 
     }
 
-    public void tabsView(View view){
-        Intent intent = new Intent(this, tabs.class);
-        startActivity(intent);
+    public void customizedSplit(View view){
+
+    }
+
+    public void iou(View view){
+
     }
 }
