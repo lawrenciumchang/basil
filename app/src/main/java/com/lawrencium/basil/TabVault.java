@@ -9,6 +9,10 @@ public class TabVault {
     private String User;
     private ArrayList<Tab> Tabs = new ArrayList<Tab>();
 
+    public TabVault(String user) {
+        User = user;
+    }
+
     public String getUser() {
         return User;
     }
