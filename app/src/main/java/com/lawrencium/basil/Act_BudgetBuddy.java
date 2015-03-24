@@ -57,6 +57,7 @@ public class Act_BudgetBuddy extends Activity {
 
     public void signIn(View view){
         Intent intent = new Intent(this, Act_SignInPage.class);
+        intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
     }
 

@@ -14,10 +14,19 @@ import android.widget.EditText;
 public class Act_SignInPage extends Activity {
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
+    String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__sign_in_page);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+
+        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+
+        System.out.println("Current User from Log In page: " + userName);
     }
 
 
@@ -33,14 +42,28 @@ public class Act_SignInPage extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        Intent i;
+
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+                i = new Intent(this, Act_BudgetBuddy.class);
+                i.putExtra(PASS_CURRENT_USER, userName);
+                startActivityForResult(i, 0);
+                break;
+            default:
+                break;
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     public void userName(View view){
