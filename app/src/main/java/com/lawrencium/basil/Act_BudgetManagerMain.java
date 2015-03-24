@@ -1,24 +1,34 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
-public class BudgetBuddy extends Activity {
+public class Act_BudgetManagerMain extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_budget_buddy);
+        setContentView(R.layout.activity_budget_manager_main);
     }
 
+    public void gotoNewTransaction(View view){
+        Intent intent = new Intent(this, Act_NewTransaction.class);
+        startActivity(intent);
+    }
+    public void gotoOverview(View view){
+        Intent intent = new Intent(this, Act_BudgetOverview.class);
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_budget_buddy, menu);
+        getMenuInflater().inflate(R.menu.menu_budget_manager, menu);
         return true;
     }
 

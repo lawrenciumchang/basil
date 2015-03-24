@@ -6,18 +6,33 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.view.ViewGroup.LayoutParams;
+
+import java.util.ArrayList;
 
 
-public class BudgetOverviewActivity extends Activity {
+public class Act_BudgetOverview extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_overview);
+
+        ArrayList<Category> categories = Budget.getInstance().getCategories();
+        for(Category c : categories){
+            Button myButton = new Button(this);
+            myButton.setText(c.getName());
+            LinearLayout ll = (LinearLayout)findViewById(R.id.categoryLayout);
+            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+
+            ll.addView(myButton, ll.getChildCount()-1, lp);
+        }
     }
 
     public void gotoNewCategory(View view){
-        Intent intent = new Intent(this, NewCategory.class);
+        Intent intent = new Intent(this, Act_NewCategory.class);
         startActivity(intent);
     }
 

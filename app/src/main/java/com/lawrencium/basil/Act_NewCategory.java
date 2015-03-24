@@ -1,17 +1,24 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 
-public class NewCategory extends Activity {
+public class Act_NewCategory extends Activity {
+    protected EditText inputName;
+    protected EditText inputBudget;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_category);
+        inputName = (EditText)findViewById(R.id.inputName);
+        inputBudget = (EditText)findViewById(R.id.inputBudget);
     }
 
 
@@ -35,5 +42,15 @@ public class NewCategory extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void createCategory(View view){
+        String newName = inputName.getText().toString();
+        double newBudget = Double.parseDouble(inputBudget.getText().toString());
+        Category newCategory = new Category(newName, newBudget);
+        Budget.getInstance().getCategories().add(newCategory);
+
+        Intent intent = new Intent(this, Act_BudgetOverview.class);
+        startActivity(intent);
     }
 }

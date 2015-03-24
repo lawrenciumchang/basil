@@ -18,5 +18,6 @@
     <string name="str_btn_overview">Graphical</string>
     <string name="str_btn_newCategory">New Category</string>
     <string name="title_activity_new_category">NewCategory</string>
+    <string name="str_btn_categorySubmit">Submit</string>
 
 </resources>
