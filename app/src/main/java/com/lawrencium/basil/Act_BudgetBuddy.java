@@ -1,17 +1,19 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 
-public class BudgetBuddy extends Activity {
+public class Act_BudgetBuddy extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_budget_buddy);
+        setContentView(R.layout.activity_act_budget_buddy);
     }
 
 
@@ -35,5 +37,19 @@ public class BudgetBuddy extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void logIn(View view){
+//        Intent intent = new Intent(this, login.class);
+//        startActivity(intent);
+    }
+
+    public void budgetView(View view){
+
+    }
+
+    public void tabsView(View view){
+        Intent intent = new Intent(this, Act_TabsPage.class);
+        startActivity(intent);
     }
 }
