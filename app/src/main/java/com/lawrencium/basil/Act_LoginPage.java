@@ -11,7 +11,7 @@ import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailed
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
-public abstract class login extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
+public abstract class Act_LoginPage extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     /* Request code used to invoke sign in user interactions. */
     private static final int RC_SIGN_IN = 0;
@@ -26,7 +26,7 @@ public abstract class login extends Activity implements ConnectionCallbacks, OnC
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_act_login_page);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
 //                .addConnectionCallbacks(this)

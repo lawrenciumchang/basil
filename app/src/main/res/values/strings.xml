@@ -8,7 +8,11 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
+
     <string name="title_activity_tabs">Tabs</string>
     <string name="title_activity_login">Login</string>
+    <string name="title_activity_act__iou_page">IOUs</string>
+    <string name="title_activity_act__request_page">Act_RequestPage</string>
+    <string name="title_activity_act__pay_page">Act_PayPage</string>
 
 </resources>
