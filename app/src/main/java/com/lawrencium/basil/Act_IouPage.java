@@ -13,6 +13,10 @@ import android.widget.Spinner;
 
 
 public class Act_IouPage extends Activity {
+    public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
+    public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
+    public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
+    public final static String PASS_USER = "com.lawrencium.basil.USER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,6 +170,10 @@ public class Act_IouPage extends Activity {
 
         else{
             Intent intent = new Intent(this, Act_PayPage.class);
+            intent.putExtra(PASS_TITLE, title);
+            intent.putExtra(PASS_CATEGORY, category);
+            intent.putExtra(PASS_AMOUNT, amount);
+            intent.putExtra(PASS_USER, user);
             startActivity(intent);
         }
     }

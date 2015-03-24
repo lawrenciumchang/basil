@@ -16,6 +16,23 @@ public class Act_PayPage extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        String title = intent.getStringExtra(Act_IouPage.PASS_TITLE);
+        String category = intent.getStringExtra(Act_IouPage.PASS_CATEGORY);
+        String amount = intent.getStringExtra(Act_IouPage.PASS_AMOUNT);
+        String user = intent.getStringExtra(Act_IouPage.PASS_USER);
+
+        System.out.println("Title: " + title);
+        System.out.println("Category: " + category);
+        System.out.println("Amount: " + amount);
+        System.out.println("User: " + user);
+
+
+        //this isn't working..
+//        TextView displayTitle = (TextView)findViewById(R.id.textView3);
+//        displayTitle.setText(title);
+
         setContentView(R.layout.activity_act__pay_page);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }
