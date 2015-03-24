@@ -18,12 +18,22 @@ public class Act_IouPage extends Activity {
     public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
     public final static String PASS_USER = "com.lawrencium.basil.USER";
 
+    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+
+    String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__iou_page);
         createDropdown();
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+
+        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+
+        System.out.println("Current User from IOU page: " + userName);
     }
 
     public void createDropdown(){
@@ -117,6 +127,7 @@ public class Act_IouPage extends Activity {
             intent.putExtra(PASS_CATEGORY, category);
             intent.putExtra(PASS_AMOUNT, amount);
             intent.putExtra(PASS_USER, user);
+            intent.putExtra(PASS_CURRENT_USER, userName);
             startActivity(intent);
         }
     }
@@ -178,6 +189,7 @@ public class Act_IouPage extends Activity {
             intent.putExtra(PASS_CATEGORY, category);
             intent.putExtra(PASS_AMOUNT, amount);
             intent.putExtra(PASS_USER, user);
+            intent.putExtra(PASS_CURRENT_USER, userName);
             startActivity(intent);
         }
     }

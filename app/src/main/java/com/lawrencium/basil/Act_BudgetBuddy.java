@@ -1,19 +1,30 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 public class Act_BudgetBuddy extends Activity {
+    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_budget_buddy);
+
+        Intent intent = getIntent();
+
+        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+
+        System.out.println("Current User: " + userName);
     }
 
 
@@ -50,11 +61,33 @@ public class Act_BudgetBuddy extends Activity {
     }
 
     public void budgetView(View view){
-
+        if(userName == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please log in before managing your finances.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "This is Evan and Annie's job!",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     public void tabsView(View view){
-        Intent intent = new Intent(this, Act_TabsPage.class);
-        startActivity(intent);
+        if(userName == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please log in before managing your finances.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else {
+            Intent intent = new Intent(this, Act_TabsPage.class);
+            intent.putExtra(PASS_CURRENT_USER, userName);
+            startActivity(intent);
+        }
     }
 }

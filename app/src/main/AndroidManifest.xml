@@ -46,7 +46,7 @@
         </activity>
         <activity
             android:name=".Act_SignInPage"
-            android:label="@string/title_activity_act__sign_in_page" >
+            android:label="Log In" >
         </activity>
     </application>
 

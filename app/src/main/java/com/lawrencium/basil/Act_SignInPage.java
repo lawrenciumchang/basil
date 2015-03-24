@@ -1,6 +1,8 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -42,6 +44,39 @@ public class Act_SignInPage extends Activity {
     }
 
     public void userName(View view){
+//        Intent intent = new Intent(this, Act_BudgetBuddy.class);
+        EditText editText = (EditText)findViewById(R.id.editText3);
+        String userName = editText.getText().toString();
+//        intent.putExtra(PASS_CURRENT_USER, userName);
+
+        if(userName.matches("")){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please enter your name.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
+        else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Welcome, " + userName + "!");
+            builder.setCancelable(false);
+            builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO Auto-generated method stub
+                    launchIntent();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+//        startActivity(intent);
+    }
+
+    public void launchIntent(){
         Intent intent = new Intent(this, Act_BudgetBuddy.class);
         EditText editText = (EditText)findViewById(R.id.editText3);
         String userName = editText.getText().toString();

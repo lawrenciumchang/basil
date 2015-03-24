@@ -12,9 +12,11 @@ import android.view.View;
 
 
 public class Act_PayPage extends Activity {
+    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+
     String title;
-    String category ;
-    String amount ;
+    String category;
+    String amount;
     String user;
     String userName;
 
@@ -95,6 +97,7 @@ public class Act_PayPage extends Activity {
 
     public void launchIntent(){
         Intent intent = new Intent(this, Act_TabsPage.class);
+        intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
     }
 }

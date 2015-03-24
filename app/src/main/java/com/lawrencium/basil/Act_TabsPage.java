@@ -6,15 +6,25 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 public class Act_TabsPage extends Activity {
+    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_tabs_page);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+
+        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+
+        System.out.println("Current User from Tabs page: " + userName);
     }
 
 
@@ -42,15 +52,18 @@ public class Act_TabsPage extends Activity {
     }
 
     public void equalSplit(View view){
-
+        Toast.makeText(getApplicationContext(), "Will be added soon :^)",
+                Toast.LENGTH_LONG).show();
     }
 
     public void customizedSplit(View view){
-
+        Toast.makeText(getApplicationContext(), "Will be added soon :^)",
+                Toast.LENGTH_LONG).show();
     }
 
     public void iou(View view){
         Intent intent = new Intent(this, Act_IouPage.class);
+        intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
     }
 
