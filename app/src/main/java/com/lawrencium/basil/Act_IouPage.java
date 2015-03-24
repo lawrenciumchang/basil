@@ -113,6 +113,10 @@ public class Act_IouPage extends Activity {
         }
         else {
             Intent intent = new Intent(this, Act_RequestPage.class);
+            intent.putExtra(PASS_TITLE, title);
+            intent.putExtra(PASS_CATEGORY, category);
+            intent.putExtra(PASS_AMOUNT, amount);
+            intent.putExtra(PASS_USER, user);
             startActivity(intent);
         }
     }

@@ -11,7 +11,6 @@
         android:icon="@mipmap/basil_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -25,32 +24,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Act_TabsPage"
             android:label="@string/title_activity_tabs" >
         </activity>
-
         <activity
             android:name=".Act_LoginPage"
             android:label="@string/title_activity_login" >
         </activity>
-
         <activity
             android:name=".Act_IouPage"
             android:label="IOU" >
         </activity>
-
         <activity
             android:name=".Act_RequestPage"
             android:label="Confirm Request" >
         </activity>
-
         <activity
             android:name=".Act_PayPage"
             android:label="Confirm Payment" >
         </activity>
-
+        <activity
+            android:name=".Act_SignInPage"
+            android:label="@string/title_activity_act__sign_in_page" >
+        </activity>
     </application>
 
 </manifest>

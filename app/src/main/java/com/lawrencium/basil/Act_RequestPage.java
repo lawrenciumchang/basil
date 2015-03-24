@@ -11,10 +11,29 @@ import android.view.View;
 
 
 public class Act_RequestPage extends Activity {
+    String title;
+    String category ;
+    String amount ;
+    String user;
+    String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        title = intent.getStringExtra(Act_IouPage.PASS_TITLE);
+        category = intent.getStringExtra(Act_IouPage.PASS_CATEGORY);
+        amount = intent.getStringExtra(Act_IouPage.PASS_AMOUNT);
+        user = intent.getStringExtra(Act_IouPage.PASS_USER);
+        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+
+        System.out.println("Title: " + title);
+        System.out.println("Category: " + category);
+        System.out.println("Amount: " + amount);
+        System.out.println("User: " + user);
+        System.out.println("Current User: " + userName);
+
         setContentView(R.layout.activity_act__request_page);
         getActionBar().setDisplayHomeAsUpEnabled(true);
     }

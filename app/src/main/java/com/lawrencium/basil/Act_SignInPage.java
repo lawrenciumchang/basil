@@ -6,21 +6,23 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 
-public class Act_BudgetBuddy extends Activity {
+public class Act_SignInPage extends Activity {
+    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_act_budget_buddy);
+        setContentView(R.layout.activity_act__sign_in_page);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_budget_buddy, menu);
+        getMenuInflater().inflate(R.menu.menu_act__sign_in_page, menu);
         return true;
     }
 
@@ -39,22 +41,11 @@ public class Act_BudgetBuddy extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void logIn(View view){
-//        Intent intent = new Intent(this, login.class);
-//        startActivity(intent);
-    }
-
-    public void signIn(View view){
-        Intent intent = new Intent(this, Act_SignInPage.class);
-        startActivity(intent);
-    }
-
-    public void budgetView(View view){
-
-    }
-
-    public void tabsView(View view){
-        Intent intent = new Intent(this, Act_TabsPage.class);
+    public void userName(View view){
+        Intent intent = new Intent(this, Act_BudgetBuddy.class);
+        EditText editText = (EditText)findViewById(R.id.editText3);
+        String userName = editText.getText().toString();
+        intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
     }
 }
