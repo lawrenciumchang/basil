@@ -96,14 +96,15 @@ public class Act_PayPage extends Activity {
                 launchIntent();
             }});
 
-        //fixer double user
+        //need to format double to look like currency
         double tempAmount = Double.parseDouble(amount);
-        IouRequestTab TempIou = new IouRequestTab(user, user, tempAmount, category, title);
+        IouRequestTab TempIou = new IouRequestTab(userName, user, tempAmount, category, title);
         TempIou.createTab();
         TabVault tempTabs = new TabVault(user);
         if(tempTabs.addTab(TempIou.getCreatedTab())) {
             System.out.println("Amount: " + tempAmount);
-            System.out.println("Tab ID" + TempIou.getCreatedTab().getTabId());
+            System.out.println("Tab ID: " + TempIou.getCreatedTab().getTabId());
+            System.out.println("Vault: " + tempTabs.getTabs());
             AlertDialog dialog = builder.create();
             dialog.show();
         }

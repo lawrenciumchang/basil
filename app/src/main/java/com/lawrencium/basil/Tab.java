@@ -10,15 +10,16 @@ public class Tab {
     private String Category;
     private String Title;
     private int TabId;
+    private double tmep;
 
 
     //Think of ways to identify different tabs
 
     //May create constructor that makes a tab for only ID for Tab equals methods
 
-//    public Tab(int tabId) {
-//        TabId = tabId;
-//    }
+    public Tab(int tabId) {
+        TabId = tabId;
+    }
 
     //Normal Constructor
     public Tab(String userOwed, String userOwing, double amountOwed, String category, String title) {
@@ -99,4 +100,15 @@ public class Tab {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "Tab{" +
+                "UserOwed='" + UserOwed + '\'' +
+                ", UserOwing='" + UserOwing + '\'' +
+                ", AmountOwed=" + AmountOwed +
+                ", Category='" + Category + '\'' +
+                ", Title='" + Title + '\'' +
+                ", TabId=" + TabId +
+                '}';
+    }
 }
