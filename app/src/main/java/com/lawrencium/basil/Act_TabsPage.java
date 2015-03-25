@@ -65,6 +65,14 @@ public class Act_TabsPage extends Activity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i;
+        i = new Intent(this, Act_BudgetBuddy.class);
+        i.putExtra(PASS_CURRENT_USER, userName);
+        startActivityForResult(i, 0);
+    }
+
     public void equalSplit(View view){
         Toast.makeText(getApplicationContext(), "Will be added soon :^)",
                 Toast.LENGTH_LONG).show();

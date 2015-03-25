@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class Act_RequestPage extends Activity {
@@ -24,6 +25,7 @@ public class Act_RequestPage extends Activity {
         super.onCreate(savedInstanceState);
 
         Intent intent = getIntent();
+
         title = intent.getStringExtra(Act_IouPage.PASS_TITLE);
         category = intent.getStringExtra(Act_IouPage.PASS_CATEGORY);
         amount = intent.getStringExtra(Act_IouPage.PASS_AMOUNT);
@@ -38,6 +40,12 @@ public class Act_RequestPage extends Activity {
 
         setContentView(R.layout.activity_act__request_page);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TextView displayUser1 = (TextView)findViewById(R.id.requestMessage1);
+        displayUser1.setText(userName + ", " + user + " owes you");
+
+        TextView displayUser2 = (TextView)findViewById(R.id.requestMessage2);
+        displayUser2.setText("$" + amount + " for " + title + " (" + category + ").");
     }
 
 
@@ -75,6 +83,14 @@ public class Act_RequestPage extends Activity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i;
+        i = new Intent(this, Act_IouPage.class);
+        i.putExtra(PASS_CURRENT_USER, userName);
+        startActivityForResult(i, 0);
     }
 
     public void confirmRequest(View view){

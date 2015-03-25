@@ -50,6 +50,14 @@ public class Act_BudgetBuddy extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+//        Intent i;
+//        i = new Intent(this, Act_BudgetBuddy.class);
+//        i.putExtra(PASS_CURRENT_USER, userName);
+//        startActivityForResult(i, 0);
+    }
+
     public void logIn(View view){
 //        Intent intent = new Intent(this, login.class);
 //        startActivity(intent);

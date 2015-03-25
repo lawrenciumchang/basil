@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class Act_PayPage extends Activity {
@@ -39,13 +40,14 @@ public class Act_PayPage extends Activity {
         System.out.println("User: " + user);
         System.out.println("Current User: " + userName);
 
-
-        //this isn't working..
-//        TextView displayTitle = (TextView)findViewById(R.id.textView3);
-//        displayTitle.setText(title);
-
         setContentView(R.layout.activity_act__pay_page);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        TextView displayUser1 = (TextView)findViewById(R.id.payMessage1);
+        displayUser1.setText(userName + ", you owe " + user);
+
+        TextView displayUser2 = (TextView)findViewById(R.id.payMessage2);
+        displayUser2.setText("$" + amount + " for " + title + " (" + category + ").");
     }
 
 
@@ -85,6 +87,14 @@ public class Act_PayPage extends Activity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i;
+        i = new Intent(this, Act_IouPage.class);
+        i.putExtra(PASS_CURRENT_USER, userName);
+        startActivityForResult(i, 0);
+    }
+
     public void confirmPay(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Your payment has been sent.");
@@ -99,6 +109,7 @@ public class Act_PayPage extends Activity {
 
         //need to format double to look like currency
         double tempAmount = Double.parseDouble(amount);
+<<<<<<< Updated upstream
 
         TabVault.getInstance().getTempIou().createTab(user, userName, tempAmount, category, title);
 
@@ -106,9 +117,28 @@ public class Act_PayPage extends Activity {
             System.out.println("Amount: " + tempAmount);
             System.out.println("Tab ID: " + TabVault.getInstance().getTempIou().getCreatedTab().getTabId());
             System.out.println("Vault: " + TabVault.getInstance().getTabs());
+=======
+<<<<<<< HEAD
+        IouRequestTab TempIou = new IouRequestTab(userName, user, tempAmount, category, title);
+        TempIou.createTab();
+        TabVault tempTabs = new TabVault(user);
+        if(tempTabs.addTab(TempIou.getCreatedTab())) {
+            System.out.println("Amount: " + tempAmount);
+            System.out.println("Tab ID: " + TempIou.getCreatedTab().getTabId());
+=======
+
+        TabVault.getInstance().getTempIou().createTab(user, userName, tempAmount, category, title);
+
+        if(TabVault.getInstance().addTab(TabVault.getInstance().getTempIou().getCreatedTab())) {
+            System.out.println("Amount: " + tempAmount);
+            System.out.println("Tab ID: " + TabVault.getInstance().getTempIou().getCreatedTab().getTabId());
+            System.out.println("Vault: " + TabVault.getInstance().getTabs());
+>>>>>>> origin/tabs
+>>>>>>> Stashed changes
             AlertDialog dialog = builder.create();
             dialog.show();
         }
+        System.out.println("VAULT: " + tempTabs);
     }
 
     public void launchIntent(){

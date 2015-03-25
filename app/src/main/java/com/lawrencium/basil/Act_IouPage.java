@@ -38,7 +38,7 @@ public class Act_IouPage extends Activity {
 
     public void createDropdown(){
         Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
-        String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping"};
+        String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         dropdown.setAdapter(adapter);
 
@@ -83,6 +83,14 @@ public class Act_IouPage extends Activity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i;
+        i = new Intent(this, Act_TabsPage.class);
+        i.putExtra(PASS_CURRENT_USER, userName);
+        startActivityForResult(i, 0);
     }
 
     public void requestClick(View view){

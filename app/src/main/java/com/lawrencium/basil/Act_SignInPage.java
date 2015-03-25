@@ -66,6 +66,14 @@ public class Act_SignInPage extends Activity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent i;
+        i = new Intent(this, Act_BudgetBuddy.class);
+        i.putExtra(PASS_CURRENT_USER, userName);
+        startActivityForResult(i, 0);
+    }
+
     public void userName(View view){
 //        Intent intent = new Intent(this, Act_BudgetBuddy.class);
         EditText editText = (EditText)findViewById(R.id.editText3);
