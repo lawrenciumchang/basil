@@ -3,24 +3,34 @@ package com.lawrencium.basil;
 import java.util.ArrayList;
 
 /**
- * Created by James on 3/23/2015.
+ * Created by James on 3/24/2015.
  */
 public class TabVault {
     private String User;
     private ArrayList<Tab> Tabs = new ArrayList<Tab>();
-
-    public TabVault(String user) {
-        User = user;
+    private volatile static TabVault ourInstance;
+    private IouRequestTab TempIou = new IouRequestTab();
+    private TabVault() {
     }
+
+    public static TabVault getInstance() {
+        if (ourInstance == null) {
+            synchronized (TabVault.class) {
+                if (ourInstance == null) {
+                    ourInstance = new TabVault();
+                }
+            }
+        }
+        return ourInstance;
+    }
+
+
 
     public String getUser() {
         return User;
     }
 
-//    Might not need this method
-//    public void setUser(String user) {
-//        User = user;
-//    }
+
 
     public ArrayList<Tab> getTabs() {
         return Tabs;
@@ -74,6 +84,14 @@ public class TabVault {
         }
         return false;
     }
-    //may make these functions take in Tabs and use the equals method
 
+    public IouRequestTab getTempIou() {
+        return TempIou;
+    }
 }
+
+
+
+
+
+

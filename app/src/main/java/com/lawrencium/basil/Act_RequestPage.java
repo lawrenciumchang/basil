@@ -88,9 +88,17 @@ public class Act_RequestPage extends Activity {
                 // TODO Auto-generated method stub
                 launchIntent();
             }});
+        double tempAmount = Double.parseDouble(amount);
 
-        AlertDialog dialog = builder.create();
-        dialog.show();
+        TabVault.getInstance().getTempIou().createTab(userName, user, tempAmount, category, title);
+
+        if(TabVault.getInstance().addTab(TabVault.getInstance().getTempIou().getCreatedTab())) {
+            System.out.println("Amount: " + tempAmount);
+            System.out.println("Tab ID: " + TabVault.getInstance().getTempIou().getCreatedTab().getTabId());
+            System.out.println("Vault: " + TabVault.getInstance().getTabs());
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
     public void launchIntent(){

@@ -11,17 +11,13 @@ public class IouRequestTab {
     private String Title;
     private Tab createdTab;
     private int tabID;
-
-    public IouRequestTab(String userOwed, String userOwing, double amountOwed, String category, String title) {
-        UserOwed = userOwed;
-        UserOwing = userOwing;
-        AmountOwed = amountOwed;
-        Category = category;
-        Title = title;
+    //may need to think of a way to handle IOUs vs YOMs without changing constructor order
+    public IouRequestTab() {
+        tabID = 0;
     }
 
-    public void createTab() {
-        createdTab = new Tab(UserOwed, UserOwing, AmountOwed, Category, Title);
+    public void createTab(String userOwed, String userOwing, double amountOwed, String category, String title) {
+        createdTab = new Tab(userOwed, userOwing, amountOwed, category, title);
         createdTab.setTabId(tabID);
         tabID++;
     }
