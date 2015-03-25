@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 
@@ -25,6 +26,16 @@ public class Act_BudgetBuddy extends Activity {
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
 
         System.out.println("Current User: " + userName);
+
+        if(userName == null){
+            Button button2 = (Button)findViewById(R.id.button6);
+            button2.setVisibility(View.GONE);
+        }
+
+        else if(userName != null){
+            Button button = (Button)findViewById(R.id.button);
+            button.setVisibility(View.GONE);
+        }
     }
 
 
@@ -67,6 +78,14 @@ public class Act_BudgetBuddy extends Activity {
         Intent intent = new Intent(this, Act_SignInPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
+    }
+
+    public void signOut(View view){
+        userName = null;
+        Intent i;
+        i = new Intent(this, Act_BudgetBuddy.class);
+        i.putExtra(PASS_CURRENT_USER, userName);
+        startActivityForResult(i, 0);
     }
 
     public void budgetView(View view){
