@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -30,11 +31,17 @@ public class Act_BudgetBuddy extends Activity {
         if(userName == null){
             Button button2 = (Button)findViewById(R.id.button6);
             button2.setVisibility(View.GONE);
+
+            TextView loggedInAs = (TextView)findViewById(R.id.loggedInAs);
+            loggedInAs.setVisibility(View.GONE);
         }
 
         else if(userName != null){
             Button button = (Button)findViewById(R.id.button);
             button.setVisibility(View.GONE);
+
+            TextView loggedInAs = (TextView)findViewById(R.id.loggedInAs);
+            loggedInAs.setText("Logged in as " + userName);
         }
     }
 
@@ -55,6 +62,7 @@ public class Act_BudgetBuddy extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this,"What would you like to see in the settings?", Toast.LENGTH_SHORT).show();
             return true;
         }
 

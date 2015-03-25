@@ -9,7 +9,8 @@
     <TextView android:text="You can manage your tabs here." android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="20dp"
+        android:id="@+id/textView2" />
 
     <Button
         android:layout_height="wrap_content"
@@ -17,7 +18,8 @@
         android:layout_marginBottom="100dp"
         android:layout_alignParentBottom="true"
         android:text="Equal Split"
-        android:onClick="equalSplit" />
+        android:onClick="equalSplit"
+        android:id="@+id/button7" />
 
     <Button
         android:layout_height="wrap_content"

@@ -76,7 +76,7 @@ public class Act_SignInPage extends Activity {
 
     public void userName(View view){
 //        Intent intent = new Intent(this, Act_BudgetBuddy.class);
-        EditText editText = (EditText)findViewById(R.id.editText3);
+        final EditText editText = (EditText)findViewById(R.id.editText3);
         String userName = editText.getText().toString();
 //        intent.putExtra(PASS_CURRENT_USER, userName);
 

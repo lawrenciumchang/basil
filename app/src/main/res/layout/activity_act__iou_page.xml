@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/editText2"
         android:layout_alignParentTop="true"
-        android:hint="Title" />
+        android:hint="Title"
+        android:singleLine="true"/>
 
     <Spinner
         android:id="@+id/spinner1"
@@ -30,7 +31,8 @@
         android:layout_below="@+id/spinner1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:hint="Amount" />
+        android:hint="Amount"
+        android:singleLine="true"/>
 
     <Spinner
         android:id="@+id/spinner2"

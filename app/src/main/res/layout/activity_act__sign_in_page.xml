@@ -19,7 +19,8 @@
         android:id="@+id/editText3"
         android:layout_above="@+id/button5"
         android:layout_alignParentLeft="true"
-        android:layout_alignRight="@+id/button5" />
+        android:layout_alignRight="@+id/button5"
+        android:singleLine="true"/>
 
     <Button
         android:layout_width="wrap_content"
