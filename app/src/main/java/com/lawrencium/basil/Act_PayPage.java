@@ -109,7 +109,7 @@ public class Act_PayPage extends Activity {
 
         //need to format double to look like currency
         double tempAmount = Double.parseDouble(amount);
-<<<<<<< Updated upstream
+
 
         TabVault.getInstance().getTempIou().createTab(user, userName, tempAmount, category, title);
 
@@ -117,28 +117,10 @@ public class Act_PayPage extends Activity {
             System.out.println("Amount: " + tempAmount);
             System.out.println("Tab ID: " + TabVault.getInstance().getTempIou().getCreatedTab().getTabId());
             System.out.println("Vault: " + TabVault.getInstance().getTabs());
-=======
-<<<<<<< HEAD
-        IouRequestTab TempIou = new IouRequestTab(userName, user, tempAmount, category, title);
-        TempIou.createTab();
-        TabVault tempTabs = new TabVault(user);
-        if(tempTabs.addTab(TempIou.getCreatedTab())) {
-            System.out.println("Amount: " + tempAmount);
-            System.out.println("Tab ID: " + TempIou.getCreatedTab().getTabId());
-=======
-
-        TabVault.getInstance().getTempIou().createTab(user, userName, tempAmount, category, title);
-
-        if(TabVault.getInstance().addTab(TabVault.getInstance().getTempIou().getCreatedTab())) {
-            System.out.println("Amount: " + tempAmount);
-            System.out.println("Tab ID: " + TabVault.getInstance().getTempIou().getCreatedTab().getTabId());
-            System.out.println("Vault: " + TabVault.getInstance().getTabs());
->>>>>>> origin/tabs
->>>>>>> Stashed changes
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-        System.out.println("VAULT: " + tempTabs);
+
     }
 
     public void launchIntent(){
