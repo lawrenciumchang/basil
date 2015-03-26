@@ -74,13 +74,13 @@ public class Act_TabsPage extends Activity {
     }
 
     public void equalSplit(View view){
-        Toast.makeText(getApplicationContext(), "Will be added soon :^)",
-                Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(this, Act_EqualSplitPage.class);
+        intent.putExtra(PASS_CURRENT_USER, userName);
+        startActivity(intent);
     }
 
     public void customizedSplit(View view){
-        Toast.makeText(getApplicationContext(), "Will be added soon :^)",
-                Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Will be added soon :^)", Toast.LENGTH_SHORT).show();
     }
 
     public void iou(View view){

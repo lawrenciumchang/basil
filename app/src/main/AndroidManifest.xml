@@ -48,6 +48,14 @@
             android:name=".Act_SignInPage"
             android:label="Log In" >
         </activity>
+        <activity
+            android:name=".Act_EqualSplitPage"
+            android:label="Equal Split" >
+        </activity>
+        <activity
+            android:name=".Act_EqualSplitPeoplePage"
+            android:label="Select Users" >
+        </activity>
     </application>
 
 </manifest>

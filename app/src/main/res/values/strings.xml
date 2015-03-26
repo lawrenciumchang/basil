@@ -15,5 +15,7 @@
     <string name="title_activity_act__request_page">Act_RequestPage</string>
     <string name="title_activity_act__pay_page">Act_PayPage</string>
     <string name="title_activity_act__sign_in_page">Act_SignInPage</string>
+    <string name="title_activity_act__equal_split_page">Act_EqualSplitPage</string>
+    <string name="title_activity_act__equal_split_people_page">Act_EqualSplitPeoplePage</string>
 
 </resources>

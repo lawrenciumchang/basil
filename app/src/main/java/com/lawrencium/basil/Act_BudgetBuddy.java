@@ -28,6 +28,7 @@ public class Act_BudgetBuddy extends Activity {
 
         System.out.println("Current User: " + userName);
 
+        //logged out
         if(userName == null){
             Button button2 = (Button)findViewById(R.id.button6);
             button2.setVisibility(View.GONE);
@@ -36,6 +37,7 @@ public class Act_BudgetBuddy extends Activity {
             loggedInAs.setVisibility(View.GONE);
         }
 
+        //logged in
         else if(userName != null){
             Button button = (Button)findViewById(R.id.button);
             button.setVisibility(View.GONE);
@@ -94,6 +96,7 @@ public class Act_BudgetBuddy extends Activity {
         i = new Intent(this, Act_BudgetBuddy.class);
         i.putExtra(PASS_CURRENT_USER, userName);
         startActivityForResult(i, 0);
+        Toast.makeText(getApplicationContext(), "You have been successfully logged out.", Toast.LENGTH_SHORT).show();
     }
 
     public void budgetView(View view){
@@ -106,8 +109,7 @@ public class Act_BudgetBuddy extends Activity {
             dialog.show();
         }
         else{
-            Toast.makeText(getApplicationContext(), "This is Evan and Annie's job!",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "This is Evan and Annie's job!", Toast.LENGTH_SHORT).show();
         }
     }
 
