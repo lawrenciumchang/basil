@@ -99,8 +99,6 @@ public class Act_EqualSplitPeoplePage extends Activity {
             }
         }
 
-
-
     }
 
     public void createUserDropdown(){
@@ -115,6 +113,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
         Spinner user2 = (Spinner)findViewById(R.id.user2);
         String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         user2.setAdapter(adapter);
     }
 
@@ -122,6 +121,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
         Spinner newUser = new Spinner(this);
         String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newUser.setAdapter(adapter);
         return newUser;
     }
@@ -191,7 +191,6 @@ public class Act_EqualSplitPeoplePage extends Activity {
         }
         for(int a = 0; a < numToCreate; a++){
             Spinner spin = (Spinner)findViewById(a);
-            System.out.println("testing: " + spin);
             if(spin.getSelectedItem().toString().equals("Select User")){
                 check = false;
             }
@@ -204,7 +203,6 @@ public class Act_EqualSplitPeoplePage extends Activity {
         //put stuff into the Bundle
         for(int i = 0; i < numToCreate; i++){
             Spinner spin = (Spinner)findViewById(i);
-            System.out.println("spin: " + spin);
             String id = Integer.toString(i);
             b.putString(id, spin.getSelectedItem().toString());
         }

@@ -20,7 +20,8 @@
         android:layout_height="wrap_content"
         android:spinnerMode="dropdown"
         android:layout_below="@+id/editText2"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:longClickable="false"/>
 
     <EditText
         android:layout_width="wrap_content"

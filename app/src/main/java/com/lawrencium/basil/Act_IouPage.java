@@ -79,11 +79,13 @@ public class Act_IouPage extends Activity {
         Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
         String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown.setAdapter(adapter);
 
         Spinner dropdown2 = (Spinner)findViewById(R.id.spinner2);
         String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items2);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown2.setAdapter(adapter2);
     }
 

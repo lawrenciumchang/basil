@@ -68,6 +68,7 @@ public class Act_EqualSplitPage extends Activity {
         Spinner dropdown = (Spinner)findViewById(R.id.equalCategory);
         String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown.setAdapter(adapter);
     }
 
@@ -164,7 +165,7 @@ public class Act_EqualSplitPage extends Activity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-        else if(number.matches("1")){
+        else if(number.matches("1") || number.matches("0")){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Please enter a number greater than 1.");
             builder.setCancelable(true);
@@ -173,7 +174,7 @@ public class Act_EqualSplitPage extends Activity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-        else if((!number.matches("")) || (!number.matches("1"))){
+        else if((!number.matches("")) || (!number.matches("1"))|| !number.matches("0")){
 //            int num = Integer.parseInt(number);
 //            if(num > 4) {
 //                AlertDialog.Builder builder = new AlertDialog.Builder(this);
