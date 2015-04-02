@@ -20,6 +20,10 @@ public class Act_EqualSplitPage extends Activity {
 
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
+    String title;
+    String category;
+    String amount;
+    String number;
     String userName;
 
     @Override
@@ -32,8 +36,32 @@ public class Act_EqualSplitPage extends Activity {
         Intent intent = getIntent();
 
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+        title = intent.getStringExtra(Act_EqualSplitPeoplePage.PASS_TITLE);
+        category = intent.getStringExtra(Act_EqualSplitPeoplePage.PASS_CATEGORY);
+        amount = intent.getStringExtra(Act_EqualSplitPeoplePage.PASS_AMOUNT);
+        number = intent.getStringExtra(Act_EqualSplitPeoplePage.PASS_NUMBER);
 
         System.out.println("Current User from Equal Split page: " + userName);
+
+        EditText titleSet = (EditText)findViewById(R.id.equalTitle);
+        titleSet.setText(title);
+
+        Spinner categorySet = (Spinner)findViewById(R.id.equalCategory);
+        String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
+        if(category != null) {
+            for (int i = 0; i < items.length; i++) {
+                if (category.equals(items[i])) {
+                    categorySet.setSelection(i);
+                }
+            }
+        }
+
+        EditText amountSet = (EditText)findViewById(R.id.equalAmount);
+        amountSet.setText(amount);
+
+        EditText numberSet = (EditText)findViewById(R.id.equalNumber);
+        numberSet.setText(amount);
+
     }
 
     public void createDropdown(){
@@ -146,17 +174,17 @@ public class Act_EqualSplitPage extends Activity {
             dialog.show();
         }
         else if((!number.matches("")) || (!number.matches("1"))){
-            int num = Integer.parseInt(number);
-            if(num > 4) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setTitle("Splitting between parties greater than 4 is only supported in the pro version.");
-                builder.setCancelable(true);
-                builder.setPositiveButton("Okay", null);
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-            else{
+//            int num = Integer.parseInt(number);
+//            if(num > 4) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//                builder.setTitle("Splitting between parties greater than 4 is only supported in the Pro Version.");
+//                builder.setCancelable(true);
+//                builder.setPositiveButton("I have too many friends", null);
+//
+//                AlertDialog dialog = builder.create();
+//                dialog.show();
+//            }
+//            else{
                 Intent intent = new Intent(this, Act_EqualSplitPeoplePage.class);
                 intent.putExtra(PASS_TITLE, title);
                 intent.putExtra(PASS_CATEGORY, category);
@@ -164,7 +192,7 @@ public class Act_EqualSplitPage extends Activity {
                 intent.putExtra(PASS_NUMBER, number);
                 intent.putExtra(PASS_CURRENT_USER, userName);
                 startActivity(intent);
-            }
+//            }
         }
     }
 }

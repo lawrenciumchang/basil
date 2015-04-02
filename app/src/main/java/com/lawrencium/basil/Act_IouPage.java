@@ -20,6 +20,10 @@ public class Act_IouPage extends Activity {
 
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
+    String title;
+    String category;
+    String amount;
+    String user;
     String userName;
 
     @Override
@@ -32,8 +36,43 @@ public class Act_IouPage extends Activity {
         Intent intent = getIntent();
 
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+        title = intent.getStringExtra(Act_PayPage.PASS_TITLE);
+        title = intent.getStringExtra(Act_RequestPage.PASS_TITLE);
+        category = intent.getStringExtra(Act_PayPage.PASS_CATEGORY);
+        category = intent.getStringExtra(Act_RequestPage.PASS_CATEGORY);
+        amount = intent.getStringExtra(Act_PayPage.PASS_AMOUNT);
+        amount = intent.getStringExtra(Act_RequestPage.PASS_AMOUNT);
+        user = intent.getStringExtra(Act_PayPage.PASS_USER);
+        user = intent.getStringExtra(Act_RequestPage.PASS_USER);
 
         System.out.println("Current User from IOU page: " + userName);
+
+        EditText titleSet = (EditText)findViewById(R.id.editText2);
+        titleSet.setText(title);
+
+        Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
+        String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
+        if(category != null) {
+            for (int i = 0; i < items.length; i++) {
+                if (category.equals(items[i])) {
+                    categorySet.setSelection(i);
+                }
+            }
+        }
+
+        EditText amountSet = (EditText)findViewById(R.id.editText);
+        amountSet.setText(amount);
+
+        Spinner userSet = (Spinner)findViewById(R.id.spinner2);
+        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        if(user != null) {
+            for (int i = 0; i < items2.length; i++) {
+                if (user.equals(items2[i])) {
+                    userSet.setSelection(i);
+                }
+            }
+        }
+
     }
 
     public void createDropdown(){

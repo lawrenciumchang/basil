@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 
 public class Act_PayPage extends Activity {
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
     String title;
     String category;
@@ -21,6 +20,11 @@ public class Act_PayPage extends Activity {
     String user;
     String userName;
 
+    public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
+    public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
+    public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
+    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    public final static String PASS_USER = "com.lawrencium.basil.USER";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +82,10 @@ public class Act_PayPage extends Activity {
         {
             case android.R.id.home:
                 i = new Intent(this, Act_IouPage.class);
+                i.putExtra(PASS_TITLE, title);
+                i.putExtra(PASS_CATEGORY, category);
+                i.putExtra(PASS_AMOUNT, amount);
+                i.putExtra(PASS_USER, user);
                 i.putExtra(PASS_CURRENT_USER, userName);
                 startActivityForResult(i, 0);
                 break;
@@ -91,6 +99,10 @@ public class Act_PayPage extends Activity {
     public void onBackPressed() {
         Intent i;
         i = new Intent(this, Act_IouPage.class);
+        i.putExtra(PASS_TITLE, title);
+        i.putExtra(PASS_CATEGORY, category);
+        i.putExtra(PASS_AMOUNT, amount);
+        i.putExtra(PASS_USER, user);
         i.putExtra(PASS_CURRENT_USER, userName);
         startActivityForResult(i, 0);
     }

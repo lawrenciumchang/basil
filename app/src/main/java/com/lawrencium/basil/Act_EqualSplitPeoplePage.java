@@ -1,12 +1,15 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 
@@ -16,9 +19,18 @@ public class Act_EqualSplitPeoplePage extends Activity {
     String amount;
     String number;
     String userName;
+    String user2;
+    Bundle b;
 
+    public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
+    public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
+    public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
+    public final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
 
+    int numToCreate;
+//    boolean check = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +46,15 @@ public class Act_EqualSplitPeoplePage extends Activity {
         number = intent.getStringExtra(Act_EqualSplitPage.PASS_NUMBER);
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
 
+        user2 = intent.getStringExtra(Act_EqualSplitConfirmPage.PASS_USER2);
+        b = intent.getExtras();
+
+        numToCreate = Integer.parseInt(number);
+        numToCreate = numToCreate - 2;
+
+        LinearLayout ll = (LinearLayout)findViewById(R.id.spinnerLayout);
+        LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+
         System.out.println("Title: " + title);
         System.out.println("Category: " + category);
         System.out.println("Amount: " + amount);
@@ -41,26 +62,42 @@ public class Act_EqualSplitPeoplePage extends Activity {
         System.out.println("Current User: " + userName);
 
         createUserDropdown();
+
         createUserDropdown2();
-
-        if(number.matches("2")){
-            //hide all boxes but first 2
-            Spinner u3 = (Spinner)findViewById(R.id.u3);
-            u3.setVisibility(View.GONE);
-
-            Spinner u4 = (Spinner)findViewById(R.id.u4);
-            u4.setVisibility(View.GONE);
+        Spinner user2Set = (Spinner)findViewById(R.id.user2);
+        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        if(user2 != null) {
+            for (int i = 0; i < items2.length; i++) {
+                if (user2.equals(items2[i])) {
+                    user2Set.setSelection(i);
+                }
+            }
         }
 
-        if(number.matches("3")){
-            createDropdown3();
-            Spinner u4 = (Spinner)findViewById(R.id.u4);
-            u4.setVisibility(View.GONE);
+        if(b.getString("0") != null) {
+            for (int a = 0; a < numToCreate; a++) {
+                String id = Integer.toString(a);
+                for(int c = 0; c < items2.length; c++) {
+                    if (b.getString(id).equals(items2[c])) {
+//                        Spinner userSet = (Spinner)findViewById(a);
+//                        System.out.println("find spinner: " + userSet);
+                        Spinner userSet = createNewUserDropdown();
+                        ll.addView(userSet, ll.getChildCount(), lp);
+                        userSet.setId(c);
+                        userSet.setSelection(c);
+                    }
+                }
+            }
         }
-        if(number.matches("4")){
-            createDropdown3();
-            createDropdown4();
+        else {
+            for (int i = 0; i < numToCreate; i++) {
+                Spinner createNew = createNewUserDropdown();
+                ll.addView(createNew, ll.getChildCount(), lp);
+                createNew.setId(i);
+            }
         }
+
+
 
     }
 
@@ -69,6 +106,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
         String[] items = new String[]{userName};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
         user1.setAdapter(adapter);
+        user1.setClickable(false);
     }
 
     public void createUserDropdown2(){
@@ -78,18 +116,12 @@ public class Act_EqualSplitPeoplePage extends Activity {
         user2.setAdapter(adapter);
     }
 
-    public void createDropdown3(){
-        Spinner dropdown = (Spinner)findViewById(R.id.u3);
+    public Spinner createNewUserDropdown(){
+        Spinner newUser = new Spinner(this);
         String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-        dropdown.setAdapter(adapter);
-    }
-
-    public void createDropdown4(){
-        Spinner dropdown = (Spinner)findViewById(R.id.u4);
-        String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
-        dropdown.setAdapter(adapter);
+        newUser.setAdapter(adapter);
+        return newUser;
     }
 
     @Override
@@ -119,6 +151,10 @@ public class Act_EqualSplitPeoplePage extends Activity {
         {
             case android.R.id.home:
                 i = new Intent(this, Act_EqualSplitPage.class);
+                i.putExtra(PASS_TITLE, title);
+                i.putExtra(PASS_CATEGORY, category);
+                i.putExtra(PASS_AMOUNT, amount);
+                i.putExtra(PASS_NUMBER, number);
                 i.putExtra(PASS_CURRENT_USER, userName);
                 startActivityForResult(i, 0);
                 break;
@@ -132,8 +168,66 @@ public class Act_EqualSplitPeoplePage extends Activity {
     public void onBackPressed() {
         Intent i;
         i = new Intent(this, Act_EqualSplitPage.class);
+        i.putExtra(PASS_TITLE, title);
+        i.putExtra(PASS_CATEGORY, category);
+        i.putExtra(PASS_AMOUNT, amount);
+        i.putExtra(PASS_NUMBER, number);
         i.putExtra(PASS_CURRENT_USER, userName);
         startActivityForResult(i, 0);
+    }
+
+    public void equalPeopleNext(View view){
+
+        boolean check = true;
+
+        Intent intent = new Intent(this, Act_EqualSplitConfirmPage.class);
+
+        //check and see if any fields are blank
+        Spinner u2 = (Spinner)findViewById(R.id.user2);
+        if(u2.getSelectedItem().toString().equals("Select User")){
+            check = false;
+        }
+        for(int a = 0; a < numToCreate; a++){
+            Spinner spin = (Spinner)findViewById(a);
+            System.out.println("testing: " + spin);
+            if(spin.getSelectedItem().toString().equals("Select User")){
+                check = false;
+            }
+        }
+
+        String user2 = u2.getSelectedItem().toString();
+
+//        Bundle b = new Bundle();
+
+        //put stuff into the Bundle
+        for(int i = 0; i < numToCreate; i++){
+            Spinner spin = (Spinner)findViewById(i);
+            System.out.println("spin: " + spin);
+            String id = Integer.toString(i);
+            b.putString(id, spin.getSelectedItem().toString());
+        }
+
+        if(check) {
+            intent.putExtra(PASS_TITLE, title);
+            intent.putExtra(PASS_CATEGORY, category);
+            intent.putExtra(PASS_AMOUNT, amount);
+            intent.putExtra(PASS_NUMBER, number);
+            intent.putExtra(PASS_CURRENT_USER, userName);
+            intent.putExtra(PASS_USER2, user2);
+            intent.putExtras(b);
+            startActivity(intent);
+        }
+        else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please select users for your transaction.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
+//            check = true;
+        }
     }
 
 }

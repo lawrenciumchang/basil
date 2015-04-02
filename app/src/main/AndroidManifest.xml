@@ -56,6 +56,10 @@
             android:name=".Act_EqualSplitPeoplePage"
             android:label="Select Users" >
         </activity>
+        <activity
+            android:name=".Act_EqualSplitConfirmPage"
+            android:label="Confirm Equal Split" >
+        </activity>
     </application>
 
 </manifest>
