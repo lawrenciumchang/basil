@@ -74,6 +74,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
             }
         }
 
+        //adds selected users upon pressing back button from next page
         if(b.getString("0") != null) {
             for (int a = 0; a < numToCreate; a++) {
                 String id = Integer.toString(a);
@@ -83,12 +84,13 @@ public class Act_EqualSplitPeoplePage extends Activity {
 //                        System.out.println("find spinner: " + userSet);
                         Spinner userSet = createNewUserDropdown();
                         ll.addView(userSet, ll.getChildCount(), lp);
-                        userSet.setId(c);
+                        userSet.setId(a);
                         userSet.setSelection(c);
                     }
                 }
             }
         }
+        //dynamically creates Spinners for number of users
         else {
             for (int i = 0; i < numToCreate; i++) {
                 Spinner createNew = createNewUserDropdown();

@@ -60,7 +60,7 @@ public class Act_EqualSplitPage extends Activity {
         amountSet.setText(amount);
 
         EditText numberSet = (EditText)findViewById(R.id.equalNumber);
-        numberSet.setText(amount);
+        numberSet.setText(number);
 
     }
 
