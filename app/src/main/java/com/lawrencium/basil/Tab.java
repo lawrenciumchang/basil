@@ -1,5 +1,8 @@
 package com.lawrencium.basil;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by James on 3/23/2015.
  */
@@ -9,8 +12,9 @@ public class Tab {
     private double AmountOwed;
     private String Category;
     private String Title;
+    private String Date;
     private int TabId;
-    private double tmep;
+
 
 
     //Think of ways to identify different tabs
@@ -21,6 +25,8 @@ public class Tab {
         TabId = tabId;
     }
 
+
+
     //Normal Constructor
     public Tab(String userOwed, String userOwing, double amountOwed, String category, String title) {
         UserOwed = userOwed;
@@ -28,6 +34,9 @@ public class Tab {
         AmountOwed = amountOwed;
         Category = category;
         Title = title;
+        Date tempDate = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMM/dd h:mma");
+        Date = format.format(tempDate);
     }
 
     //Copy Constructor
@@ -38,6 +47,7 @@ public class Tab {
         Category = T.getCategory();
         Title = T.getTitle();
         TabId = T.getTabId();
+        Date = T.getDate();
     }
 
     public String getUserOwed() {
@@ -87,6 +97,14 @@ public class Tab {
     public void setTabId(int tabId) {
         TabId = tabId;
     }
+
+    public String getDate() {
+        return Date;
+    }
+    public void setDate(String date) {
+        Date = date;
+    }
+
 
     @Override
     public boolean equals(Object o) {

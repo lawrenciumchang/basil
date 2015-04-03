@@ -60,6 +60,10 @@
             android:name=".Act_EqualSplitConfirmPage"
             android:label="Confirm Equal Split" >
         </activity>
+        <activity
+            android:name=".Act_TabVault"
+            android:label="@string/title_activity_act__tab_vault" >
+        </activity>
     </application>
 
 </manifest>

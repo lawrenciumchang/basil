@@ -2,9 +2,11 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +21,8 @@ public class Act_PayPage extends Activity {
     String amount;
     String user;
     String userName;
-
+    TabsDbHelper tabDbHelper = new TabsDbHelper(this);
+    IouRequestTab tempRequest = new IouRequestTab();
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
     public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
@@ -108,6 +111,12 @@ public class Act_PayPage extends Activity {
     }
 
     public void confirmPay(View view){
+        SQLiteDatabase db = tabDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String tabId;
+        String date;
+        int temp;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Your payment has been sent.");
         builder.setCancelable(false);
@@ -121,14 +130,25 @@ public class Act_PayPage extends Activity {
 
         //need to format double to look like currency
         double tempAmount = Double.parseDouble(amount);
+        tempRequest.createTab(user, userName, tempAmount, category, title);
+        temp = tempRequest.getCreatedTab().getTabId();
+        tabId = Integer.toString(temp);
+        date = tempRequest.getCreatedTab().getDate();
+
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, user);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING, userName);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT, amount);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, category);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
+        long newRowId = db.insert(
+                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                values);
 
 
-        TabVault.getInstance().getTempIou().createTab(user, userName, tempAmount, category, title);
-
-        if(TabVault.getInstance().addTab(TabVault.getInstance().getTempIou().getCreatedTab())) {
-            System.out.println("Amount: " + tempAmount);
-            System.out.println("Tab ID: " + TabVault.getInstance().getTempIou().getCreatedTab().getTabId());
-            System.out.println("Vault: " + TabVault.getInstance().getTabs());
+        if(newRowId >= 0) {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
