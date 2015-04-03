@@ -8,11 +8,11 @@
 
     <EditText
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/editText2"
         android:layout_alignParentTop="true"
         android:hint="Title"
-        android:singleLine="true"/>
+        android:singleLine="true" />
 
     <Spinner
         android:id="@+id/spinner1"
@@ -25,7 +25,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/editText"

@@ -8,7 +8,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/equalTitle"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -25,7 +25,7 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/equalAmount"
@@ -37,7 +37,7 @@
 
     <EditText
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:inputType="number"
         android:ems="10"
         android:id="@+id/equalNumber"

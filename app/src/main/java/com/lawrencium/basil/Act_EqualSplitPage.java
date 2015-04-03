@@ -67,7 +67,7 @@ public class Act_EqualSplitPage extends Activity {
     public void createDropdown(){
         Spinner dropdown = (Spinner)findViewById(R.id.equalCategory);
         String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown.setAdapter(adapter);
     }

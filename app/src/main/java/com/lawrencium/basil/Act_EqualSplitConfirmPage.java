@@ -5,6 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.DecimalFormat;
 
 
 public class Act_EqualSplitConfirmPage extends Activity {
@@ -23,6 +28,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
     public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
 
+    int num;
     int numToCreate;
 
     @Override
@@ -42,8 +48,10 @@ public class Act_EqualSplitConfirmPage extends Activity {
 
         b = intent.getExtras();
 
-        numToCreate = Integer.parseInt(number);
-        numToCreate = numToCreate - 2;
+        num = Integer.parseInt(number);
+        numToCreate = num - 2;
+
+        double total = Double.parseDouble(amount);
 
         System.out.println("Current User from Equal Split Confirmation: " + userName);
         System.out.println("User 2: " + user2);
@@ -53,6 +61,14 @@ public class Act_EqualSplitConfirmPage extends Activity {
             System.out.println("Bundle: " + b.getString(id));
         }
 
+        if(b.get("0") == null) {
+            Double n = (double) num;
+            total = total/n;
+            DecimalFormat dec = new DecimalFormat("0.00");
+            String t = dec.format(total);
+            TextView display = (TextView) findViewById(R.id.equalDisplay);
+            display.setText(user2 + " owes you $" + t + " for " + title + " (" + category + ").");
+        }
 
     }
 
@@ -113,4 +129,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    public void confirmEqual(View view){
+        Toast.makeText(getApplicationContext(), "Soon.", Toast.LENGTH_SHORT).show();
+    }
 }

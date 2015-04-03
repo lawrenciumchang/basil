@@ -104,7 +104,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
     public void createUserDropdown(){
         Spinner user1 = (Spinner)findViewById(R.id.user1);
         String[] items = new String[]{userName};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         user1.setAdapter(adapter);
         user1.setClickable(false);
     }
@@ -112,7 +112,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
     public void createUserDropdown2(){
         Spinner user2 = (Spinner)findViewById(R.id.user2);
         String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         user2.setAdapter(adapter);
     }
@@ -120,7 +120,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
     public Spinner createNewUserDropdown(){
         Spinner newUser = new Spinner(this);
         String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, items);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         newUser.setAdapter(adapter);
         return newUser;
