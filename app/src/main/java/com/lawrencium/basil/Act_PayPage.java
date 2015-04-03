@@ -143,7 +143,7 @@ public class Act_PayPage extends Activity {
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
         long newRowId = db.insert(
-                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+                FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                 values);
 

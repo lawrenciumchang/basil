@@ -24,6 +24,7 @@ public class TabsDbHelper extends SQLiteOpenHelper {
                     FeedEntry.COLUMN_NAME_AMOUNT + TEXT_TYPE + COMMA_SEP +
                     FeedEntry.COLUMN_NAME_CATEGORIES + TEXT_TYPE + COMMA_SEP +
                     FeedEntry.COLUMN_NAME_TABID + TEXT_TYPE + COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_DATE + TEXT_TYPE +
 
                     // Any other options for the CREATE command
                     " )";

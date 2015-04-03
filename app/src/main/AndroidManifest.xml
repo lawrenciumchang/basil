@@ -62,7 +62,7 @@
         </activity>
         <activity
             android:name=".Act_TabVault"
-            android:label="@string/title_activity_act__tab_vault" >
+            android:label="Tab Vault" >
         </activity>
     </application>
 

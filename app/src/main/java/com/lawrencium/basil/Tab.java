@@ -35,7 +35,7 @@ public class Tab {
         Category = category;
         Title = title;
         Date tempDate = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMM/dd h:mma");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd h:mm:ssa");
         Date = format.format(tempDate);
     }
 
@@ -127,6 +127,7 @@ public class Tab {
                 ", Category='" + Category + '\'' +
                 ", Title='" + Title + '\'' +
                 ", TabId=" + TabId +
+                ", Date=" + Date +
                 '}';
     }
 }

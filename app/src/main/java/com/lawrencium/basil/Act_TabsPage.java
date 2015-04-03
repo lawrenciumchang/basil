@@ -89,5 +89,9 @@ public class Act_TabsPage extends Activity {
         startActivity(intent);
     }
 
-
+    public void viewTabs(View view){
+        Intent intent = new Intent(this, Act_TabVault.class);
+        intent.putExtra(PASS_CURRENT_USER, userName);
+        startActivity(intent);
+    }
 }
