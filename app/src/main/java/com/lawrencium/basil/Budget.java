@@ -7,7 +7,7 @@ import java.util.ArrayList;
  */
 public class Budget {
     private volatile static Budget singleton;
-    private ArrayList<Category> categories = new ArrayList<Category>();
+    //FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper();
 
     private Budget() {
     }
@@ -22,7 +22,5 @@ public class Budget {
         return singleton;
     }
 
-    public ArrayList<Category> getCategories(){
-        return categories;
-    }
+
 }

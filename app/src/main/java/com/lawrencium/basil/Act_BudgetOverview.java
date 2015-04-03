@@ -35,7 +35,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT
         };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE + " DESC";
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
         Cursor c = db.query(
                 FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
                 projection,
@@ -48,6 +48,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         if(c.moveToFirst()) {
             do {
                 Frag_GraphButton fragment = Frag_GraphButton.newInstance(
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT)));
                 fragmentTransaction.add(R.id.categoryLayout, fragment);

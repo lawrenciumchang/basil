@@ -4,9 +4,13 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 
 
 public class Act_NewTransaction extends Activity {
+    protected EditText inputName;
+    protected EditText inputBudget;
+    FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

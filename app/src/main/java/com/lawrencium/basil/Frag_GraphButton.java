@@ -22,10 +22,12 @@ import android.widget.TextView;
 public class Frag_GraphButton extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_ID = "cat_id";
     private static final String ARG_NAME = "cat_name";
     private static final String ARG_TOTAL = "cat_total";
 
     // TODO: Rename and change types of parameters
+    private String cat_id;
     private String cat_name;
     private String cat_total;
 
@@ -40,9 +42,10 @@ public class Frag_GraphButton extends Fragment {
      * @return A new instance of fragment Frag_GraphButton.
      */
     // TODO: Rename and change types and number of parameters
-    public static Frag_GraphButton newInstance(String cat_name, String cat_total) {
+    public static Frag_GraphButton newInstance(String cat_id, String cat_name, String cat_total) {
         Frag_GraphButton fragment = new Frag_GraphButton();
         Bundle args = new Bundle();
+        args.putString(ARG_ID, cat_id);
         args.putString(ARG_NAME, cat_name);
         args.putString(ARG_TOTAL, cat_total);
         fragment.setArguments(args);
@@ -60,6 +63,7 @@ public class Frag_GraphButton extends Fragment {
         //for logic
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            cat_id = getArguments().getString(ARG_ID);
             cat_name = getArguments().getString(ARG_NAME);
             cat_total = getArguments().getString(ARG_TOTAL);
         }
@@ -72,7 +76,7 @@ public class Frag_GraphButton extends Fragment {
         //things a user sees
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
         TextView textView = (TextView) v.findViewById(R.id.txt_catName);
-        textView.setText(cat_name + ": " + cat_total);
+        textView.setText("[" + cat_id + "] " + cat_name + ": " + cat_total);
 
         return v;
     }
