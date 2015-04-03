@@ -1,6 +1,7 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -46,6 +47,8 @@ public class Frag_GraphButton extends Fragment {
         args.putString(ARG_TOTAL, cat_total);
         fragment.setArguments(args);
         return fragment;
+
+        //fragments ALWAYS go to onCreate -> onCreateView -> onAttach (not as important at the moment)
     }
 
     public Frag_GraphButton() {
@@ -54,6 +57,7 @@ public class Frag_GraphButton extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        //for logic
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             cat_name = getArguments().getString(ARG_NAME);
@@ -65,6 +69,7 @@ public class Frag_GraphButton extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        //things a user sees
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
         TextView textView = (TextView) v.findViewById(R.id.txt_catName);
         textView.setText(cat_name + ": " + cat_total);
