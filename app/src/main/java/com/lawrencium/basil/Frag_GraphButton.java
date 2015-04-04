@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -75,8 +76,8 @@ public class Frag_GraphButton extends Fragment {
         // Inflate the layout for this fragment
         //things a user sees
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
-        TextView textView = (TextView) v.findViewById(R.id.txt_catName);
-        textView.setText("[" + cat_id + "] " + cat_name + ": " + cat_total);
+        Button catName = (Button) v.findViewById(R.id.txt_catName);
+        catName.setText("[" + cat_id + "] " + cat_name + ": " + cat_total);
 
         return v;
     }
