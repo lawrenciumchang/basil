@@ -37,13 +37,13 @@ public class Act_TabVault extends Activity {
         String Amount;
         String tabId;
         Tab tempTab;
-         String UserOwed;
-         String UserOwing;
-         double AmountOwed;
-         String Category;
-         String Title;
-         int TabId;
-         String Date;
+        String UserOwed;
+        String UserOwing;
+        double AmountOwed;
+        String Category;
+        String Title;
+        int TabId;
+        String Date;
         String out = "";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__tab_vault);
@@ -72,20 +72,20 @@ public class Act_TabVault extends Activity {
         );
         if(c.moveToFirst()) {
             do {
-               Title = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE));
-               UserOwed = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED));
-               UserOwing = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING));
-               Amount = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT));
-               AmountOwed = Double.parseDouble(Amount);
-               Category = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES));
-               tabId = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID));
-               TabId = Integer.parseInt(tabId);
-               Date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
-               tempTab = new Tab(UserOwed, UserOwing, AmountOwed, Category, Title);
-               tempTab.setTabId(TabId);
-               tempTab.setDate(Date);
-               Tabs.add(tempTab);
-               System.out.println("Tab Created: " + tempTab);
+                Title = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE));
+                UserOwed = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED));
+                UserOwing = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING));
+                Amount = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT));
+                AmountOwed = Double.parseDouble(Amount);
+                Category = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES));
+                tabId = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID));
+                TabId = Integer.parseInt(tabId);
+                Date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
+                tempTab = new Tab(UserOwed, UserOwing, AmountOwed, Category, Title);
+                tempTab.setTabId(TabId);
+                tempTab.setDate(Date);
+                Tabs.add(tempTab);
+                System.out.println("Tab Created: " + tempTab);
                 System.out.println("Amount: "+AmountOwed);
 
                 TextView vault = (TextView)findViewById(R.id.vault);

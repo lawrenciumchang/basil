@@ -64,6 +64,14 @@
             android:name=".Act_TabVault"
             android:label="Tab Vault" >
         </activity>
+        <activity
+            android:name=".Act_CustomSplitPage"
+            android:label="Custom Split" >
+        </activity>
+        <activity
+            android:name=".Act_CustomSplitPeoplePage"
+            android:label="Manage Transactions" >
+        </activity>
     </application>
 
 </manifest>

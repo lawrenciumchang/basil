@@ -26,15 +26,17 @@
         android:layout_width="fill_parent"
         android:layout_marginBottom="50dp"
         android:layout_alignParentBottom="true"
-        android:text="Customized Split"
-        android:onClick="customizedSplit" />
+        android:text="Custom Split"
+        android:onClick="customSplit"
+        android:id="@+id/customButton" />
 
     <Button
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:layout_alignParentBottom="true"
         android:text="IOU"
-        android:onClick="iou" />
+        android:onClick="iou"
+        android:id="@+id/iouButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -46,5 +48,25 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentLeft="true"
         android:onClick="viewTabs" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recent Tabs:"
+        android:id="@+id/textView3"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/button9"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Recent tabs will be displayed here once I figure out how to do it :^)"
+        android:id="@+id/recent1"
+        android:layout_below="@+id/textView3"
+        android:layout_marginTop="30dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignRight="@+id/textView2" />
 
 </RelativeLayout>

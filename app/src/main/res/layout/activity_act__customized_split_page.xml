@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.lawrencium.basil.Act_CustomSplitPage">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:id="@+id/customTitle"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:hint="Title"
+        android:singleLine="true"/>
+
+    <Spinner
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/customCategory"
+        android:layout_below="@+id/customTitle"
+        android:layout_alignParentLeft="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:inputType="numberDecimal"
+        android:ems="10"
+        android:id="@+id/customAmount"
+        android:layout_below="@+id/customCategory"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:hint="Total Amount (+ tax if applicable)"
+        android:singleLine="true"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/customNumber"
+        android:layout_below="@+id/customAmount"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/customAmount"
+        android:hint="Number of People"
+        android:singleLine="true"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Next"
+        android:id="@+id/customNext"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/customNumber"
+        android:layout_alignParentLeft="true"
+        android:onClick="customNext" />
+</RelativeLayout>

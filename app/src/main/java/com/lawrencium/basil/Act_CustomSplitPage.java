@@ -12,12 +12,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 
-public class Act_EqualSplitPage extends Activity {
+public class Act_CustomSplitPage extends Activity {
+
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
     public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
     public final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
-
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
     String title;
@@ -29,24 +29,25 @@ public class Act_EqualSplitPage extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_act__equal_split_page);
+        setContentView(R.layout.activity_act__customized_split_page);
         createDropdown();
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         Intent intent = getIntent();
 
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
-        title = intent.getStringExtra(Act_EqualSplitPeoplePage.PASS_TITLE);
-        category = intent.getStringExtra(Act_EqualSplitPeoplePage.PASS_CATEGORY);
-        amount = intent.getStringExtra(Act_EqualSplitPeoplePage.PASS_AMOUNT);
-        number = intent.getStringExtra(Act_EqualSplitPeoplePage.PASS_NUMBER);
+        title = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_TITLE);
+        category = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_CATEGORY);
+        amount = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_AMOUNT);
+        number = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_NUMBER);
 
-        System.out.println("Current User from Equal Split page: " + userName);
+        System.out.println("Current User from Custom Split page: " + userName);
 
-        EditText titleSet = (EditText)findViewById(R.id.equalTitle);
+        EditText titleSet = (EditText)findViewById(R.id.customTitle);
         titleSet.setText(title);
 
-        Spinner categorySet = (Spinner)findViewById(R.id.equalCategory);
+        Spinner categorySet = (Spinner)findViewById(R.id.customCategory);
         String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
         if(category != null) {
             for (int i = 0; i < items.length; i++) {
@@ -56,16 +57,16 @@ public class Act_EqualSplitPage extends Activity {
             }
         }
 
-        EditText amountSet = (EditText)findViewById(R.id.equalAmount);
+        EditText amountSet = (EditText)findViewById(R.id.customAmount);
         amountSet.setText(amount);
 
-        EditText numberSet = (EditText)findViewById(R.id.equalNumber);
+        EditText numberSet = (EditText)findViewById(R.id.customNumber);
         numberSet.setText(number);
 
     }
 
     public void createDropdown(){
-        Spinner dropdown = (Spinner)findViewById(R.id.equalCategory);
+        Spinner dropdown = (Spinner)findViewById(R.id.customCategory);
         String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -75,7 +76,7 @@ public class Act_EqualSplitPage extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_act__equal_split_page, menu);
+        getMenuInflater().inflate(R.menu.menu_act__customized_split_page, menu);
         return true;
     }
 
@@ -116,18 +117,18 @@ public class Act_EqualSplitPage extends Activity {
         startActivityForResult(i, 0);
     }
 
-    public void equalNext(View view){
-        EditText equalTitle = (EditText)findViewById(R.id.equalTitle);
-        String title = equalTitle.getText().toString();
+    public void customNext(View view){
+        EditText customTitle = (EditText)findViewById(R.id.customTitle);
+        String title = customTitle.getText().toString();
 
-        Spinner equalCategory = (Spinner)findViewById(R.id.equalCategory);
-        String category = equalCategory.getSelectedItem().toString();
+        Spinner customCategory = (Spinner)findViewById(R.id.customCategory);
+        String category = customCategory.getSelectedItem().toString();
 
-        EditText equalAmount = (EditText)findViewById(R.id.equalAmount);
-        String amount = equalAmount.getText().toString();
+        EditText customAmount = (EditText)findViewById(R.id.customAmount);
+        String amount = customAmount.getText().toString();
 
-        EditText equalNumber = (EditText)findViewById(R.id.equalNumber);
-        String number = equalNumber.getText().toString();
+        EditText customNumber = (EditText)findViewById(R.id.customNumber);
+        String number = customNumber.getText().toString();
 
         if(title.matches("")){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -175,7 +176,7 @@ public class Act_EqualSplitPage extends Activity {
             dialog.show();
         }
         else if((!number.matches("")) || (!number.matches("1"))|| !number.matches("0")){
-            Intent intent = new Intent(this, Act_EqualSplitPeoplePage.class);
+            Intent intent = new Intent(this, Act_CustomSplitPeoplePage.class);
             intent.putExtra(PASS_TITLE, title);
             intent.putExtra(PASS_CATEGORY, category);
             intent.putExtra(PASS_AMOUNT, amount);
@@ -184,4 +185,5 @@ public class Act_EqualSplitPage extends Activity {
             startActivity(intent);
         }
     }
+
 }

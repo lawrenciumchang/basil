@@ -5,33 +5,44 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 
-public class Act_TabsPage extends Activity {
+public class Act_CustomSplitPeoplePage extends Activity {
+
+    public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
+    public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
+    public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
+    public final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
+    String title;
+    String category;
+    String amount;
+    String number;
     String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_act_tabs_page);
+        setContentView(R.layout.activity_act__custom_split_people_page);
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
 
+        title = intent.getStringExtra(Act_EqualSplitPage.PASS_TITLE);
+        category = intent.getStringExtra(Act_EqualSplitPage.PASS_CATEGORY);
+        amount = intent.getStringExtra(Act_EqualSplitPage.PASS_AMOUNT);
+        number = intent.getStringExtra(Act_EqualSplitPage.PASS_NUMBER);
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
 
-        System.out.println("Current User from Tabs page: " + userName);
-
+        System.out.println("Current User from Custom Split Manage Transactions page: " + userName);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_tabs, menu);
+        getMenuInflater().inflate(R.menu.menu_act__custom_split_people_page, menu);
         return true;
     }
 
@@ -49,13 +60,16 @@ public class Act_TabsPage extends Activity {
 //
 //        return super.onOptionsItemSelected(item);
 
-
         Intent i;
 
         switch (item.getItemId())
         {
             case android.R.id.home:
-                i = new Intent(this, Act_BudgetBuddy.class);
+                i = new Intent(this, Act_CustomSplitPage.class);
+                i.putExtra(PASS_TITLE, title);
+                i.putExtra(PASS_CATEGORY, category);
+                i.putExtra(PASS_AMOUNT, amount);
+                i.putExtra(PASS_NUMBER, number);
                 i.putExtra(PASS_CURRENT_USER, userName);
                 startActivityForResult(i, 0);
                 break;
@@ -68,32 +82,14 @@ public class Act_TabsPage extends Activity {
     @Override
     public void onBackPressed() {
         Intent i;
-        i = new Intent(this, Act_BudgetBuddy.class);
+        i = new Intent(this, Act_CustomSplitPage.class);
+        i.putExtra(PASS_TITLE, title);
+        i.putExtra(PASS_CATEGORY, category);
+        i.putExtra(PASS_AMOUNT, amount);
+        i.putExtra(PASS_NUMBER, number);
         i.putExtra(PASS_CURRENT_USER, userName);
         startActivityForResult(i, 0);
     }
 
-    public void equalSplit(View view){
-        Intent intent = new Intent(this, Act_EqualSplitPage.class);
-        intent.putExtra(PASS_CURRENT_USER, userName);
-        startActivity(intent);
-    }
 
-    public void customSplit(View view){
-        Intent intent = new Intent(this, Act_CustomSplitPage.class);
-        intent.putExtra(PASS_CURRENT_USER, userName);
-        startActivity(intent);
-    }
-
-    public void iou(View view){
-        Intent intent = new Intent(this, Act_IouPage.class);
-        intent.putExtra(PASS_CURRENT_USER, userName);
-        startActivity(intent);
-    }
-
-    public void viewTabs(View view){
-        Intent intent = new Intent(this, Act_TabVault.class);
-        intent.putExtra(PASS_CURRENT_USER, userName);
-        startActivity(intent);
-    }
 }

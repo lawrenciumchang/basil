@@ -17,5 +17,7 @@
     <string name="title_activity_act__equal_split_people_page">Act_EqualSplitPeoplePage</string>
     <string name="title_activity_act__equal_split_confirm_page">Act_EqualSplitConfirmPage</string>
     <string name="title_activity_act__tab_vault">Act_TabVault</string>
+    <string name="title_activity_act__customized_split_page">Act_CustomizedSplitPage</string>
+    <string name="title_activity_act__custom_split_people_page">Act_CustomSplitPeoplePage</string>
 
 </resources>
