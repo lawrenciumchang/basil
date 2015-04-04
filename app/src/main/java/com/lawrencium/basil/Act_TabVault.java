@@ -44,6 +44,7 @@ public class Act_TabVault extends Activity {
          String Title;
          int TabId;
          String Date;
+        String out = "";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__tab_vault);
 
@@ -84,10 +85,12 @@ public class Act_TabVault extends Activity {
                tempTab.setTabId(TabId);
                tempTab.setDate(Date);
                Tabs.add(tempTab);
-                System.out.println("Tab Created: " + tempTab);
+               System.out.println("Tab Created: " + tempTab);
+                System.out.println("Amount: "+AmountOwed);
 
                 TextView vault = (TextView)findViewById(R.id.vault);
-                vault.setText(tempTab.toString());
+                out +=tempTab.toString();
+                vault.setText(out);
 
             } while (c.moveToNext());
         }

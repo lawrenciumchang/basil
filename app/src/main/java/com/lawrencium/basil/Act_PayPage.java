@@ -130,6 +130,10 @@ public class Act_PayPage extends Activity {
 
         //need to format double to look like currency
         double tempAmount = Double.parseDouble(amount);
+        tempAmount *= -1;
+        amount = Double.toString(tempAmount);
+        //System.out.println("Temp Amount: "+tempAmount);
+
         tempRequest.createTab(user, userName, tempAmount, category, title);
         temp = tempRequest.getCreatedTab().getTabId();
         tabId = Integer.toString(temp);

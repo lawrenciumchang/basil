@@ -2,8 +2,10 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +20,8 @@ public class Act_RequestPage extends Activity {
     String amount ;
     String user;
     String userName;
-
+    TabsDbHelper tabDbHelper = new TabsDbHelper(this);
+    IouRequestTab tempRequest = new IouRequestTab();
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
     public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
@@ -107,6 +110,12 @@ public class Act_RequestPage extends Activity {
     }
 
     public void confirmRequest(View view){
+        SQLiteDatabase db = tabDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String tabId;
+        String date;
+        int temp;
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Your request has been sent.");
         builder.setCancelable(false);
@@ -119,12 +128,30 @@ public class Act_RequestPage extends Activity {
             }});
         double tempAmount = Double.parseDouble(amount);
 
+        System.out.println("Temp Amount: "+tempAmount);
+
+        tempRequest.createTab(user, userName, tempAmount, category, title);
+        temp = tempRequest.getCreatedTab().getTabId();
+        tabId = Integer.toString(temp);
+        date = tempRequest.getCreatedTab().getDate();
+
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, userName);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING, user);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT, amount);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, category);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
+        long newRowId = db.insert(
+                FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
+                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                values);
 
 
-
-
+        if(newRowId >= 0) {
             AlertDialog dialog = builder.create();
             dialog.show();
+        }
 
     }
 
