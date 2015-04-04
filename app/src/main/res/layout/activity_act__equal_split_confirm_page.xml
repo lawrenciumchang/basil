@@ -25,7 +25,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Next"
+        android:text="Confirm"
         android:id="@+id/confirmEqual"
         android:onClick="confirmEqual"
         android:layout_alignParentBottom="true"

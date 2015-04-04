@@ -1,13 +1,14 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.DecimalFormat;
 
@@ -20,6 +21,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
     String userName;
     String user2;
     Bundle b;
+    String users = "";
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
@@ -61,6 +63,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
             System.out.println("Bundle: " + b.getString(id));
         }
 
+        //for 2 people total
         if(b.get("0") == null) {
             Double n = (double) num;
             total = total/n;
@@ -68,6 +71,37 @@ public class Act_EqualSplitConfirmPage extends Activity {
             String t = dec.format(total);
             TextView display = (TextView) findViewById(R.id.equalDisplay);
             display.setText(user2 + " owes you $" + t + " for " + title + " (" + category + ").");
+        }
+        //for 3 people total
+        else if(b.get("1") == null){
+            Double n = (double) num;
+            total = total/n;
+            DecimalFormat dec = new DecimalFormat("0.00");
+            String t = dec.format(total);
+            TextView display = (TextView) findViewById(R.id.equalDisplay);
+
+            users += " and " + b.getString("0");
+
+            display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
+        }
+        //for 4 or more people total
+        else{
+            Double n = (double) num;
+            total = total/n;
+            DecimalFormat dec = new DecimalFormat("0.00");
+            String t = dec.format(total);
+            TextView display = (TextView) findViewById(R.id.equalDisplay);
+
+            for(int i = 0; i < numToCreate-1; i++){
+                String id = Integer.toString(i);
+                users += ", " + b.getString(id);
+            }
+
+            int m = numToCreate-1;
+            String nn = Integer.toString(m);
+            users += ", and " + b.getString(nn);
+
+            display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
         }
 
     }
@@ -130,6 +164,23 @@ public class Act_EqualSplitConfirmPage extends Activity {
     }
 
     public void confirmEqual(View view){
-        Toast.makeText(getApplicationContext(), "Soon.", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Your request has been sent.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                launchIntent();
+            }});
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
+
+    public void launchIntent(){
+        Intent intent = new Intent(this, Act_TabsPage.class);
+        intent.putExtra(PASS_CURRENT_USER, userName);
+        startActivity(intent);
+    }
+
+
 }
