@@ -2,8 +2,10 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 
 public class Act_EqualSplitConfirmPage extends Activity {
@@ -22,6 +25,9 @@ public class Act_EqualSplitConfirmPage extends Activity {
     String user2;
     Bundle b;
     String users = "";
+    TabsDbHelper tabDbHelper = new TabsDbHelper(this);
+    IouRequestTab tempRequest = new IouRequestTab();
+    ArrayList<Tab> Tabs = new ArrayList<Tab>();
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
@@ -71,6 +77,10 @@ public class Act_EqualSplitConfirmPage extends Activity {
             String t = dec.format(total);
             TextView display = (TextView) findViewById(R.id.equalDisplay);
             display.setText(user2 + " owes you $" + t + " for " + title + " (" + category + ").");
+
+            tempRequest.createTab(userName, user2, total, category, title);
+            Tabs. add(tempRequest.getCreatedTab());
+
         }
         //for 3 people total
         else if(b.get("1") == null){
@@ -83,6 +93,10 @@ public class Act_EqualSplitConfirmPage extends Activity {
             users += " and " + b.getString("0");
 
             display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
+            tempRequest.createTab(userName, user2, total, category, title);
+            Tabs.add(tempRequest.getCreatedTab());
+            tempRequest.createTab(userName, b.getString("0"), total, category, title);
+            Tabs.add(tempRequest.getCreatedTab());
         }
         //for 4 or more people total
         else{
@@ -91,15 +105,21 @@ public class Act_EqualSplitConfirmPage extends Activity {
             DecimalFormat dec = new DecimalFormat("0.00");
             String t = dec.format(total);
             TextView display = (TextView) findViewById(R.id.equalDisplay);
-
+            tempRequest.createTab(userName, user2, total, category, title);
+            Tabs.add(tempRequest.getCreatedTab());
             for(int i = 0; i < numToCreate-1; i++){
                 String id = Integer.toString(i);
                 users += ", " + b.getString(id);
+                tempRequest.createTab(userName, b.getString(id), total, category, title);
+                Tabs.add(tempRequest.getCreatedTab());
+
             }
 
             int m = numToCreate-1;
             String nn = Integer.toString(m);
             users += ", and " + b.getString(nn);
+            tempRequest.createTab(userName, b.getString(nn), total, category, title);
+            Tabs.add(tempRequest.getCreatedTab());
 
             display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
         }
@@ -172,6 +192,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 launchIntent();
             }});
+        addToDatabase();
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -180,6 +201,36 @@ public class Act_EqualSplitConfirmPage extends Activity {
         Intent intent = new Intent(this, Act_TabsPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
+    }
+
+    private void addToDatabase(){
+        SQLiteDatabase db = tabDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String tabId;
+        String date;
+        int temp;
+        String tempAmount; // = Double.parseDouble(amount);
+
+
+
+        for(Tab T : Tabs) {
+            temp = T.getTabId();
+            tabId = Integer.toString(temp);
+            date = T.getDate();
+            tempAmount = Double.toString(T.getAmountOwed());
+
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, userName);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING, T.getUserOwing());
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT, tempAmount);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, category);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
+            long newRowId = db.insert(
+                    FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
+                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                    values);
+        }
     }
 
 

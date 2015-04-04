@@ -134,7 +134,7 @@ public class Act_PayPage extends Activity {
         amount = Double.toString(tempAmount);
         //System.out.println("Temp Amount: "+tempAmount);
 
-        tempRequest.createTab(user, userName, tempAmount, category, title);
+        tempRequest.createTab(userName, user, tempAmount, category, title);
         temp = tempRequest.getCreatedTab().getTabId();
         tabId = Integer.toString(temp);
         date = tempRequest.getCreatedTab().getDate();

@@ -89,7 +89,7 @@ public class Act_TabVault extends Activity {
                 System.out.println("Amount: "+AmountOwed);
 
                 TextView vault = (TextView)findViewById(R.id.vault);
-                out +=tempTab.toString();
+                out +=tempTab.toString()+"\n";
                 vault.setText(out);
 
             } while (c.moveToNext());
