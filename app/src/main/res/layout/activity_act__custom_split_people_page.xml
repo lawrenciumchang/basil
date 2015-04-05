@@ -25,7 +25,8 @@
         android:id="@+id/customPeopleNext"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:onClick="customPeopleNext" />
 
     <ScrollView
         android:layout_width="wrap_content"
@@ -39,6 +40,58 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"></LinearLayout>
+            android:layout_height="fill_parent"
+            android:id="@+id/transactions"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+
+            <Spinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/userName"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:focusable="false"
+                android:focusableInTouchMode="false" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/userSubtotal"
+                android:hint="Subtotal" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/userTip"
+                android:hint="Tip" />
+
+            <Spinner
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user2"
+                android:focusable="false" />
+
+            <EditText
+                android:layout_width="363dp"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/user2Subtotal"
+                android:hint="Subtotal" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal"
+                android:ems="10"
+                android:id="@+id/user2Tip"
+                android:hint="Tip" />
+        </LinearLayout>
     </ScrollView>
+
 </RelativeLayout>

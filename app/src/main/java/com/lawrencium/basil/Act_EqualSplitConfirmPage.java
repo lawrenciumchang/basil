@@ -25,6 +25,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
     String user2;
     Bundle b;
     String users = "";
+
     TabsDbHelper tabDbHelper = new TabsDbHelper(this);
     IouRequestTab tempRequest = new IouRequestTab();
     ArrayList<Tab> Tabs = new ArrayList<Tab>();

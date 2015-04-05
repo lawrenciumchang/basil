@@ -72,6 +72,10 @@
             android:name=".Act_CustomSplitPeoplePage"
             android:label="Manage Transactions" >
         </activity>
+        <activity
+            android:name=".Act_CustomSplitConfirmPage"
+            android:label="Confirm Custom Split" >
+        </activity>
     </application>
 
 </manifest>

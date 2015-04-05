@@ -29,7 +29,7 @@ public class Act_CustomSplitPage extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_act__customized_split_page);
+        setContentView(R.layout.activity_act__custom_split_page);
         createDropdown();
         getActionBar().setDisplayHomeAsUpEnabled(true);
 

@@ -52,6 +52,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
         numToCreate = Integer.parseInt(number);
         numToCreate = numToCreate - 2;
 
+        //used for creating new objects dynamically
         LinearLayout ll = (LinearLayout)findViewById(R.id.spinnerLayout);
         LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
@@ -207,7 +208,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
             b.putString(id, spin.getSelectedItem().toString());
         }
 
-        if(check) {
+        if(check){
             intent.putExtra(PASS_TITLE, title);
             intent.putExtra(PASS_CATEGORY, category);
             intent.putExtra(PASS_AMOUNT, amount);
@@ -225,8 +226,6 @@ public class Act_EqualSplitPeoplePage extends Activity {
 
             AlertDialog dialog = builder.create();
             dialog.show();
-
-//            check = true;
         }
     }
 
