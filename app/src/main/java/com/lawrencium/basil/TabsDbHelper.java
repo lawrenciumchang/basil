@@ -29,7 +29,7 @@ public class TabsDbHelper extends SQLiteOpenHelper {
                     // Any other options for the CREATE command
                     " )";
 
-    private static final String SQL_DELETE_CATEGORIES =
+    private static final String SQL_DELETE_TABS =
             "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME_TABS;
     // If you change the database schema, you must increment the database version.
     public static final int DATABASE_VERSION = 1;
@@ -44,7 +44,7 @@ public class TabsDbHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
         // to simply to discard the data and start over
-        db.execSQL(SQL_DELETE_CATEGORIES);
+        db.execSQL(SQL_DELETE_TABS);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
