@@ -85,7 +85,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
 //                        System.out.println("find spinner: " + userSet);
                         Spinner userSet = createNewUserDropdown();
                         ll.addView(userSet, ll.getChildCount(), lp);
-                        userSet.setId(a);
+                        userSet.setId(a+2);
                         userSet.setSelection(c);
                     }
                 }
@@ -96,7 +96,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
             for (int i = 0; i < numToCreate; i++) {
                 Spinner createNew = createNewUserDropdown();
                 ll.addView(createNew, ll.getChildCount(), lp);
-                createNew.setId(i);
+                createNew.setId(i+2);
             }
         }
 
@@ -191,20 +191,25 @@ public class Act_EqualSplitPeoplePage extends Activity {
             check = false;
         }
         for(int a = 0; a < numToCreate; a++){
-            Spinner spin = (Spinner)findViewById(a);
+            Spinner spin = (Spinner)findViewById(a+2);
             if(spin.getSelectedItem().toString().equals("Select User")){
                 check = false;
             }
         }
 
+        //BUNDLE NEWS!
+        //bundle includes userName (you), user2, and anything else
+        //userName starts at "0"
+        b.putString("0", userName);
         String user2 = u2.getSelectedItem().toString();
+        b.putString("1", user2);
 
 //        Bundle b = new Bundle();
 
         //put stuff into the Bundle
         for(int i = 0; i < numToCreate; i++){
-            Spinner spin = (Spinner)findViewById(i);
-            String id = Integer.toString(i);
+            Spinner spin = (Spinner)findViewById(i+2);
+            String id = Integer.toString(i+2);
             b.putString(id, spin.getSelectedItem().toString());
         }
 

@@ -15,10 +15,8 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Random;
-import java.util.Set;
 
 
 public class Act_EqualSplitConfirmPage extends Activity {
@@ -71,13 +69,13 @@ public class Act_EqualSplitConfirmPage extends Activity {
         System.out.println("Current User from Equal Split Confirmation: " + userName);
         System.out.println("User 2: " + user2);
 
-        for(int i = 0; i < numToCreate; i++){
+        for(int i = 0; i < num; i++){
             String id = Integer.toString(i);
             System.out.println("Bundle: " + b.getString(id));
         }
 
         //for 2 people total
-        if(b.get("0") == null) {
+        if(b.get("2") == null) {
             Double n = (double) num;
             total = total/n;
             DecimalFormat dec = new DecimalFormat("0.00");
@@ -91,14 +89,14 @@ public class Act_EqualSplitConfirmPage extends Activity {
 
         }
         //for 3 people total
-        else if(b.get("1") == null){
+        else if(b.get("3") == null){
             Double n = (double) num;
             total = total/n;
             DecimalFormat dec = new DecimalFormat("0.00");
 
             TextView display = (TextView) findViewById(R.id.equalDisplay);
 
-            users += " and " + b.getString("0");
+            users += " and " + b.getString("3");
             tempArr = priceSplit(num, amount);
             System.out.println("Random set: "+tempArr);
             String t = dec.format(tempArr[1]);
@@ -118,7 +116,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
             tempRequest.createTab(userName, user2, total, category, title);
             Tabs.add(tempRequest.getCreatedTab());
             for(int i = 0; i < numToCreate-1; i++){
-                String id = Integer.toString(i);
+                String id = Integer.toString(i+2);
                 users += ", " + b.getString(id);
                 tempRequest.createTab(userName, b.getString(id), total, category, title);
                 Tabs.add(tempRequest.getCreatedTab());
@@ -126,7 +124,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
             tempArr = priceSplit(num, amount);
             System.out.println("Random set: "+tempArr);
             int m = numToCreate-1;
-            String nn = Integer.toString(m);
+            String nn = Integer.toString(m+2);
             users += ", and " + b.getString(nn);
             tempRequest.createTab(userName, b.getString(nn), total, category, title);
             Tabs.add(tempRequest.getCreatedTab());

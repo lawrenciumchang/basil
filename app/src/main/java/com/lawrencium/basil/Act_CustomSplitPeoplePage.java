@@ -226,6 +226,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
         }
         for(int a = 0; a < numToCreate; a++){
             checkSpinID += a;
+            System.out.println("Check spin id: " + checkSpinID);
             Spinner spin = (Spinner)findViewById(checkSpinID);
             if(spin.getSelectedItem().toString().equals("Select User")){
                 checkUsers = false;
