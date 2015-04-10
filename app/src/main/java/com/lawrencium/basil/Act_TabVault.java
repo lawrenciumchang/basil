@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 
@@ -76,6 +77,7 @@ public class Act_TabVault extends Activity {
                 UserOwed = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED));
                 UserOwing = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING));
                 Amount = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT));
+
                 AmountOwed = Double.parseDouble(Amount);
                 Category = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES));
                 tabId = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID));
@@ -85,8 +87,9 @@ public class Act_TabVault extends Activity {
                 tempTab.setTabId(TabId);
                 tempTab.setDate(Date);
                 Tabs.add(tempTab);
+                DecimalFormat dec = new DecimalFormat("0.00");
                 System.out.println("Tab Created: " + tempTab);
-                System.out.println("Amount: "+AmountOwed);
+                System.out.println("Amount: "+dec.format(AmountOwed));
 
                 TextView vault = (TextView)findViewById(R.id.vault);
                 out +=tempTab.toString()+"\n";

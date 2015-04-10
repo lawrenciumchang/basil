@@ -1,5 +1,6 @@
 package com.lawrencium.basil;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -120,10 +121,11 @@ public class Tab {
 
     @Override
     public String toString() {
+        DecimalFormat dec = new DecimalFormat("0.00");
         return "Tab{" +
                 "UserOwed='" + UserOwed + '\'' +
                 ", UserOwing='" + UserOwing + '\'' +
-                ", AmountOwed=" + AmountOwed +
+                ", AmountOwed=" + dec.format(AmountOwed) +
                 ", Category='" + Category + '\'' +
                 ", Title='" + Title + '\'' +
                 ", TabId=" + TabId +

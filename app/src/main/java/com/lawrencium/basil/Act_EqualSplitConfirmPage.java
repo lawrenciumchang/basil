@@ -91,10 +91,9 @@ public class Act_EqualSplitConfirmPage extends Activity {
             System.out.println("Random set: "+tempArr);
             testString = paymentOut(tempArr, tempPeople);
             System.out.println("Who Owes: "+testString);
-
             display.setText(testString+ " for " + title + " (" + category + ").");
-            tempRequest.createTab(userName, user2, total, category, title);
-            Tabs. add(tempRequest.getCreatedTab());
+            Tabs = createTabs(tempArr, tempPeople, category, title);
+
 
         }
         //for 3 people or more total
@@ -110,50 +109,16 @@ public class Act_EqualSplitConfirmPage extends Activity {
             tempSet=ranPerson(num);
             tempArr = priceSplit(num, amount,tempSet);
             System.out.println("Random set: "+tempArr);
-            testString = paymentOut(tempArr, tempPeople);
-            System.out.println("Who Owes: "+testString);
+            //testString = paymentOut(tempArr, tempPeople);
+            //System.out.println("Who Owes: "+testString);
             String t = dec.format(tempArr[1]);
             if(priceEqualCheck(tempArr))
-                display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
+                display.setText(getNames(tempPeople) + " each owe you $" + t + " for " + title + " (" + category + ").");
             else
-                display.setText(testString+ " for " + title + " (" + category + ").");
-            //tempRequest.createTab(userName, user2, total, category, title);
-            //Tabs.add(tempRequest.getCreatedTab());
-            //tempRequest.createTab(userName, b.getString("0"), total, category, title);
-            //Tabs.add(tempRequest.getCreatedTab());
+                display.setText(paymentOut(tempArr, tempPeople)+ " for " + title + " (" + category + ").");
+
+            Tabs = createTabs(tempArr, tempPeople, category, title);
         }
-        //for 4 or more people total
-
-//            tempPeople = getPeople(b, num);
-//            Double n = (double) num;
-//            total = total/n;
-//            DecimalFormat dec = new DecimalFormat("0.00");
-//            String t = dec.format(total);
-//            TextView display = (TextView) findViewById(R.id.equalDisplay);
-//            tempRequest.createTab(userName, user2, total, category, title);
-//            Tabs.add(tempRequest.getCreatedTab());
-//            for(int i = 0; i < numToCreate-1; i++){
-//                String id = Integer.toString(i+2);
-//                users += ", " + b.getString(id);
-//                tempRequest.createTab(userName, b.getString(id), total, category, title);
-//                Tabs.add(tempRequest.getCreatedTab());
-//            }
-//            tempSet=ranPerson(num);
-//            tempArr = priceSplit(num, amount, tempSet);
-//            System.out.println("Random set: "+tempArr);
-//            System.out.println("Random set: "+tempArr);
-//            testString = paymentOut(tempArr, tempPeople);
-//            int m = numToCreate-1;
-//            String nn = Integer.toString(m+2);
-//            users += ", and " + b.getString(nn);
-//            tempRequest.createTab(userName, b.getString(nn), total, category, title);
-//            Tabs.add(tempRequest.getCreatedTab());
-//
-//            if(priceEqualCheck(tempArr))
-//                display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
-//            else
-//                display.setText(testString+ " for " + title + " (" + category + ").");
-
 
     }
 
@@ -223,7 +188,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 launchIntent();
             }});
-        addToDatabase();
+        addTabsToDatabase();
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -234,7 +199,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
         startActivity(intent);
     }
 
-    private void addToDatabase(){
+    private void addTabsToDatabase(){
         SQLiteDatabase db = tabDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         String tabId;
@@ -245,10 +210,13 @@ public class Act_EqualSplitConfirmPage extends Activity {
 
 
         for(Tab T : Tabs) {
+            DecimalFormat dec = new DecimalFormat("0.00");
             temp = T.getTabId();
             tabId = Integer.toString(temp);
             date = T.getDate();
-            tempAmount = Double.toString(T.getAmountOwed());
+            tempAmount = dec.format(T.getAmountOwed());
+
+            System.out.println("Amount Saved: "+tempAmount);
 
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, userName);
@@ -334,9 +302,26 @@ public class Act_EqualSplitConfirmPage extends Activity {
             payments += "and "+people[num-1]+" owes you $"+dec.format(prices[num-1]);
         }
 
-
         return payments;
 
+    }
+
+    private String getNames(String[] names){
+        String nameList ="";
+        int num = names.length;
+        DecimalFormat dec = new DecimalFormat("0.00");
+
+        if(num == 3){
+            nameList = names[1]+" and "+names[2];
+        }
+        else{
+            for(int i = 1; i < num-1; i++){
+                nameList += names[i]+", ";
+            }
+            nameList += "and "+names[num-1];
+        }
+
+        return nameList;
     }
 
     private String[] getPeople(Bundle b, int numPpl){
@@ -363,5 +348,20 @@ public class Act_EqualSplitConfirmPage extends Activity {
                 return false;
         }
         return true;
+    }
+
+    private ArrayList<Tab> createTabs(double[] prices, String[] people, String category, String title){
+        IouRequestTab tempRequest = new IouRequestTab();
+        ArrayList<Tab> Tabs = new ArrayList<Tab>();
+        int num = people.length;
+
+
+        for(int i = 1; i < num; i++ ) {
+            tempRequest.createTab(people[0], people[i], prices[i], category, title);
+            Tabs.add(tempRequest.getCreatedTab());
+        }
+
+        return Tabs;
+
     }
 }
