@@ -20,9 +20,9 @@ public class Act_CustomSplitConfirmPage extends Activity {
     int num;
     int numToCreate;
 
-    int bundleSpinID = 100;
-    int bundleSubID = 200;
-    int bundleTipID = 300;
+    int bundleSpinID;
+    int bundleSubID;
+    int bundleTipID;
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
@@ -58,10 +58,17 @@ public class Act_CustomSplitConfirmPage extends Activity {
         num = Integer.parseInt(number);
         numToCreate = num - 2;
 
+        bundleSpinID = 101;
+        bundleSubID = 201;
+        bundleTipID = 301;
+
+        System.out.println("Bundle 1: " + bun.getString("100") + ", " + bun.getString("200") + ", " + bun.getString("300"));
+        System.out.println("Bundle 2: " + bun.getString("101") + ", " + bun.getString("201") + ", " + bun.getString("301"));
+
         for(int i = 0; i < numToCreate; i++){
-            bundleSpinID += i;
-            bundleSubID += i;
-            bundleTipID += i;
+            bundleSpinID += 1;
+            bundleSubID += 1;
+            bundleTipID += 1;
 
             String spinID = Integer.toString(bundleSpinID);
             String subID = Integer.toString(bundleSubID);
@@ -106,7 +113,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 i.putExtra(PASS_NUMBER, number);
                 i.putExtra(PASS_CURRENT_USER, userName);
                 i.putExtra(PASS_USER2, user2);
-//                i.putExtras(b);
+                i.putExtras(bun);
                 startActivityForResult(i, 0);
                 break;
             default:
@@ -125,7 +132,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
         i.putExtra(PASS_NUMBER, number);
         i.putExtra(PASS_CURRENT_USER, userName);
         i.putExtra(PASS_USER2, user2);
-//        i.putExtras(b);
+        i.putExtras(bun);
         startActivityForResult(i, 0);
     }
 
