@@ -78,7 +78,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
         //adds selected users upon pressing back button from next page
         if(b.getString("0") != null) {
             for (int a = 0; a < numToCreate; a++) {
-                String id = Integer.toString(a);
+                String id = Integer.toString(a+2);
                 for(int c = 0; c < items2.length; c++) {
                     if (b.getString(id).equals(items2[c])) {
 //                        Spinner userSet = (Spinner)findViewById(a);
