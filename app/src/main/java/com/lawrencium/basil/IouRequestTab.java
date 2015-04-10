@@ -10,10 +10,19 @@ public class IouRequestTab {
     private String Category;
     private String Title;
     private Tab createdTab;
-    private int tabID;
+    private int tabID = 0;
     //may need to think of a way to handle IOUs vs YOMs without changing constructor order
-    public IouRequestTab() {
-        tabID = 0;
+    private volatile static IouRequestTab uniqueInstance;
+    private IouRequestTab(){}
+    public static IouRequestTab getInstance(){
+        if(uniqueInstance == null){
+            synchronized (IouRequestTab.class){
+                if(uniqueInstance == null)
+                    uniqueInstance = new IouRequestTab();
+            }
+        }
+        return uniqueInstance;
+
     }
 
     public void createTab(String userOwed, String userOwing, double amountOwed, String category, String title) {

@@ -30,7 +30,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
     String users = "";
 
     TabsDbHelper tabDbHelper = new TabsDbHelper(this);
-    IouRequestTab tempRequest = new IouRequestTab();
+
     ArrayList<Tab> Tabs = new ArrayList<Tab>();
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
@@ -351,14 +351,14 @@ public class Act_EqualSplitConfirmPage extends Activity {
     }
 
     private ArrayList<Tab> createTabs(double[] prices, String[] people, String category, String title){
-        IouRequestTab tempRequest = new IouRequestTab();
+
         ArrayList<Tab> Tabs = new ArrayList<Tab>();
         int num = people.length;
 
 
         for(int i = 1; i < num; i++ ) {
-            tempRequest.createTab(people[0], people[i], prices[i], category, title);
-            Tabs.add(tempRequest.getCreatedTab());
+            IouRequestTab.getInstance().createTab(people[0], people[i], prices[i], category, title);
+            Tabs.add(IouRequestTab.getInstance().getCreatedTab());
         }
 
         return Tabs;

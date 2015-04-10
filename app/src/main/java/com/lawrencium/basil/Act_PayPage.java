@@ -22,7 +22,7 @@ public class Act_PayPage extends Activity {
     String user;
     String userName;
     TabsDbHelper tabDbHelper = new TabsDbHelper(this);
-    IouRequestTab tempRequest = new IouRequestTab();
+
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
     public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
@@ -134,10 +134,10 @@ public class Act_PayPage extends Activity {
         amount = Double.toString(tempAmount);
         //System.out.println("Temp Amount: "+tempAmount);
 
-        tempRequest.createTab(userName, user, tempAmount, category, title);
-        temp = tempRequest.getCreatedTab().getTabId();
+        IouRequestTab.getInstance().createTab(userName, user, tempAmount, category, title);
+        temp = IouRequestTab.getInstance().getCreatedTab().getTabId();
         tabId = Integer.toString(temp);
-        date = tempRequest.getCreatedTab().getDate();
+        date = IouRequestTab.getInstance().getCreatedTab().getDate();
 
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, user);
