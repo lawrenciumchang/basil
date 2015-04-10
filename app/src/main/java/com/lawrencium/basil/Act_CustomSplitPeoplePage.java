@@ -35,6 +35,8 @@ public class Act_CustomSplitPeoplePage extends Activity {
     String userName;
     String user2;
 
+    String taxFlag;
+
     int numToCreate;
     double total;
 
@@ -63,6 +65,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
         amount = intent.getStringExtra(Act_EqualSplitPage.PASS_AMOUNT);
         number = intent.getStringExtra(Act_EqualSplitPage.PASS_NUMBER);
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+        taxFlag = intent.getStringExtra(Act_CustomSplitConfirmPage.PASS_TAX_FLAG);
 
         user2 = intent.getStringExtra(Act_EqualSplitConfirmPage.PASS_USER2);
         bun = intent.getExtras();
@@ -81,6 +84,14 @@ public class Act_CustomSplitPeoplePage extends Activity {
         //used for creating new objects dynamically
         LinearLayout ll = (LinearLayout)findViewById(R.id.transactions);
         ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        //checks whether or not to check tax box
+        if(taxFlag != null){
+            if(taxFlag.matches("tax")) {
+                CheckBox check = (CheckBox) findViewById(R.id.tax);
+                check.setChecked(true);
+            }
+        }
 
         //creates user 1 and 2 and adds information if back button was pressed to preserve information
         createUserDropdown();

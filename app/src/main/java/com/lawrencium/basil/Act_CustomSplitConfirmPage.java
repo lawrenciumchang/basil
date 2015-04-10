@@ -16,6 +16,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
     String userName;
     String user2;
     Bundle bun;
+    String taxFlag;
 
     int num;
     int numToCreate;
@@ -30,6 +31,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
     public final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
     public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
+    public final static String PASS_TAX_FLAG = "com.lawrencium.basil.TAXFLAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
         number = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_NUMBER);
         userName = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_CURRENT_USER);
         user2 = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_USER2);
+        taxFlag = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_TAX_FLAG);
 
         bun = intent.getExtras();
 
@@ -54,6 +57,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
         System.out.println("Number of people: " + number);
         System.out.println("Current User from Custom Split Confirm Page: " + userName);
         System.out.println("User 2: " + user2);
+        System.out.println("Tax Flag: " + taxFlag);
 
         num = Integer.parseInt(number);
         numToCreate = num - 2;
@@ -113,6 +117,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 i.putExtra(PASS_NUMBER, number);
                 i.putExtra(PASS_CURRENT_USER, userName);
                 i.putExtra(PASS_USER2, user2);
+                i.putExtra(PASS_TAX_FLAG, taxFlag);
                 i.putExtras(bun);
                 startActivityForResult(i, 0);
                 break;
@@ -132,6 +137,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
         i.putExtra(PASS_NUMBER, number);
         i.putExtra(PASS_CURRENT_USER, userName);
         i.putExtra(PASS_USER2, user2);
+        i.putExtra(PASS_TAX_FLAG, taxFlag);
         i.putExtras(bun);
         startActivityForResult(i, 0);
     }
