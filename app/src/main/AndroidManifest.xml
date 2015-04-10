@@ -36,6 +36,10 @@
             android:name=".Act_NewCategory"
             android:label="@string/title_activity_new_category" >
         </activity>
+        <activity
+            android:name=".Act_TransactionConfirm"
+            android:label="@string/title_activity_act__transaction_confirm" >
+        </activity>
     </application>
 
 </manifest>

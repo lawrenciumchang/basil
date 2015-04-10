@@ -11,15 +11,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.view.ViewGroup.LayoutParams;
-
-import java.util.ArrayList;
 
 
 public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnFragmentInteractionListener {
-    FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(this);
+    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
     FragmentManager fragmentManager = getFragmentManager();
 
     @Override
