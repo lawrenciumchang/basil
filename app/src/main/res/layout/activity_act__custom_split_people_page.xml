@@ -68,7 +68,7 @@
                 android:inputType="numberDecimal"
                 android:ems="10"
                 android:id="@+id/userTip"
-                android:hint="Tip" />
+                android:hint="Tip (optional)" />
 
             <Spinner
                 android:layout_width="fill_parent"
@@ -90,7 +90,7 @@
                 android:inputType="numberDecimal"
                 android:ems="10"
                 android:id="@+id/user2Tip"
-                android:hint="Tip" />
+                android:hint="Tip (optional)" />
         </LinearLayout>
     </ScrollView>
 

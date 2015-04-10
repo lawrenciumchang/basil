@@ -37,12 +37,17 @@ public class Act_CustomSplitPeoplePage extends Activity {
     int numToCreate;
     double total;
 
+//    Bundle bun;
+
     int spinID = 100;
     int subID = 200;
     int tipID = 300;
     int checkSpinID = 100;
     int checkSubID = 200;
-    int checkTipID = 300;
+    int bundleSpinID = 100;
+    int bundleSubID = 200;
+    int bundleTipID = 300;
+//    int checkTipID = 300;
     int calcSubID = 200;
 
     @Override
@@ -76,6 +81,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
 
         createUserDropdown2();
 
+        //dynamically create based on number of people in transaction
         for (int i = 0; i < numToCreate; i++) {
             Spinner createDrop = createNewUserDropdown();
             ll.addView(createDrop, ll.getChildCount(), lp);
@@ -128,7 +134,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
     public EditText createNewUserTip(){
         EditText newTip = new EditText(this);
         newTip.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        newTip.setHint("Tip");
+        newTip.setHint("Tip (optional)");
         return newTip;
     }
 
@@ -194,6 +200,12 @@ public class Act_CustomSplitPeoplePage extends Activity {
 
     public void customPeopleNext(View view){
 
+        checkSpinID = 100;
+        checkSubID = 200;
+        bundleSpinID = 100;
+        bundleSubID = 200;
+        bundleTipID = 300;
+
         //if any fields checked below are not met, mark false
         boolean checkUsers = true;
         boolean checkSubs = true;
@@ -237,10 +249,31 @@ public class Act_CustomSplitPeoplePage extends Activity {
         }
 
 
-        //put user3 and onwards [name, subtotal, tip] into Bundle
         //CODE HERE
+        //pass user 1 and user 2 info separately outside of bundle
 
 
+
+        Bundle bun = new Bundle();
+        //BUNDLE
+        //put user3 and onwards [name, subtotal, tip] into Bundle
+        for(int i = 0; i < numToCreate; i++){
+            bundleSpinID += i;
+            bundleSubID += i;
+            bundleTipID += i;
+
+            Spinner spin = (Spinner)findViewById(bundleSpinID);
+            String spinID = Integer.toString(bundleSpinID);
+            bun.putString(spinID , spin.getSelectedItem().toString());
+
+            EditText sub = (EditText)findViewById(bundleSubID);
+            String subID = Integer.toString(bundleSubID);
+            bun.putString(subID, sub.getText().toString());
+
+            EditText tip = (EditText)findViewById(bundleTipID);
+            String tipID = Integer.toString(bundleTipID);
+            bun.putString(tipID, tip.getText().toString());
+        }
 
 
         String user2 = u2.getSelectedItem().toString();
@@ -306,7 +339,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
                     intent.putExtra(PASS_NUMBER, number);
                     intent.putExtra(PASS_CURRENT_USER, userName);
                     intent.putExtra(PASS_USER2, user2);
-//                    intent.putExtras(b);
+                    intent.putExtras(bun);
                     startActivity(intent);
                 }
             }
@@ -321,7 +354,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
                 intent.putExtra(PASS_NUMBER, number);
                 intent.putExtra(PASS_CURRENT_USER, userName);
                 intent.putExtra(PASS_USER2, user2);
-//                intent.putExtras(b);
+                intent.putExtras(bun);
                 startActivity(intent);
             }
 

@@ -15,7 +15,14 @@ public class Act_CustomSplitConfirmPage extends Activity {
     String number;
     String userName;
     String user2;
-    Bundle b;
+    Bundle bun;
+
+    int num;
+    int numToCreate;
+
+    int bundleSpinID = 100;
+    int bundleSubID = 200;
+    int bundleTipID = 300;
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
@@ -37,13 +44,31 @@ public class Act_CustomSplitConfirmPage extends Activity {
         amount = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_AMOUNT);
         number = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_NUMBER);
         userName = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_CURRENT_USER);
+        user2 = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_USER2);
+
+        bun = intent.getExtras();
 
         System.out.println("Title: " + title);
         System.out.println("Category: " + category);
         System.out.println("Amount: " + amount);
         System.out.println("Number of people: " + number);
         System.out.println("Current User from Custom Split Confirm Page: " + userName);
+        System.out.println("User 2: " + user2);
 
+        num = Integer.parseInt(number);
+        numToCreate = num - 2;
+
+        for(int i = 0; i < numToCreate; i++){
+            bundleSpinID += i;
+            bundleSubID += i;
+            bundleTipID += i;
+
+            String spinID = Integer.toString(bundleSpinID);
+            String subID = Integer.toString(bundleSubID);
+            String tipID = Integer.toString(bundleTipID);
+
+            System.out.println("Bundle: User - " + bun.getString(spinID) + " Subtotal - " + bun.getString(subID) + " Tip - " + bun.getString(tipID));
+        }
 
     }
 
