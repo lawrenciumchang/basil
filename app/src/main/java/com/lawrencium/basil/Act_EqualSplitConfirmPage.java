@@ -65,6 +65,9 @@ public class Act_EqualSplitConfirmPage extends Activity {
 
         double total = Double.parseDouble(amount);
         double[] tempArr;
+        String[] tempPeople;
+        String testString ="";
+        LinkedHashSet tempSet;
 
         System.out.println("Current User from Equal Split Confirmation: " + userName);
         System.out.println("User 2: " + user2);
@@ -75,62 +78,82 @@ public class Act_EqualSplitConfirmPage extends Activity {
         }
 
         //for 2 people total
-        if(b.get("2") == null) {
+        if(num == 2) {
+            tempPeople = getPeople(b, num);
             Double n = (double) num;
             total = total/n;
             DecimalFormat dec = new DecimalFormat("0.00");
             String t = dec.format(total);
             TextView display = (TextView) findViewById(R.id.equalDisplay);
-            display.setText(user2 + " owes you $" + t + " for " + title + " (" + category + ").");
-            tempArr = priceSplit(num, amount);
+            //display.setText(user2 + " owes you $" + t + " for " + title + " (" + category + ").");
+            tempSet=ranPerson(num);
+            tempArr = priceSplit(num, amount, tempSet);
             System.out.println("Random set: "+tempArr);
+            testString = paymentOut(tempArr, tempPeople);
+            System.out.println("Who Owes: "+testString);
+
+            display.setText(testString+ " for " + title + " (" + category + ").");
             tempRequest.createTab(userName, user2, total, category, title);
             Tabs. add(tempRequest.getCreatedTab());
 
         }
-        //for 3 people total
-        else if(b.get("3") == null){
+        //for 3 people or more total
+        else{
+            tempPeople = getPeople(b, num);
             Double n = (double) num;
             total = total/n;
             DecimalFormat dec = new DecimalFormat("0.00");
 
             TextView display = (TextView) findViewById(R.id.equalDisplay);
 
-            users += " and " + b.getString("3");
-            tempArr = priceSplit(num, amount);
+            //users += " and " + b.getString("3");
+            tempSet=ranPerson(num);
+            tempArr = priceSplit(num, amount,tempSet);
             System.out.println("Random set: "+tempArr);
+            testString = paymentOut(tempArr, tempPeople);
+            System.out.println("Who Owes: "+testString);
             String t = dec.format(tempArr[1]);
-            display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
-            tempRequest.createTab(userName, user2, total, category, title);
-            Tabs.add(tempRequest.getCreatedTab());
-            tempRequest.createTab(userName, b.getString("0"), total, category, title);
-            Tabs.add(tempRequest.getCreatedTab());
+            if(priceEqualCheck(tempArr))
+                display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
+            else
+                display.setText(testString+ " for " + title + " (" + category + ").");
+            //tempRequest.createTab(userName, user2, total, category, title);
+            //Tabs.add(tempRequest.getCreatedTab());
+            //tempRequest.createTab(userName, b.getString("0"), total, category, title);
+            //Tabs.add(tempRequest.getCreatedTab());
         }
         //for 4 or more people total
-        else{
-            Double n = (double) num;
-            total = total/n;
-            DecimalFormat dec = new DecimalFormat("0.00");
-            String t = dec.format(total);
-            TextView display = (TextView) findViewById(R.id.equalDisplay);
-            tempRequest.createTab(userName, user2, total, category, title);
-            Tabs.add(tempRequest.getCreatedTab());
-            for(int i = 0; i < numToCreate-1; i++){
-                String id = Integer.toString(i+2);
-                users += ", " + b.getString(id);
-                tempRequest.createTab(userName, b.getString(id), total, category, title);
-                Tabs.add(tempRequest.getCreatedTab());
-            }
-            tempArr = priceSplit(num, amount);
-            System.out.println("Random set: "+tempArr);
-            int m = numToCreate-1;
-            String nn = Integer.toString(m+2);
-            users += ", and " + b.getString(nn);
-            tempRequest.createTab(userName, b.getString(nn), total, category, title);
-            Tabs.add(tempRequest.getCreatedTab());
 
-            display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
-        }
+//            tempPeople = getPeople(b, num);
+//            Double n = (double) num;
+//            total = total/n;
+//            DecimalFormat dec = new DecimalFormat("0.00");
+//            String t = dec.format(total);
+//            TextView display = (TextView) findViewById(R.id.equalDisplay);
+//            tempRequest.createTab(userName, user2, total, category, title);
+//            Tabs.add(tempRequest.getCreatedTab());
+//            for(int i = 0; i < numToCreate-1; i++){
+//                String id = Integer.toString(i+2);
+//                users += ", " + b.getString(id);
+//                tempRequest.createTab(userName, b.getString(id), total, category, title);
+//                Tabs.add(tempRequest.getCreatedTab());
+//            }
+//            tempSet=ranPerson(num);
+//            tempArr = priceSplit(num, amount, tempSet);
+//            System.out.println("Random set: "+tempArr);
+//            System.out.println("Random set: "+tempArr);
+//            testString = paymentOut(tempArr, tempPeople);
+//            int m = numToCreate-1;
+//            String nn = Integer.toString(m+2);
+//            users += ", and " + b.getString(nn);
+//            tempRequest.createTab(userName, b.getString(nn), total, category, title);
+//            Tabs.add(tempRequest.getCreatedTab());
+//
+//            if(priceEqualCheck(tempArr))
+//                display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
+//            else
+//                display.setText(testString+ " for " + title + " (" + category + ").");
+
 
     }
 
@@ -254,9 +277,11 @@ public class Act_EqualSplitConfirmPage extends Activity {
         return tempRan;
     }
 
-    private double[] priceSplit(int numPeople, String price){
-        LinkedHashSet<Integer> tempSet=ranPerson(numPeople);
+    private double[] priceSplit(int numPeople, String price, LinkedHashSet<Integer> tempSet){
+        //LinkedHashSet<Integer> tempSet=ranPerson(numPeople);
         System.out.println("Random People: "+tempSet);
+
+        String tester = "Prices: ";
 
         double[] tempArr = new double[tempSet.size()];
         Integer temp = numPeople;
@@ -287,17 +312,26 @@ public class Act_EqualSplitConfirmPage extends Activity {
             }
             else
                 tempArr[pricePay] = equalPrice;
+            tester += tempArr[pricePay]+" ";
         }
-
+        System.out.println(tester);
         return tempArr;
     }
 
 
-    private String paymentOut(double[] prices){
+    private String paymentOut(double[] prices, String[] people){
         String payments ="";
+        int num = people.length;
+        DecimalFormat dec = new DecimalFormat("0.00");
 
-        if(prices.length == 2){
-            
+        if(num == 2){
+            payments = people[1]+" owes you $"+dec.format(prices[1]);
+        }
+        else{
+            for(int i = 1; i < num-1; i++){
+                payments += people[i]+" owes you $"+dec.format(prices[i])+", ";
+            }
+            payments += "and "+people[num-1]+" owes you $"+dec.format(prices[num-1]);
         }
 
 
@@ -305,5 +339,29 @@ public class Act_EqualSplitConfirmPage extends Activity {
 
     }
 
+    private String[] getPeople(Bundle b, int numPpl){
+        String[] people = new String[numPpl];
+        String temp ="";
 
+        String test = "People in Bundle: ";
+
+        for(int i =0; i < numPpl; i++){
+            temp = i+"";
+            people[i] = b.getString(temp);
+           test += people[i]+" ";
+        }
+        System.out.println(test);
+        return people;
+    }
+
+    private boolean priceEqualCheck(double[] prices){
+        if(prices.length == 0 || prices.length == 1)
+            return true;
+        double tempPrice = prices[0];
+        for(int i = 1; i < prices.length; i++){
+            if(tempPrice != prices[i])
+                return false;
+        }
+        return true;
+    }
 }
