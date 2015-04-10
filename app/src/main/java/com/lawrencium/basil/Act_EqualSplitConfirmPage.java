@@ -12,8 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Random;
+import java.util.Set;
 
 
 public class Act_EqualSplitConfirmPage extends Activity {
@@ -61,6 +66,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
         numToCreate = num - 2;
 
         double total = Double.parseDouble(amount);
+        double[] tempArr;
 
         System.out.println("Current User from Equal Split Confirmation: " + userName);
         System.out.println("User 2: " + user2);
@@ -78,7 +84,8 @@ public class Act_EqualSplitConfirmPage extends Activity {
             String t = dec.format(total);
             TextView display = (TextView) findViewById(R.id.equalDisplay);
             display.setText(user2 + " owes you $" + t + " for " + title + " (" + category + ").");
-
+            tempArr = priceSplit(num, amount);
+            System.out.println("Random set: "+tempArr);
             tempRequest.createTab(userName, user2, total, category, title);
             Tabs. add(tempRequest.getCreatedTab());
 
@@ -88,11 +95,13 @@ public class Act_EqualSplitConfirmPage extends Activity {
             Double n = (double) num;
             total = total/n;
             DecimalFormat dec = new DecimalFormat("0.00");
-            String t = dec.format(total);
+
             TextView display = (TextView) findViewById(R.id.equalDisplay);
 
             users += " and " + b.getString("0");
-
+            tempArr = priceSplit(num, amount);
+            System.out.println("Random set: "+tempArr);
+            String t = dec.format(tempArr[1]);
             display.setText(user2 + users + " each owe you $" + t + " for " + title + " (" + category + ").");
             tempRequest.createTab(userName, user2, total, category, title);
             Tabs.add(tempRequest.getCreatedTab());
@@ -113,9 +122,9 @@ public class Act_EqualSplitConfirmPage extends Activity {
                 users += ", " + b.getString(id);
                 tempRequest.createTab(userName, b.getString(id), total, category, title);
                 Tabs.add(tempRequest.getCreatedTab());
-
             }
-
+            tempArr = priceSplit(num, amount);
+            System.out.println("Random set: "+tempArr);
             int m = numToCreate-1;
             String nn = Integer.toString(m);
             users += ", and " + b.getString(nn);
@@ -232,6 +241,70 @@ public class Act_EqualSplitConfirmPage extends Activity {
                     FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                     values);
         }
+    }
+
+    private LinkedHashSet<Integer> ranPerson(int numPeople){
+
+        LinkedHashSet<Integer> tempRan = new LinkedHashSet<Integer>();
+        Random ran = new Random();
+        int temp;
+
+        while(tempRan.size() < numPeople){
+            temp = ran.nextInt(numPeople);
+            tempRan.add(temp);
+        }
+        return tempRan;
+    }
+
+    private double[] priceSplit(int numPeople, String price){
+        LinkedHashSet<Integer> tempSet=ranPerson(numPeople);
+        System.out.println("Random People: "+tempSet);
+
+        double[] tempArr = new double[tempSet.size()];
+        Integer temp = numPeople;
+        double total = Double.parseDouble(price);
+        System.out.println("Number of People: "+temp+" Price: "+price+" Price Double: "+total);
+        BigDecimal bdPrice = new BigDecimal(price);
+
+        BigDecimal bdNumPeople = new BigDecimal(temp.toString());
+
+        BigDecimal bdTempD = bdPrice.divide(bdNumPeople, 2, BigDecimal.ROUND_DOWN);
+        double equalPrice = bdTempD.doubleValue();
+        System.out.println("Equal Price: "+equalPrice);
+
+        //Testing remainder
+        BigDecimal bdTempR = bdPrice.remainder(bdTempD);
+
+        double tempRem = bdTempR.doubleValue()*100;
+        int rem = (int)tempRem;
+
+//        System.out.println("Divide: "+bdTempD);
+//        System.out.println("Remainder: "+bdTempR);
+//        System.out.println("Int Remainder: "+rem);
+
+        for(int pricePay : tempSet){
+            if(rem>0){
+                tempArr[pricePay] = equalPrice + .01;
+                rem--;
+            }
+            else
+                tempArr[pricePay] = equalPrice;
+        }
+
+        return tempArr;
+    }
+
+
+    private String paymentOut(double[] prices){
+        String payments ="";
+
+        if(prices.length == 2){
+            
+        }
+
+
+        return payments;
+
     }
 
 
