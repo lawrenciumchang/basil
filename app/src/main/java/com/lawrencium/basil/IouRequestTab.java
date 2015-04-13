@@ -13,7 +13,9 @@ public class IouRequestTab {
     private int tabID = 0;
     //may need to think of a way to handle IOUs vs YOMs without changing constructor order
     private volatile static IouRequestTab uniqueInstance;
+
     private IouRequestTab(){}
+
     public static IouRequestTab getInstance(){
         if(uniqueInstance == null){
             synchronized (IouRequestTab.class){

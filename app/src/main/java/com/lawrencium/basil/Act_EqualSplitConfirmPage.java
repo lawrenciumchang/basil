@@ -32,6 +32,8 @@ public class Act_EqualSplitConfirmPage extends Activity {
     TabsDbHelper tabDbHelper = new TabsDbHelper(this);
 
     ArrayList<Tab> Tabs = new ArrayList<Tab>();
+    String[] ppl;
+    double[] pricesSPlit;
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
@@ -85,16 +87,16 @@ public class Act_EqualSplitConfirmPage extends Activity {
             DecimalFormat dec = new DecimalFormat("0.00");
             String t = dec.format(total);
             TextView display = (TextView) findViewById(R.id.equalDisplay);
-            //display.setText(user2 + " owes you $" + t + " for " + title + " (" + category + ").");
+
             tempSet=ranPerson(num);
             tempArr = priceSplit(num, amount, tempSet);
             System.out.println("Random set: "+tempArr);
             testString = paymentOut(tempArr, tempPeople);
             System.out.println("Who Owes: "+testString);
             display.setText(testString+ " for " + title + " (" + category + ").");
-            Tabs = createTabs(tempArr, tempPeople, category, title);
-
-
+            //Tabs = createTabs(tempArr, tempPeople, category, title);
+            ppl = tempPeople;
+            pricesSPlit = tempArr;
         }
         //for 3 people or more total
         else{
@@ -109,15 +111,17 @@ public class Act_EqualSplitConfirmPage extends Activity {
             tempSet=ranPerson(num);
             tempArr = priceSplit(num, amount,tempSet);
             System.out.println("Random set: "+tempArr);
-            //testString = paymentOut(tempArr, tempPeople);
-            //System.out.println("Who Owes: "+testString);
+
+
             String t = dec.format(tempArr[1]);
             if(priceEqualCheck(tempArr))
                 display.setText(getNames(tempPeople) + " each owe you $" + t + " for " + title + " (" + category + ").");
             else
                 display.setText(paymentOut(tempArr, tempPeople)+ " for " + title + " (" + category + ").");
 
-            Tabs = createTabs(tempArr, tempPeople, category, title);
+            ppl = tempPeople;
+            pricesSPlit = tempArr;
+            //Tabs = createTabs(tempArr, tempPeople, category, title);
         }
 
     }
@@ -188,6 +192,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 launchIntent();
             }});
+        Tabs = createTabs(pricesSPlit, ppl, category, title);
         addTabsToDatabase();
         AlertDialog dialog = builder.create();
         dialog.show();
