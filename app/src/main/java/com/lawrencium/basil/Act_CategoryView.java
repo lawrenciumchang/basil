@@ -13,6 +13,9 @@ import static com.lawrencium.basil.R.id.txt_week1;
 public class Act_CategoryView extends Activity {
 
     TextView txt_week1;
+    TextView txt_week2;
+    TextView txt_week3;
+    TextView txt_week4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,18 @@ public class Act_CategoryView extends Activity {
         txt_week1 = (TextView) findViewById(R.id.txt_week1);
         // hide until its title is clicked
         txt_week1.setVisibility(View.GONE);
+
+        txt_week2 = (TextView) findViewById(R.id.txt_week2);
+        // hide until its title is clicked
+        txt_week2.setVisibility(View.GONE);
+
+        txt_week3 = (TextView) findViewById(R.id.txt_week3);
+        // hide until its title is clicked
+        txt_week3.setVisibility(View.GONE);
+
+        txt_week4 = (TextView) findViewById(R.id.txt_week4);
+        // hide until its title is clicked
+        txt_week4.setVisibility(View.GONE);
     }
 
 
@@ -48,9 +63,32 @@ public class Act_CategoryView extends Activity {
     }
 
     public void toggle_contents(View v){
-        txt_week1.setVisibility( txt_week1.isShown()
-                ? View.GONE
-                : View.VISIBLE );
+
+        switch(v.getId()){
+            case R.id.week1:
+                txt_week1.setVisibility( txt_week1.isShown()
+                        ? View.GONE
+                        : View.VISIBLE );
+                break;
+            case R.id.week2:
+                txt_week2.setVisibility( txt_week2.isShown()
+                        ? View.GONE
+                        : View.VISIBLE );
+                break;
+            case R.id.week3:
+                txt_week3.setVisibility( txt_week3.isShown()
+                        ? View.GONE
+                        : View.VISIBLE );
+                break;
+            case R.id.week4:
+                txt_week4.setVisibility( txt_week4.isShown()
+                        ? View.GONE
+                        : View.VISIBLE );
+
+
+        }
+
+
     }
 
 

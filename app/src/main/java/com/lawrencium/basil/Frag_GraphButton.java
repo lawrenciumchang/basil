@@ -2,6 +2,7 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -85,7 +86,10 @@ public class Frag_GraphButton extends Fragment {
             public void onClick(View v) {
                 // here you set what you want to do when user clicks your button,
                 // e.g. launch a new activity
-                deleteCategory(v);
+                //deleteCategory(v);
+                Intent intent = new Intent(getActivity(), Act_CategoryView.class);
+                startActivity(intent);
+
             }
         });
 

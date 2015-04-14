@@ -26,6 +26,7 @@
         android:text="@string/txt_week1Content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/week1"
         android:id="@+id/txt_week1"/>
 
     <Button
@@ -33,20 +34,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/week2"
-        android:layout_below="@+id/week1"/>
+        android:layout_below="@+id/txt_week1"
+        android:onClick="toggle_contents"/>
+
+    <!--content to hide/show -->
+    <TextView
+        android:text="@string/txt_week2Content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/week2"
+        android:id="@+id/txt_week2"/>
 
     <Button
         android:text="@string/str_week3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/week3"
-        android:layout_below="@+id/week2"/>
+        android:layout_below="@+id/txt_week2"
+        android:onClick="toggle_contents"/>
+
+    <TextView
+        android:text="@string/txt_week3Content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/week3"
+        android:id="@+id/txt_week3"/>
 
     <Button
         android:text="@string/str_week4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/week4"
-        android:layout_below="@+id/week3"/>
+        android:layout_below="@+id/txt_week3"
+        android:onClick="toggle_contents"/>
+
+    <TextView
+        android:text="@string/txt_week4Content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/week4"
+        android:id="@+id/txt_week4"/>
 
 </RelativeLayout>
