@@ -5,22 +5,28 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_main">MainActivity</string>
-
-
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="title_activity_budget_manager">BudgetManager</string>
     <string name="title_activity_budget_overview">BudgetOverviewActivity</string>
     <string name="title_activity_new_transaction">NewTransactionActivity</string>
-
+    <string name="title_activity_category_view">CategoryViewActivity</string>
     <string name="str_btn_addTransaction">Add Transaction</string>
     <string name="str_btn_overview">Graphical</string>
     <string name="str_btn_newCategory">New Category</string>
     <string name="title_activity_new_category">NewCategory</string>
     <string name="str_btn_categorySubmit">Submit</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <string name="str_monthlyExpense">Monthly Expense</string>
+    <string name="str_week1">Week 1</string>
+    <string name="str_week2">Week 2</string>
+    <string name="str_week3">Week 3</string>
+    <string name="str_week4">Week 4</string>
+    <string name="txt_week1Content"> sdflsdkfjkdjflskdjflskdf</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_act__category_view">Act_CategoryView</string>
 
 </resources>

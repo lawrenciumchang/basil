@@ -76,7 +76,7 @@ public class Frag_GraphButton extends Fragment {
         // Inflate the layout for this fragment
         //things a user sees
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
-        Button catName = (Button) v.findViewById(R.id.txt_catName);
+        Button catName = (Button) v.findViewById(R.id.catButton);
         catName.setText("[" + cat_id + "] " + cat_name + ": " + cat_total);
 
         return v;
