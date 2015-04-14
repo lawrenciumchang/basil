@@ -53,9 +53,8 @@ public class Act_NewCategory extends Activity {
     public void createCategory(View view){
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        String newName = inputName.getText().toString();
-        //double newBudget = Double.parseDouble(inputBudget.getText().toString());
-        String newBudget = inputBudget.getText().toString();
+        String newName = inputName.getText().toString().trim();
+        String newBudget = inputBudget.getText().toString().trim();
 
         /*Category newCategory = new Category(newName, newBudget);
         Budget.getInstance().getCategories().add(newCategory);*/
@@ -69,5 +68,16 @@ public class Act_NewCategory extends Activity {
         Intent intent = new Intent(this, Act_BudgetOverview.class);
         startActivity(intent);
         finish();
+    }
+
+    public void fillFields(final String name, final String budget) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //stuff that updates ui
+                inputName.setText(name);
+                inputBudget.setText(budget);
+            }
+        });
     }
 }

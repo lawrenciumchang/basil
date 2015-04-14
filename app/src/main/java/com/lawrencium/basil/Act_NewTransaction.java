@@ -84,10 +84,10 @@ public class Act_NewTransaction extends Activity {
     public void createTransaction(View view) {
         SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        String newName = inputName.getText().toString();
+        String newName = inputName.getText().toString().trim();
         //double newBudget = Double.parseDouble(inputBudget.getText().toString());
-        String newBudget = inputValue.getText().toString();
-        String newCategory = inputCategory.getSelectedItem().toString();
+        String newBudget = inputValue.getText().toString().trim();
+        String newCategory = inputCategory.getSelectedItem().toString().trim();
 
         /*Category newCategory = new Category(newName, newBudget);
         Budget.getInstance().getCategories().add(newCategory);*/

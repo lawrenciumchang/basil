@@ -2,6 +2,7 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -33,6 +34,7 @@ public class Frag_GraphButton extends Fragment {
     private String cat_total;
 
     private OnFragmentInteractionListener mListener;
+//    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(getActivity());
 
     /**
      * Use this factory method to create a new instance of
@@ -78,6 +80,14 @@ public class Frag_GraphButton extends Fragment {
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
         Button catName = (Button) v.findViewById(R.id.catButton);
         catName.setText("[" + cat_id + "] " + cat_name + ": " + cat_total);
+        catName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // here you set what you want to do when user clicks your button,
+                // e.g. launch a new activity
+                deleteCategory(v);
+            }
+        });
 
         return v;
     }
@@ -121,4 +131,11 @@ public class Frag_GraphButton extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    public String getCatId() {
+        return cat_id;
+    }
+    public void deleteCategory(View view) {
+        Act_BudgetOverview budgetOverviewActivity = (Act_BudgetOverview) getActivity();
+        budgetOverviewActivity.removeCategory(this);
+    }
 }

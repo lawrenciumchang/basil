@@ -40,6 +40,10 @@
             android:name=".Act_TransactionConfirm"
             android:label="@string/title_activity_act__transaction_confirm" >
         </activity>
+        <activity
+            android:name=".Act_CategoryDetails"
+            android:label="@string/title_activity_act__category_details" >
+        </activity>
     </application>
 
 </manifest>
