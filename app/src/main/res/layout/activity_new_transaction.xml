@@ -11,17 +11,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/spinnerCategories"
         android:layout_below="@+id/inputName"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:spinnerMode="dropdown" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="numberDecimal"
-        android:ems="10"
         android:id="@+id/inputValue"
+        android:hint="0.00"
         android:layout_below="@+id/spinnerCategories"
-        android:layout_alignParentLeft="true"
-        android:hint="$0.00" />
+        android:layout_toRightOf="@+id/textDollarSign" />
 
     <EditText
         android:layout_width="match_parent"
@@ -36,6 +36,19 @@
         android:text="New Button"
         android:id="@+id/button"
         android:layout_below="@+id/inputValue"
-        android:layout_alignParentLeft="true" />
+        android:layout_alignParentLeft="true"
+        android:onClick="createTransaction" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="$"
+        android:id="@+id/textDollarSign"
+        android:layout_alignBottom="@+id/inputValue"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@+id/inputValue"
+        android:textSize="18dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="7dp" />
 
 </RelativeLayout>

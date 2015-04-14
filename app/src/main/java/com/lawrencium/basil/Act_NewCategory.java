@@ -2,10 +2,10 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +15,7 @@ import android.widget.EditText;
 public class Act_NewCategory extends Activity {
     protected EditText inputName;
     protected EditText inputBudget;
-    FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(this);
+    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,7 @@ public class Act_NewCategory extends Activity {
 
         inputName = (EditText)findViewById(R.id.inputName);
         inputBudget = (EditText)findViewById(R.id.inputBudget);
+        inputBudget.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
     }
 
 
@@ -52,9 +53,8 @@ public class Act_NewCategory extends Activity {
     public void createCategory(View view){
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        String newName = inputName.getText().toString();
-        //double newBudget = Double.parseDouble(inputBudget.getText().toString());
-        String newBudget = inputBudget.getText().toString();
+        String newName = inputName.getText().toString().trim();
+        String newBudget = inputBudget.getText().toString().trim();
 
         /*Category newCategory = new Category(newName, newBudget);
         Budget.getInstance().getCategories().add(newCategory);*/
@@ -67,5 +67,17 @@ public class Act_NewCategory extends Activity {
 
         Intent intent = new Intent(this, Act_BudgetOverview.class);
         startActivity(intent);
+        finish();
+    }
+
+    public void fillFields(final String name, final String budget) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //stuff that updates ui
+                inputName.setText(name);
+                inputBudget.setText(budget);
+            }
+        });
     }
 }

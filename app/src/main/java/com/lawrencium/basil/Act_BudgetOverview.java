@@ -11,15 +11,11 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
-import android.view.ViewGroup.LayoutParams;
-
-import java.util.ArrayList;
 
 
 public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnFragmentInteractionListener {
-    FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper(this);
+    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
     FragmentManager fragmentManager = getFragmentManager();
 
     @Override
@@ -103,5 +99,13 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    public void removeCategory(Frag_GraphButton fragment) {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry._ID+"="+fragment.getCatId(), null);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.remove(fragment);
+        fragmentTransaction.commit();
     }
 }

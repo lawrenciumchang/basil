@@ -39,6 +39,8 @@
         <activity
             android:name=".Act_CategoryView"
             android:label="@string/title_activity_act__category_view" >
+            android:name=".Act_TransactionConfirm"
+            android:label="@string/title_activity_act__transaction_confirm" >
         </activity>
     </application>
 
