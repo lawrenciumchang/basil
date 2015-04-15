@@ -1,10 +1,15 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 
 public class Act_CustomSplitConfirmPage extends Activity {
@@ -17,6 +22,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
     String user2;
     Bundle bun;
     String taxFlag;
+    String output = "";
 
     int num;
     int numToCreate;
@@ -24,6 +30,11 @@ public class Act_CustomSplitConfirmPage extends Activity {
     int bundleSpinID;
     int bundleSubID;
     int bundleTipID;
+
+    double tipSum = 0;
+    double subtotalSum = 0;
+    double tax = 0;
+    double taxSum = 0;
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
@@ -66,20 +77,157 @@ public class Act_CustomSplitConfirmPage extends Activity {
         bundleSubID = 201;
         bundleTipID = 301;
 
-        System.out.println("Bundle 1: " + bun.getString("100") + ", " + bun.getString("200") + ", " + bun.getString("300"));
-        System.out.println("Bundle 2: " + bun.getString("101") + ", " + bun.getString("201") + ", " + bun.getString("301"));
+//        System.out.println("Bundle 1: " + bun.getString("100") + ", " + bun.getString("200") + ", " + bun.getString("300"));
+//        System.out.println("Bundle 2: " + bun.getString("101") + ", " + bun.getString("201") + ", " + bun.getString("301"));
 
-        for(int i = 0; i < numToCreate; i++){
-            bundleSpinID += 1;
-            bundleSubID += 1;
-            bundleTipID += 1;
+        //for testing
+//        for(int i = 0; i < numToCreate; i++){
+//            bundleSpinID += 1;
+//            bundleSubID += 1;
+//            bundleTipID += 1;
+//
+//            String spinID = Integer.toString(bundleSpinID);
+//            String subID = Integer.toString(bundleSubID);
+//            String tipID = Integer.toString(bundleTipID);
+//
+//            System.out.println("Bundle: User - " + bun.getString(spinID) + " Subtotal - " + bun.getString(subID) + " Tip - " + bun.getString(tipID));
+//        }
 
-            String spinID = Integer.toString(bundleSpinID);
-            String subID = Integer.toString(bundleSubID);
-            String tipID = Integer.toString(bundleTipID);
+        //no tax, nothing to calculate, print info out to user
+        if(taxFlag.matches("notax")){
+            TextView display = (TextView)findViewById(R.id.customDisplay);
 
-            System.out.println("Bundle: User - " + bun.getString(spinID) + " Subtotal - " + bun.getString(subID) + " Tip - " + bun.getString(tipID));
+            //add user 1 and 2 to string first
+            //check if no tip was added, make it display "0"
+            if(bun.getString("300").matches("")){
+                bun.putString("300", "0");
+            }
+            output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + bun.getString("300") + " tip" + "<br/>";
+            double t1 = Double.parseDouble(bun.getString("300"));
+            tipSum += t1;
+
+            if(bun.getString("301").matches("")){
+                bun.putString("301", "0");
+            }
+            output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + bun.getString("301") + " tip" + "<br/>";
+            double t2 = Double.parseDouble(bun.getString("301"));
+            tipSum += t2;
+
+            for(int j = 0; j < numToCreate; j++){
+                bundleSpinID += 1;
+                bundleSubID += 1;
+                bundleTipID += 1;
+
+                String spinID = Integer.toString(bundleSpinID);
+                String subID = Integer.toString(bundleSubID);
+                String tipID = Integer.toString(bundleTipID);
+
+                if(bun.getString(tipID).matches("")){
+                    bun.putString(tipID, "0");
+                }
+                output += bun.getString(spinID) + ": $" + bun.getString(subID) + ", with $" + bun.getString(tipID) + " tip" + "<br/>";
+
+                double t = Double.parseDouble(bun.getString(tipID));
+                tipSum += t;
+            }
+
+//            if(tipSum == 0){
+//                output += "Total Tip: $0" + "<br/>";
+//            }
+//            else {
+                output += "Total Tip: $" + tipSum + "<br/>";
+//            }
+
+            int amnt = Integer.parseInt(amount);
+            amnt += tipSum;
+            output += "<b>Total</b>: $" + amnt;
+
+            display.setText(Html.fromHtml(output));
         }
+        else if(taxFlag.matches("tax")){
+            TextView display = (TextView)findViewById(R.id.customDisplay);
+
+            //calculate tax
+            double amnt = Double.parseDouble(amount);
+
+            //add user 1 and 2's subtotals to sum first
+            double s1 = Double.parseDouble(bun.getString("200"));
+            subtotalSum += s1;
+
+            double s2 = Double.parseDouble(bun.getString("201"));
+            subtotalSum += s2;
+
+            for(int k = 0; k < numToCreate; k++){
+                bundleSubID += 1;
+                String subID = Integer.toString(bundleSubID);
+                double s = Double.parseDouble(bun.getString(subID));
+                subtotalSum += s;
+            }
+
+            // in 1.xx format
+            tax = amnt / subtotalSum;
+
+            //reset bundleSubID
+            bundleSubID = 201;
+
+            //add user 1 and 2 to string first
+            //check if no tip was added, make it display "0"
+            if(bun.getString("300").matches("")){
+                bun.putString("300", "0");
+            }
+            double tax1 = s1*(tax-1);
+            output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + tax1 + " tax and $" + bun.getString("300") + " tip" + "<br/>";
+            int t1 = Integer.parseInt(bun.getString("300"));
+            tipSum += t1;
+            double sub1 = Double.parseDouble(bun.getString("200"));
+            double tx1 = sub1*(tax-1);
+            taxSum += tx1;
+
+            if(bun.getString("301").matches("")){
+                bun.putString("301", "0");
+            }
+            double tax2 = s2*(tax-1);
+            output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + tax2 + " tax and $" + bun.getString("301") + " tip" + "<br/>";
+            int t2 = Integer.parseInt(bun.getString("301"));
+            tipSum += t2;
+            double sub2 = Double.parseDouble(bun.getString("201"));
+            double tx2 = sub2*(tax-1);
+            taxSum += tx2;
+
+            for(int l = 0; l < numToCreate; l++){
+                bundleSpinID += 1;
+                bundleSubID += 1;
+                bundleTipID += 1;
+
+                String spinID = Integer.toString(bundleSpinID);
+                String subID = Integer.toString(bundleSubID);
+                String tipID = Integer.toString(bundleTipID);
+
+                if(bun.getString(tipID).matches("")){
+                    bun.putString(tipID, "0");
+                }
+                double s = Double.parseDouble(bun.getString(subID));
+                double tx = s*(tax-1);
+                output += bun.getString(spinID) + ": $" + bun.getString(subID) + ", with $" + tx + " tax and $" + bun.getString(tipID) + " tip" + "<br/>";
+
+                double t = Double.parseDouble(bun.getString(tipID));
+                tipSum += t;
+                taxSum += tx;
+            }
+
+            output += "Total Tax (" + (tax-1)*100 + "%): " + taxSum + "<br/>";
+
+            output += "Total Tip: $" + tipSum + "<br/>";
+
+            int totalAmount = Integer.parseInt(amount);
+            totalAmount += tipSum;
+            output += "<b>Total</b>: $" + totalAmount;
+
+            display.setText(Html.fromHtml(output));
+        }
+
+
+
 
     }
 
@@ -140,6 +288,26 @@ public class Act_CustomSplitConfirmPage extends Activity {
         i.putExtra(PASS_TAX_FLAG, taxFlag);
         i.putExtras(bun);
         startActivityForResult(i, 0);
+    }
+
+    public void confirmCustom(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Your request has been sent.");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                launchIntent();
+            }});
+//        addTabsToDatabase();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void launchIntent(){
+        Intent intent = new Intent(this, Act_TabsPage.class);
+        intent.putExtra(PASS_CURRENT_USER, userName);
+        startActivity(intent);
     }
 
 }

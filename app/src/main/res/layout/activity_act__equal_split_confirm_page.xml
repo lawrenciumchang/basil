@@ -19,7 +19,20 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"></LinearLayout>
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Large Text"
+                android:id="@+id/equalDisplay"
+                android:layout_alignTop="@+id/scrollView2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="164dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
     </ScrollView>
 
     <Button
@@ -31,14 +44,4 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/equalDisplay"
-        android:layout_alignTop="@+id/scrollView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="164dp"
-        android:gravity="center_vertical|center_horizontal" />
 </RelativeLayout>
