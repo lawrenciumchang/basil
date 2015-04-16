@@ -7,9 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -92,6 +96,18 @@ public class Frag_GraphButton extends Fragment {
 
             }
         });
+        /*catName.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                // here you set what you want to do when user clicks your button,
+                // e.g. launch a new activity
+                //deleteCategory(v);
+                Intent intent = new Intent(getActivity(), Act_CategoryView.class);
+                startActivity(intent);
+                return true;
+            }
+        });*/
+        registerForContextMenu(catName);
 
         return v;
     }
@@ -135,10 +151,31 @@ public class Frag_GraphButton extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_overview_category_floating, menu);
+    }
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.category_delete:
+                //editNote(info.id);
+                deleteCategory();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+
     public String getCatId() {
         return cat_id;
     }
-    public void deleteCategory(View view) {
+    public void deleteCategory() {
         Act_BudgetOverview budgetOverviewActivity = (Act_BudgetOverview) getActivity();
         budgetOverviewActivity.removeCategory(this);
     }

@@ -1,5 +1,6 @@
 package com.lawrencium.basil;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -22,6 +23,8 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_overview);
+        ActionBar actionBar = getActionBar();
+        actionBar.hide();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 

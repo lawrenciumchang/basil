@@ -4,6 +4,7 @@
     <string name="app_name">Basil</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="action_delete">Delete</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
@@ -32,4 +33,5 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_act__category_view">Act_CategoryView</string>
     <string name="title_activity_act__transaction_confirm">Act_TransactionConfirm</string>
+    <string name="title_activity_act__overview_settings">Act_OverviewSettings</string>
 </resources>
