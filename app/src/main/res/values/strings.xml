@@ -20,14 +20,14 @@
     <string name="str_btn_categorySubmit">Submit</string>
 
     <string name="str_monthlyExpense">Monthly Expense</string>
-    <string name="str_week1">Week 1</string>
-    <string name="str_week2">Week 2</string>
-    <string name="str_week3">Week 3</string>
-    <string name="str_week4">Week 4</string>
-    <string name="txt_week1Content"> week one transactions</string>
-    <string name="txt_week2Content"> week two transactions</string>
-    <string name="txt_week3Content"> week three transactions</string>
-    <string name="txt_week4Content"> week four transactions</string>
+    <string name="str_week1">1</string>
+    <string name="str_week2">2</string>
+    <string name="str_week3">3</string>
+    <string name="str_week4">4</string>
+    <string name="txt_week1Content"> -------week one transactions------- \ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl</string>
+    <string name="txt_week2Content"> -------week two transactions------- \nYou bought a bunch of stuff this week</string>
+    <string name="txt_week3Content"> -------week three transactions------- \nYou bought less, good job!</string>
+    <string name="txt_week4Content"> -------week four transactions------- \nIt\'s the end of the month go crazy</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
