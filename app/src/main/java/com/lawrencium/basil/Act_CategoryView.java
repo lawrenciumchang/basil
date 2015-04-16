@@ -66,24 +66,44 @@ public class Act_CategoryView extends Activity {
 
         switch(v.getId()){
             case R.id.week1:
-                txt_week1.setVisibility( txt_week1.isShown()
-                        ? View.GONE
-                        : View.VISIBLE );
+                if(txt_week1.isShown()){
+                    Fx.slide_up(this, txt_week1);
+                    txt_week1.setVisibility(View.GONE);
+                }
+                else{
+                    txt_week1.setVisibility(View.VISIBLE);
+                    Fx.slide_down(this, txt_week1);
+                }
                 break;
             case R.id.week2:
-                txt_week2.setVisibility( txt_week2.isShown()
-                        ? View.GONE
-                        : View.VISIBLE );
+                if(txt_week2.isShown()){
+                    Fx.slide_up(this, txt_week2);
+                    txt_week2.setVisibility(View.GONE);
+                }
+                else{
+                    txt_week2.setVisibility(View.VISIBLE);
+                    Fx.slide_down(this, txt_week2);
+                }
                 break;
             case R.id.week3:
-                txt_week3.setVisibility( txt_week3.isShown()
-                        ? View.GONE
-                        : View.VISIBLE );
+                if(txt_week3.isShown()){
+                    Fx.slide_up(this, txt_week3);
+                    txt_week3.setVisibility(View.GONE);
+                }
+                else{
+                    txt_week3.setVisibility(View.VISIBLE);
+                    Fx.slide_down(this, txt_week3);
+                }
                 break;
             case R.id.week4:
-                txt_week4.setVisibility( txt_week4.isShown()
-                        ? View.GONE
-                        : View.VISIBLE );
+                if(txt_week4.isShown()){
+                    Fx.slide_up(this, txt_week4);
+                    txt_week4.setVisibility(View.GONE);
+                }
+                else{
+                    txt_week4.setVisibility(View.VISIBLE);
+                    Fx.slide_down(this, txt_week4);
+                }
 
 
         }
