@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 
 public class Act_CustomSplitConfirmPage extends Activity {
 
@@ -61,6 +63,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
         taxFlag = intent.getStringExtra(Act_CustomSplitPeoplePage.PASS_TAX_FLAG);
 
         bun = intent.getExtras();
+        DecimalFormat dec = new DecimalFormat("0.00");
 
         System.out.println("Title: " + title);
         System.out.println("Category: " + category);
@@ -100,14 +103,14 @@ public class Act_CustomSplitConfirmPage extends Activity {
             //add user 1 and 2 to string first
             //check if no tip was added, make it display "0"
             if(bun.getString("300").matches("")){
-                bun.putString("300", "0");
+                bun.putString("300", "0.00");
             }
             output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + bun.getString("300") + " tip" + "<br/>";
             double t1 = Double.parseDouble(bun.getString("300"));
             tipSum += t1;
 
             if(bun.getString("301").matches("")){
-                bun.putString("301", "0");
+                bun.putString("301", "0.00");
             }
             output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + bun.getString("301") + " tip" + "<br/>";
             double t2 = Double.parseDouble(bun.getString("301"));
@@ -123,7 +126,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 String tipID = Integer.toString(bundleTipID);
 
                 if(bun.getString(tipID).matches("")){
-                    bun.putString(tipID, "0");
+                    bun.putString(tipID, "0.00");
                 }
                 output += bun.getString(spinID) + ": $" + bun.getString(subID) + ", with $" + bun.getString(tipID) + " tip" + "<br/>";
 
@@ -135,12 +138,12 @@ public class Act_CustomSplitConfirmPage extends Activity {
 //                output += "Total Tip: $0" + "<br/>";
 //            }
 //            else {
-                output += "Total Tip: $" + tipSum + "<br/>";
+                output += "Total Tip: $" + dec.format(tipSum) + "<br/>";
 //            }
 
-            int amnt = Integer.parseInt(amount);
+            double amnt = Double.parseDouble(amount);
             amnt += tipSum;
-            output += "<b>Total</b>: $" + amnt;
+            output += "<b>Total</b>: $" + dec.format(amnt);
 
             display.setText(Html.fromHtml(output));
         }
@@ -176,7 +179,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 bun.putString("300", "0");
             }
             double tax1 = s1*(tax-1);
-            output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + tax1 + " tax and $" + bun.getString("300") + " tip" + "<br/>";
+            output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + dec.format(tax1) + " tax and $" + bun.getString("300") + " tip" + "<br/>";
             int t1 = Integer.parseInt(bun.getString("300"));
             tipSum += t1;
             double sub1 = Double.parseDouble(bun.getString("200"));
@@ -187,7 +190,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 bun.putString("301", "0");
             }
             double tax2 = s2*(tax-1);
-            output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + tax2 + " tax and $" + bun.getString("301") + " tip" + "<br/>";
+            output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + dec.format(tax2) + " tax and $" + bun.getString("301") + " tip" + "<br/>";
             int t2 = Integer.parseInt(bun.getString("301"));
             tipSum += t2;
             double sub2 = Double.parseDouble(bun.getString("201"));
@@ -208,20 +211,20 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 }
                 double s = Double.parseDouble(bun.getString(subID));
                 double tx = s*(tax-1);
-                output += bun.getString(spinID) + ": $" + bun.getString(subID) + ", with $" + tx + " tax and $" + bun.getString(tipID) + " tip" + "<br/>";
+                output += bun.getString(spinID) + ": $" + bun.getString(subID) + ", with $" + dec.format(tx) + " tax and $" + bun.getString(tipID) + " tip" + "<br/>";
 
                 double t = Double.parseDouble(bun.getString(tipID));
                 tipSum += t;
                 taxSum += tx;
             }
 
-            output += "Total Tax (" + (tax-1)*100 + "%): " + taxSum + "<br/>";
+            output += "Total Tax (" + dec.format((tax-1)*100) + "%): " + dec.format(taxSum) + "<br/>";
 
-            output += "Total Tip: $" + tipSum + "<br/>";
+            output += "Total Tip: $" + dec.format(tipSum) + "<br/>";
 
-            int totalAmount = Integer.parseInt(amount);
+            double totalAmount = Double.parseDouble(amount);
             totalAmount += tipSum;
-            output += "<b>Total</b>: $" + totalAmount;
+            output += "<b>Total</b>: $" + dec.format(totalAmount);
 
             display.setText(Html.fromHtml(output));
         }

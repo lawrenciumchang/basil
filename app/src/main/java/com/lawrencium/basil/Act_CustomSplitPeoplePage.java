@@ -283,6 +283,8 @@ public class Act_CustomSplitPeoplePage extends Activity {
         bundleSubID = 201;
         bundleTipID = 301;
         calcSubID = 201;
+        double convertStrings;
+        DecimalFormat dec = new DecimalFormat("0.00");
 
         //if any fields checked below are not met, mark false
         boolean checkUsers = true;
@@ -336,10 +338,13 @@ public class Act_CustomSplitPeoplePage extends Activity {
         bun.putString("101", user2);
 
         String sub1 = user1Subtotal.getText().toString();
-        bun.putString("200", sub1);
+        convertStrings = Double.parseDouble(sub1);
+        bun.putString("200", dec.format(convertStrings));
+
 
         String sub2 = user2Subtotal.getText().toString();
-        bun.putString("201", sub2);
+        convertStrings = Double.parseDouble(sub2);
+        bun.putString("201", dec.format(convertStrings));
 
         EditText userTip1 = (EditText)findViewById(R.id.userTip);
         String tip1 = userTip1.getText().toString();
@@ -363,7 +368,8 @@ public class Act_CustomSplitPeoplePage extends Activity {
 
             EditText sub = (EditText)findViewById(bundleSubID);
             String subID = Integer.toString(bundleSubID);
-            bun.putString(subID, sub.getText().toString());
+            convertStrings = Double.parseDouble(sub.getText().toString());
+            bun.putString(subID, dec.format(convertStrings));
 
             EditText tip = (EditText)findViewById(bundleTipID);
             String tipID = Integer.toString(bundleTipID);
@@ -408,15 +414,21 @@ public class Act_CustomSplitPeoplePage extends Activity {
                 }
 
                 Double amnt = Double.parseDouble(amount);
-                DecimalFormat dec = new DecimalFormat("0.00");
+                //DecimalFormat dec = new DecimalFormat("0.00");
                 String t = dec.format(total);
                 String aa = dec.format(amnt);
                 System.out.println("Total of Subtotals: " + t);
                 System.out.println("Amount Entered: " + aa);
 
                 if(!t.equals(aa)){
+                    double tempT = Double.parseDouble(t);
+                    double tempAA = Double.parseDouble(aa);
+                    tempAA = tempAA - tempT;
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    builder.setTitle("Subtotals do not add to Total Amount. Please verify your information.");
+                    if(tempAA >0)
+                        builder.setTitle("Subtotals do not add to Total Amount. Please add $"+dec.format(tempAA));
+                    else
+                        builder.setTitle("Subtotals do not add to Total Amount. Please remove $"+dec.format(tempAA*(-1)));
                     builder.setCancelable(true);
                     builder.setPositiveButton("Okay", null);
 

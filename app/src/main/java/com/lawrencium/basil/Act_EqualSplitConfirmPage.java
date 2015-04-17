@@ -20,6 +20,8 @@ import java.util.Random;
 
 
 public class Act_EqualSplitConfirmPage extends Activity {
+
+
     String title;
     String category;
     String amount;
@@ -250,6 +252,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
         return tempRan;
     }
 
+    //ToDo: Handle the edge cases i.e. divide by zero
     private double[] priceSplit(int numPeople, String price, LinkedHashSet<Integer> tempSet){
         //LinkedHashSet<Integer> tempSet=ranPerson(numPeople);
         System.out.println("Random People: "+tempSet);
