@@ -102,16 +102,12 @@ public class Act_CustomSplitConfirmPage extends Activity {
 
             //add user 1 and 2 to string first
             //check if no tip was added, make it display "0"
-            if(bun.getString("300").matches("")){
-                bun.putString("300", "0.00");
-            }
+
             output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + bun.getString("300") + " tip" + "<br/>";
             double t1 = Double.parseDouble(bun.getString("300"));
             tipSum += t1;
 
-            if(bun.getString("301").matches("")){
-                bun.putString("301", "0.00");
-            }
+
             output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + bun.getString("301") + " tip" + "<br/>";
             double t2 = Double.parseDouble(bun.getString("301"));
             tipSum += t2;
@@ -125,9 +121,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 String subID = Integer.toString(bundleSubID);
                 String tipID = Integer.toString(bundleTipID);
 
-                if(bun.getString(tipID).matches("")){
-                    bun.putString(tipID, "0.00");
-                }
+
                 output += bun.getString(spinID) + ": $" + bun.getString(subID) + ", with $" + bun.getString(tipID) + " tip" + "<br/>";
 
                 double t = Double.parseDouble(bun.getString(tipID));
@@ -176,22 +170,22 @@ public class Act_CustomSplitConfirmPage extends Activity {
             //add user 1 and 2 to string first
             //check if no tip was added, make it display "0"
             if(bun.getString("300").matches("")){
-                bun.putString("300", "0");
+                bun.putString("300", "0.00");
             }
             double tax1 = s1*(tax-1);
             output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + dec.format(tax1) + " tax and $" + bun.getString("300") + " tip" + "<br/>";
-            int t1 = Integer.parseInt(bun.getString("300"));
+            double t1 = Double.parseDouble(bun.getString("300"));
             tipSum += t1;
             double sub1 = Double.parseDouble(bun.getString("200"));
             double tx1 = sub1*(tax-1);
             taxSum += tx1;
 
             if(bun.getString("301").matches("")){
-                bun.putString("301", "0");
+                bun.putString("301", "0.00");
             }
             double tax2 = s2*(tax-1);
             output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + dec.format(tax2) + " tax and $" + bun.getString("301") + " tip" + "<br/>";
-            int t2 = Integer.parseInt(bun.getString("301"));
+            double t2 = Double.parseDouble(bun.getString("301"));
             tipSum += t2;
             double sub2 = Double.parseDouble(bun.getString("201"));
             double tx2 = sub2*(tax-1);
@@ -207,7 +201,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 String tipID = Integer.toString(bundleTipID);
 
                 if(bun.getString(tipID).matches("")){
-                    bun.putString(tipID, "0");
+                    bun.putString(tipID, "0.00");
                 }
                 double s = Double.parseDouble(bun.getString(subID));
                 double tx = s*(tax-1);
@@ -218,7 +212,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 taxSum += tx;
             }
 
-            output += "Total Tax (" + dec.format((tax-1)*100) + "%): " + dec.format(taxSum) + "<br/>";
+            output += "Total Tax (" + dec.format((tax-1)*100) + "%): $" + dec.format(taxSum) + "<br/>";
 
             output += "Total Tip: $" + dec.format(tipSum) + "<br/>";
 

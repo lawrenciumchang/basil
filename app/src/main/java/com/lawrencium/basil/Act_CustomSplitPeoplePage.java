@@ -348,11 +348,26 @@ public class Act_CustomSplitPeoplePage extends Activity {
 
         EditText userTip1 = (EditText)findViewById(R.id.userTip);
         String tip1 = userTip1.getText().toString();
-        bun.putString("300", tip1);
+        if(tip1.matches("")){
+           tip1 ="0.00";
+           bun.putString("300", tip1);
+        }
+        else {
+            convertStrings = Double.parseDouble(tip1);
+            bun.putString("300", dec.format(convertStrings));
+        }
 
         EditText userTip2 = (EditText)findViewById(R.id.user2Tip);
         String tip2 = userTip2.getText().toString();
-        bun.putString("301", tip2);
+        if(tip2.matches("")){
+            tip2 ="0.00";
+            bun.putString("301", tip2);
+        }
+        else {
+            convertStrings = Double.parseDouble(tip2);
+            bun.putString("301", dec.format(convertStrings));
+        }
+
 
 
         //BUNDLE
@@ -373,7 +388,14 @@ public class Act_CustomSplitPeoplePage extends Activity {
 
             EditText tip = (EditText)findViewById(bundleTipID);
             String tipID = Integer.toString(bundleTipID);
-            bun.putString(tipID, tip.getText().toString());
+            if(tip.getText().toString().matches("")){
+                bun.putString(tipID, "0.00");
+            }
+            else {
+                convertStrings = Double.parseDouble(tip.getText().toString());
+                bun.putString(tipID, dec.format(convertStrings));
+            }
+
         }
 
 
