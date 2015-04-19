@@ -11,6 +11,12 @@ import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailed
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 
+
+// *****************************************************************
+// this class is for Google+ login
+// currently not implemented
+// *****************************************************************
+
 public abstract class Act_LoginPage extends Activity implements ConnectionCallbacks, OnConnectionFailedListener {
 
     /* Request code used to invoke sign in user interactions. */

@@ -102,6 +102,7 @@ public class Tab {
     public String getDate() {
         return Date;
     }
+
     public void setDate(String date) {
         Date = date;
     }
@@ -119,17 +120,28 @@ public class Tab {
         return true;
     }
 
+//    @Override
+//    public String toString() {
+//        DecimalFormat dec = new DecimalFormat("0.00");
+//        return "Tab{" +
+//                "UserOwed='" + UserOwed + '\'' +
+//                ", UserOwing='" + UserOwing + '\'' +
+//                ", AmountOwed=" + dec.format(AmountOwed) +
+//                ", Category='" + Category + '\'' +
+//                ", Title='" + Title + '\'' +
+//                ", TabId=" + TabId +
+//                ", Date=" + Date +
+//                '}';
+//    }
+
     @Override
-    public String toString() {
+    public String toString(){
         DecimalFormat dec = new DecimalFormat("0.00");
-        return "Tab{" +
-                "UserOwed='" + UserOwed + '\'' +
-                ", UserOwing='" + UserOwing + '\'' +
-                ", AmountOwed=" + dec.format(AmountOwed) +
-                ", Category='" + Category + '\'' +
-                ", Title='" + Title + '\'' +
-                ", TabId=" + TabId +
-                ", Date=" + Date +
-                '}';
+        return "User: " + UserOwing + "\n" +
+               "Amount Owed: " + dec.format(AmountOwed) + "\n" +
+               "Title: " + Title + "\n" +
+               "Category: " + Category + "\n" +
+               "Date of Transaction: " + Date + "\n";
     }
+
 }

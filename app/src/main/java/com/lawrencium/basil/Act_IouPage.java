@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -61,6 +62,7 @@ public class Act_IouPage extends Activity {
         }
 
         EditText amountSet = (EditText)findViewById(R.id.editText);
+        amountSet.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
         amountSet.setText(amount);
 
         Spinner userSet = (Spinner)findViewById(R.id.spinner2);

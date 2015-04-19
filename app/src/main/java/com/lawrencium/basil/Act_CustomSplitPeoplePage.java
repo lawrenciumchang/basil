@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -94,14 +95,25 @@ public class Act_CustomSplitPeoplePage extends Activity {
         }
 
         //creates user 1 and 2 and adds information if back button was pressed to preserve information
+        //else just format text box with decimal properly
         createUserDropdown();
         if(bun.getString("200") != null){
             EditText s1 = (EditText)findViewById(R.id.userSubtotal);
+            s1.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
             s1.setText(bun.getString("200"));
+        }
+        else{
+            EditText s1 = (EditText)findViewById(R.id.userSubtotal);
+            s1.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
         }
         if(bun.getString("300") != null){
             EditText t1 = (EditText)findViewById(R.id.userTip);
+            t1.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
             t1.setText(bun.getString("300"));
+        }
+        else{
+            EditText t1 = (EditText)findViewById(R.id.userTip);
+            t1.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
         }
 
         createUserDropdown2();
@@ -116,17 +128,28 @@ public class Act_CustomSplitPeoplePage extends Activity {
         }
         if(bun.getString("201") != null){
             EditText s2 = (EditText)findViewById(R.id.user2Subtotal);
+            s2.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
             s2.setText(bun.getString("201"));
+        }
+        else{
+            EditText s2 = (EditText)findViewById(R.id.user2Subtotal);
+            s2.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
         }
         if(bun.getString("301") != null){
             EditText t2 = (EditText)findViewById(R.id.user2Tip);
+            t2.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
             t2.setText(bun.getString("301"));
+        }
+        else{
+            EditText t2 = (EditText)findViewById(R.id.user2Tip);
+            t2.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
         }
 
         spinID = 101;
         subID = 201;
         tipID = 301;
 
+        //preserves values on back button press
         if(bun.getString("102") != null){
             for (int a = 0; a < numToCreate; a++) {
                 spinID += 1;
@@ -146,6 +169,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
                 String idB = Integer.toString(subID);
                 createSub.setId(subID);
                 createSub.setText(bun.getString(idB));
+                createSub.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
 
                 EditText createTip = createNewUserTip();
                 ll.addView(createTip, ll.getChildCount(), lp);
@@ -153,6 +177,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
                 String idC = Integer.toString(tipID);
                 createTip.setId(tipID);
                 createTip.setText(bun.getString(idC));
+                createTip.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
             }
         }
         else {
@@ -167,11 +192,13 @@ public class Act_CustomSplitPeoplePage extends Activity {
                 ll.addView(createSub, ll.getChildCount(), lp);
                 subID += 1;
                 createSub.setId(subID);
+                createSub.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
 
                 EditText createTip = createNewUserTip();
                 ll.addView(createTip, ll.getChildCount(), lp);
                 tipID += 1;
                 createTip.setId(tipID);
+                createTip.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
             }
         }
     }
