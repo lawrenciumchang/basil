@@ -76,25 +76,14 @@ public class Act_CustomSplitConfirmPage extends Activity {
         num = Integer.parseInt(number);
         numToCreate = num - 2;
 
-        bundleSpinID = 101;
-        bundleSubID = 201;
-        bundleTipID = 301;
+        // bundleSpinID = 101;
+        // bundleSubID = 201;
+        // bundleTipID = 301;
 
-//        System.out.println("Bundle 1: " + bun.getString("100") + ", " + bun.getString("200") + ", " + bun.getString("300"));
-//        System.out.println("Bundle 2: " + bun.getString("101") + ", " + bun.getString("201") + ", " + bun.getString("301"));
+        bundleSpinID = 99;
+        bundleSubID = 199;
+        bundleTipID = 299;
 
-        //for testing
-//        for(int i = 0; i < numToCreate; i++){
-//            bundleSpinID += 1;
-//            bundleSubID += 1;
-//            bundleTipID += 1;
-//
-//            String spinID = Integer.toString(bundleSpinID);
-//            String subID = Integer.toString(bundleSubID);
-//            String tipID = Integer.toString(bundleTipID);
-//
-//            System.out.println("Bundle: User - " + bun.getString(spinID) + " Subtotal - " + bun.getString(subID) + " Tip - " + bun.getString(tipID));
-//        }
 
         //no tax, nothing to calculate, print info out to user
         if(taxFlag.matches("notax")){
@@ -103,40 +92,47 @@ public class Act_CustomSplitConfirmPage extends Activity {
             //add user 1 and 2 to string first
             //check if no tip was added, make it display "0"
 
-            output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + bun.getString("300") + " tip" + "<br/>";
-            double t1 = Double.parseDouble(bun.getString("300"));
-            tipSum += t1;
+            // output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + bun.getString("300") + " tip" + "<br/>";
+            // double t1 = Double.parseDouble(bun.getString("300"));
+            // tipSum += t1;
 
 
-            output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + bun.getString("301") + " tip" + "<br/>";
-            double t2 = Double.parseDouble(bun.getString("301"));
-            tipSum += t2;
+            // output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + bun.getString("301") + " tip" + "<br/>";
+            // double t2 = Double.parseDouble(bun.getString("301"));
+            // tipSum += t2;
 
-            for(int j = 0; j < numToCreate; j++){
+            String spinID = "";
+            String subID ="";
+            String tipID ="";
+            double t;
+            double s;
+            // for(int j = 0; j < numToCreate; j++){
+            for(int j = 0; j < num; j++){
                 bundleSpinID += 1;
                 bundleSubID += 1;
                 bundleTipID += 1;
 
-                String spinID = Integer.toString(bundleSpinID);
-                String subID = Integer.toString(bundleSubID);
-                String tipID = Integer.toString(bundleTipID);
+                spinID = Integer.toString(bundleSpinID);
+                subID = Integer.toString(bundleSubID);
+                tipID = Integer.toString(bundleTipID);
 
 
                 output += bun.getString(spinID) + ": $" + bun.getString(subID) + ", with $" + bun.getString(tipID) + " tip" + "<br/>";
-
-                double t = Double.parseDouble(bun.getString(tipID));
+                subID = Integer.toString(bundleSubID);
+                s = Double.parseDouble(bun.getString(subID));
+                subtotalSum += s;
+                t = Double.parseDouble(bun.getString(tipID));
                 tipSum += t;
+
             }
 
-//            if(tipSum == 0){
-//                output += "Total Tip: $0" + "<br/>";
-//            }
-//            else {
+
                 output += "Total Tip: $" + dec.format(tipSum) + "<br/>";
-//            }
+
 
             double amnt = Double.parseDouble(amount);
             amnt += tipSum;
+            output += "Subtotal: $" + dec.format(subtotalSum)+"<br/>";
             output += "<b>Total</b>: $" + dec.format(amnt);
 
             display.setText(Html.fromHtml(output));
@@ -148,16 +144,19 @@ public class Act_CustomSplitConfirmPage extends Activity {
             double amnt = Double.parseDouble(amount);
 
             //add user 1 and 2's subtotals to sum first
-            double s1 = Double.parseDouble(bun.getString("200"));
-            subtotalSum += s1;
+            // double s1 = Double.parseDouble(bun.getString("200"));
+            // subtotalSum += s1;
 
-            double s2 = Double.parseDouble(bun.getString("201"));
-            subtotalSum += s2;
+            // double s2 = Double.parseDouble(bun.getString("201"));
+            // subtotalSum += s2;
 
-            for(int k = 0; k < numToCreate; k++){
+            String subID;
+            double s;
+
+            for(int k = 0; k < num; k++){
                 bundleSubID += 1;
-                String subID = Integer.toString(bundleSubID);
-                double s = Double.parseDouble(bun.getString(subID));
+                subID = Integer.toString(bundleSubID);
+                s = Double.parseDouble(bun.getString(subID));
                 subtotalSum += s;
             }
 
@@ -165,49 +164,56 @@ public class Act_CustomSplitConfirmPage extends Activity {
             tax = amnt / subtotalSum;
 
             //reset bundleSubID
-            bundleSubID = 201;
+            bundleSubID = 199;
 
             //add user 1 and 2 to string first
             //check if no tip was added, make it display "0"
-            if(bun.getString("300").matches("")){
-                bun.putString("300", "0.00");
-            }
-            double tax1 = s1*(tax-1);
-            output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + dec.format(tax1) + " tax and $" + bun.getString("300") + " tip" + "<br/>";
-            double t1 = Double.parseDouble(bun.getString("300"));
-            tipSum += t1;
-            double sub1 = Double.parseDouble(bun.getString("200"));
-            double tx1 = sub1*(tax-1);
-            taxSum += tx1;
+            // if(bun.getString("300").matches("")){
+            //     bun.putString("300", "0.00");
+            // }
+            // double tax1 = s1*(tax-1);
+            // output += bun.getString("100") + ": $" + bun.getString("200") + ", with $" + dec.format(tax1) + " tax and $" + bun.getString("300") + " tip" + "<br/>";
+            // double t1 = Double.parseDouble(bun.getString("300"));
+            // tipSum += t1;
+            // double sub1 = Double.parseDouble(bun.getString("200"));
+            // double tx1 = sub1*(tax-1);
+            // taxSum += tx1;
 
-            if(bun.getString("301").matches("")){
-                bun.putString("301", "0.00");
-            }
-            double tax2 = s2*(tax-1);
-            output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + dec.format(tax2) + " tax and $" + bun.getString("301") + " tip" + "<br/>";
-            double t2 = Double.parseDouble(bun.getString("301"));
-            tipSum += t2;
-            double sub2 = Double.parseDouble(bun.getString("201"));
-            double tx2 = sub2*(tax-1);
-            taxSum += tx2;
+            // if(bun.getString("301").matches("")){
+            //     bun.putString("301", "0.00");
+            // }
+            // double tax2 = s2*(tax-1);
+            // output += bun.getString("101") + ": $" + bun.getString("201") + ", with $" + dec.format(tax2) + " tax and $" + bun.getString("301") + " tip" + "<br/>";
+            // double t2 = Double.parseDouble(bun.getString("301"));
+            // tipSum += t2;
+            // double sub2 = Double.parseDouble(bun.getString("201"));
+            // double tx2 = sub2*(tax-1);
+            // taxSum += tx2;
 
-            for(int l = 0; l < numToCreate; l++){
+            String spinID = "";
+            //String subID ="";
+            String tipID ="";
+            //double s;
+            double tx;
+            double t;
+
+            for(int l = 0; l < num; l++){
                 bundleSpinID += 1;
                 bundleSubID += 1;
                 bundleTipID += 1;
 
-                String spinID = Integer.toString(bundleSpinID);
-                String subID = Integer.toString(bundleSubID);
-                String tipID = Integer.toString(bundleTipID);
+                spinID = Integer.toString(bundleSpinID);
+                subID = Integer.toString(bundleSubID);
+                tipID = Integer.toString(bundleTipID);
 
-                if(bun.getString(tipID).matches("")){
-                    bun.putString(tipID, "0.00");
-                }
-                double s = Double.parseDouble(bun.getString(subID));
-                double tx = s*(tax-1);
+//                if(bun.getString(tipID).matches("")){
+//                    bun.putString(tipID, "0.00");
+//                }
+                s = Double.parseDouble(bun.getString(subID));
+                tx = s*(tax-1);
                 output += bun.getString(spinID) + ": $" + bun.getString(subID) + ", with $" + dec.format(tx) + " tax and $" + bun.getString(tipID) + " tip" + "<br/>";
 
-                double t = Double.parseDouble(bun.getString(tipID));
+                t = Double.parseDouble(bun.getString(tipID));
                 tipSum += t;
                 taxSum += tx;
             }
@@ -215,6 +221,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
             output += "Total Tax (" + dec.format((tax-1)*100) + "%): $" + dec.format(taxSum) + "<br/>";
 
             output += "Total Tip: $" + dec.format(tipSum) + "<br/>";
+            output += "Subtotal: $" + dec.format(subtotalSum)+"<br/>";
 
             double totalAmount = Double.parseDouble(amount);
             totalAmount += tipSum;
