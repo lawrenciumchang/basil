@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:text="@string/str_monthlyExpense"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,40 +50,48 @@
 
     </LinearLayout>
 
-    <RelativeLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true">
 
-        <!--content to hide/show -->
-        <TextView
-            android:text="@string/txt_week1Content"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/txt_week1"/>
+            android:layout_height="wrap_content">
 
-        <!--content to hide/show -->
-        <TextView
-            android:text="@string/txt_week2Content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_week1"
-            android:id="@+id/txt_week2"/>
+            <!--content to hide/show -->
+            <TextView
+                android:text="@string/txt_week1Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/txt_week1"/>
 
-        <TextView
-            android:text="@string/txt_week3Content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_week2"
-            android:id="@+id/txt_week3"/>
+            <!--content to hide/show -->
+            <TextView
+                android:text="@string/txt_week2Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_week1"
+                android:id="@+id/txt_week2"/>
 
-        <TextView
-            android:text="@string/txt_week4Content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_week3"
-            android:id="@+id/txt_week4"/>
-    </RelativeLayout>
+            <TextView
+                android:text="@string/txt_week3Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_week2"
+                android:id="@+id/txt_week3"/>
 
+            <TextView
+                android:text="@string/txt_week4Content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_week3"
+                android:id="@+id/txt_week4"/>
+
+        </RelativeLayout>
+    </ScrollView>
 
 
 </LinearLayout>
