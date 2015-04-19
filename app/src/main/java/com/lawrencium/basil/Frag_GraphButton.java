@@ -92,6 +92,10 @@ public class Frag_GraphButton extends Fragment {
                 // e.g. launch a new activity
                 //deleteCategory(v);
                 Intent intent = new Intent(getActivity(), Act_CategoryView.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("CAT_NAME", cat_name);
+                bundle.putString("CAT_TOTAL", cat_total);
+                intent.putExtras(bundle);
                 startActivity(intent);
 
             }
