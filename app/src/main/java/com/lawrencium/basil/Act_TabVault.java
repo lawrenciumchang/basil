@@ -61,7 +61,6 @@ public class Act_TabVault extends Activity {
             FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
         };
 
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " ASC";
         Cursor c = db.query(
                 FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
                 projection,
