@@ -134,14 +134,34 @@ public class Tab {
 //                '}';
 //    }
 
+    public String reformatDate(String date){
+
+        String tempString = "";
+        int firstBackSlash = date.indexOf('/');
+        int secondBackSlash = date.indexOf('/', firstBackSlash+1);
+
+        tempString = date.substring(firstBackSlash+1, secondBackSlash)+"/";
+        tempString += date.substring(secondBackSlash+1, secondBackSlash+3)+"/";
+        tempString += date.substring(2, firstBackSlash)+" ";
+
+        firstBackSlash = date.indexOf(':');
+        secondBackSlash = date.indexOf(':', firstBackSlash+1);
+        tempString += date.substring(firstBackSlash-2, firstBackSlash)+":";
+        tempString += date.substring(firstBackSlash+1, secondBackSlash)+" ";
+        tempString += date.substring(secondBackSlash+3, date.length());
+
+
+        return tempString;
+    }
+
     @Override
     public String toString(){
         DecimalFormat dec = new DecimalFormat("0.00");
         return "User: " + UserOwing + "\n" +
-               "Amount Owed: " + dec.format(AmountOwed) + "\n" +
+               "Amount Owed: $" + dec.format(AmountOwed) + "\n" +
                "Title: " + Title + "\n" +
                "Category: " + Category + "\n" +
-               "Date of Transaction: " + Date + "\n";
+               "Date of Transaction: " + reformatDate(Date) + "\n";
     }
 
 }
