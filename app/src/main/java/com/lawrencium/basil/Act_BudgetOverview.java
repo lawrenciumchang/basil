@@ -50,7 +50,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT)));
-                fragmentTransaction.add(R.id.categoryLayout, fragment);
+                fragmentTransaction.add(R.id.categoryLayout, fragment, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)));
 
 //                String btnText = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE));
 //                Button myButton = new Button(this);
@@ -70,6 +70,41 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
 
             ll.addView(myButton, ll.getChildCount()-1, lp);
         }*/
+    }
+
+    protected void onResume() {
+        super.onResume();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        int lastId;
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        String[] projection = {
+                FeedReaderContract.FeedEntry._ID,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT
+        };
+        String sortOrder = FeedReaderContract.FeedEntry._ID + " DESC";
+        String limit = "1";
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder,
+                limit
+        );
+        if(c.moveToFirst()) {
+            if(fragmentManager.findFragmentByTag( c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)) ) == null) {
+                Frag_GraphButton fragment = Frag_GraphButton.newInstance(
+                    c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
+                    c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
+                    c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT)));
+                fragmentTransaction.add(R.id.categoryLayout, fragment, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)));
+            }
+        }
+        fragmentTransaction.commit();
     }
 
     public void gotoNewCategory(View view){
@@ -105,6 +140,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
     }
 
     public void removeCategory(Frag_GraphButton fragment) {
+        System.out.println("\n id from act:  " + fragment.getCatId());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry._ID+"="+fragment.getCatId(), null);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

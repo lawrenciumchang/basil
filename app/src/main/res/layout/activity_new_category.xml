@@ -16,7 +16,8 @@
         android:id="@+id/inputName"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
-        android:hint="Category Name" />
+        android:hint="Category Name"
+        android:inputType="textCapWords" />
 
     <EditText
         android:layout_width="match_parent"

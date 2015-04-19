@@ -155,12 +155,24 @@ public class Frag_GraphButton extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
+        menu.add(Integer.parseInt(cat_id), 1, 0, "Delete");
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.menu_overview_category_floating, menu);
     }
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if (item.getGroupId() == Integer.parseInt(cat_id)) {
+            System.out.println("\n id from menu: " + cat_id);
+            switch (item.getItemId()) {
+                case 1:
+                    deleteCategory();
+                    return true;
+                default:
+                    return super.onContextItemSelected(item);
+            }
+        }
+        return false;
+        /*AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.category_delete:
                 //editNote(info.id);
@@ -168,7 +180,7 @@ public class Frag_GraphButton extends Fragment {
                 return true;
             default:
                 return super.onContextItemSelected(item);
-        }
+        }*/
     }
 
 
@@ -177,6 +189,7 @@ public class Frag_GraphButton extends Fragment {
     }
     public void deleteCategory() {
         Act_BudgetOverview budgetOverviewActivity = (Act_BudgetOverview) getActivity();
+        System.out.println("\n id from frag: " + cat_id);
         budgetOverviewActivity.removeCategory(this);
     }
 }

@@ -99,8 +99,8 @@ public class Act_NewTransaction extends Activity {
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                 values);
 
-        Intent intent = new Intent(this, Act_TransactionConfirm.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, Act_TransactionConfirm.class);
+//        startActivity(intent);
         finish();
     }
 }

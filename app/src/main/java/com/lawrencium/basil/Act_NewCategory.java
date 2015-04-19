@@ -65,8 +65,8 @@ public class Act_NewCategory extends Activity {
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                 values);
 
-        Intent intent = new Intent(this, Act_BudgetOverview.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, Act_BudgetOverview.class);
+//        startActivity(intent);
         finish();
     }
 
