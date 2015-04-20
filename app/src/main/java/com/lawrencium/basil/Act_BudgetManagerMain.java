@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 
 public class Act_BudgetManagerMain extends Activity {
@@ -14,6 +15,9 @@ public class Act_BudgetManagerMain extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_manager_main);
+
+        TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
+        progress_overview.setText(getString(R.string.str_progress) +"%");
     }
 
     public void gotoNewTransaction(View view){
