@@ -61,6 +61,7 @@ public class Act_TabVault extends Activity {
             FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
         };
 
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
         Cursor c = db.query(
                 FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
                 projection,
@@ -144,5 +145,11 @@ public class Act_TabVault extends Activity {
         i.putExtra(PASS_CURRENT_USER, userName);
         startActivityForResult(i, 0);
     }
+
+//    public void removeTab(Frag_GraphButton fragment) {
+//        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+//        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry._ID+"="+fragment.getCatId(), null);
+//
+//    }
 
 }
