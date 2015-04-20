@@ -195,10 +195,11 @@ public class Act_CustomSplitConfirmPage extends Activity {
             DecimalFormat perc = new DecimalFormat("0.##%");
             //output += "Total Tax (" + dec.format((tax-1)*100) + "%): $" + dec.format(taxSum) + "<br/>";
             System.out.println("Tax Percentage: "+((tax-1)*100));
+            output += "Subtotal: $" + dec.format(subtotalSum)+"<br/>";
+
             output += "Total Tax (" + perc.format((tax-1)) + "): $" + dec.format(taxSum) + "<br/>";
 
             output += "Total Tip: $" + dec.format(tipSum) + "<br/>";
-            output += "Subtotal: $" + dec.format(subtotalSum)+"<br/>";
 
             double totalAmount = Double.parseDouble(amount);
             totalAmount += tipSum;

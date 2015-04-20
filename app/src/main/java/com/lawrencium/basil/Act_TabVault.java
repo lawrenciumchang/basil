@@ -89,6 +89,7 @@ public class Act_TabVault extends Activity {
                 Tabs.add(tempTab);
 
                 DecimalFormat dec = new DecimalFormat("0.00");
+                System.out.println("TAB ID: " + TabId);
                 System.out.println("Tab Created: " + tempTab);
                 System.out.println("Amount: "+dec.format(AmountOwed));
 
