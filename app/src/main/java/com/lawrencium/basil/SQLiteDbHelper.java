@@ -26,7 +26,8 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     FeedEntry.COLUMN_NAME_CATEGORY + TEXT_TYPE + COMMA_SEP +
-                    FeedEntry.COLUMN_NAME_CONTENT + TEXT_TYPE + //COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_CONTENT + TEXT_TYPE + COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_DATE + TEXT_TYPE + //COMMA_SEP +
                     // Any other options for the CREATE command
                     " )";
 

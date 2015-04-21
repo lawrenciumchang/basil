@@ -14,6 +14,9 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class Act_NewTransaction extends Activity {
     protected EditText inputName;
@@ -83,17 +86,18 @@ public class Act_NewTransaction extends Activity {
 
     public void createTransaction(View view) {
         SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
+        Date tempDate = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
+        String date = format.format(tempDate);
         ContentValues values = new ContentValues();
         String newName = inputName.getText().toString().trim();
-        //double newBudget = Double.parseDouble(inputBudget.getText().toString());
         String newBudget = inputValue.getText().toString().trim();
         String newCategory = inputCategory.getSelectedItem().toString().trim();
 
-        /*Category newCategory = new Category(newName, newBudget);
-        Budget.getInstance().getCategories().add(newCategory);*/
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, newCategory);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT, newBudget);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
         long newRowId = db.insert(
                 FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,

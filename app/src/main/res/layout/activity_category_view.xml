@@ -18,79 +18,112 @@
     </RelativeLayout>
 
     <LinearLayout
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <Button
             android:text="@string/str_week1"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/week1"
-            android:onClick="toggle_contents" />
+            android:onClick="toggle_contents"
+            android:layout_weight="1"/>
 
         <Button
             android:text="@string/str_week2"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/week2"
-            android:onClick="toggle_contents"/>
+            android:onClick="toggle_contents"
+            android:layout_weight="1"/>
 
         <Button
             android:text="@string/str_week3"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/week3"
-            android:onClick="toggle_contents"/>
+            android:onClick="toggle_contents"
+            android:layout_weight="1"/>
 
         <Button
             android:text="@string/str_week4"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/week4"
-            android:onClick="toggle_contents"/>
+            android:onClick="toggle_contents"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/scrollView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true">
+        android:id="@+id/scrollView">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <!--content to hide/show -->
-            <TextView
-                android:text="@string/txt_week1Content"
+            <LinearLayout
+                android:id="@+id/lo_week1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_week1"/>
+                android:orientation="vertical">
 
-            <!--content to hide/show -->
-            <TextView
-                android:text="@string/txt_week2Content"
+                <TextView
+                    android:text="@string/txt_week1Content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_week1"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lo_week2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_week1"
-                android:id="@+id/txt_week2"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:text="@string/txt_week3Content"
+                <TextView
+                    android:text="@string/txt_week2Content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_week2"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lo_week3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_week2"
-                android:id="@+id/txt_week3"/>
+                android:orientation="vertical">
 
-            <TextView
-                android:text="@string/txt_week4Content"
+                <TextView
+                    android:text="@string/txt_week3Content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_week3"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lo_week4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_week3"
-                android:id="@+id/txt_week4"/>
+                android:orientation="vertical">
 
-        </RelativeLayout>
+                <TextView
+                    android:text="@string/txt_week4Content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_week4"/>
+            </LinearLayout>
+
+        </LinearLayout>
     </ScrollView>
 
 

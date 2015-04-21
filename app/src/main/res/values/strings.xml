@@ -24,12 +24,12 @@
     <string name="str_week2">2</string>
     <string name="str_week3">3</string>
     <string name="str_week4">4</string>
-    <string name="txt_week1Content"> -------week one transactions------- \ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl\ndkfjlaskdjfl jdsfl jaldskfjlksajdfl kjsldfkj lfl</string>
-    <string name="txt_week2Content"> -------week two transactions------- \nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week\nYou bought a bunch of stuff this week</string>
-    <string name="txt_week3Content"> -------week three transactions------- \nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!\nYou bought less, good job!</string>
-    <string name="txt_week4Content"> -------week four transactions------- \nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy\nIt\'s the end of the month go crazy</string>
+    <string name="txt_week1Content">-------Week one transactions-------</string>
+    <string name="txt_week2Content">-------Week two transactions-------</string>
+    <string name="txt_week3Content">------Week three transactions------</string>
+    <string name="txt_week4Content">-------Week four transactions------</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <!-- Activity and Fragment Titles -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_act__category_view">Act_CategoryView</string>
     <string name="title_activity_act__transaction_confirm">Act_TransactionConfirm</string>
