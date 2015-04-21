@@ -96,7 +96,7 @@ public class Act_NewTransaction extends Activity {
 
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, newCategory);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT, newBudget);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
         long newRowId = db.insert(
                 FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,

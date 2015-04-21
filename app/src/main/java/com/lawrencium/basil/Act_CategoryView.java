@@ -77,7 +77,7 @@ public class Act_CategoryView extends Activity {
                 FeedReaderContract.FeedEntry._ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
         };
         String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
@@ -100,7 +100,7 @@ public class Act_CategoryView extends Activity {
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)) + " " +
                         //"(" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY)) + ") " +
                         date[2]+"/"+date[1] + " $" +
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT));
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 nextTransaction.setText(text);
 
                 switch(calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {

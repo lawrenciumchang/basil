@@ -25,7 +25,7 @@ public class Act_TransactionConfirm extends Activity {
                 FeedReaderContract.FeedEntry._ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
         };
         String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY;
         Cursor c = db.query(
@@ -42,7 +42,7 @@ public class Act_TransactionConfirm extends Activity {
                 String btnText = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)) + " " +
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY)) + " " +
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)) + " " +
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT));
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 Button myButton = new Button(this);
                 myButton.setText(btnText);
                 LinearLayout ll = (LinearLayout) findViewById(R.id.transactionLayout);

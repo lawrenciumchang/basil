@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="com.lawrencium.basil.Act_BudgetManagerMain"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#ffeeeeee">
 
     <ScrollView
         android:layout_width="match_parent"

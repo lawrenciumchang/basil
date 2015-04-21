@@ -10,12 +10,13 @@ import com.lawrencium.basil.FeedReaderContract.FeedEntry;
  */
 public class SQLiteDbHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
+    private static final String CURRENCY_TYPE = " DECIMAL(10,2)";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_CATEGORIES =
             "CREATE TABLE " + FeedEntry.TABLE_NAME_CATEGORIES + " (" +
                     FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
-                    FeedEntry.COLUMN_NAME_CONTENT + TEXT_TYPE + //COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_VALUE + CURRENCY_TYPE + //COMMA_SEP +
                     // Any other options for the CREATE command
                     " )";
 
@@ -26,7 +27,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     FeedEntry.COLUMN_NAME_CATEGORY + TEXT_TYPE + COMMA_SEP +
-                    FeedEntry.COLUMN_NAME_CONTENT + TEXT_TYPE + COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_VALUE + CURRENCY_TYPE + COMMA_SEP +
                     FeedEntry.COLUMN_NAME_DATE + TEXT_TYPE + //COMMA_SEP +
                     // Any other options for the CREATE command
                     " )";

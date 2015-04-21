@@ -59,7 +59,7 @@ public class Act_NewCategory extends Activity {
         /*Category newCategory = new Category(newName, newBudget);
         Budget.getInstance().getCategories().add(newCategory);*/
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT, newBudget);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
         long newRowId = db.insert(
                 FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,

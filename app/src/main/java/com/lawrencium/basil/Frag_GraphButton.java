@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -85,7 +86,8 @@ public class Frag_GraphButton extends Fragment {
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
         Button catName = (Button) v.findViewById(R.id.catButton);
         catName.setText("[" + cat_id + "] " + cat_name + ": " + cat_total);
-        catName.setOnClickListener(new View.OnClickListener() {
+        ProgressBar catGraph = (ProgressBar) v.findViewById(R.id.catGraph);
+        catGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // here you set what you want to do when user clicks your button,
@@ -100,17 +102,6 @@ public class Frag_GraphButton extends Fragment {
 
             }
         });
-        /*catName.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                // here you set what you want to do when user clicks your button,
-                // e.g. launch a new activity
-                //deleteCategory(v);
-                Intent intent = new Intent(getActivity(), Act_CategoryView.class);
-                startActivity(intent);
-                return true;
-            }
-        });*/
         registerForContextMenu(catName);
 
         return v;

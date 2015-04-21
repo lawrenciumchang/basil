@@ -24,7 +24,8 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_overview);
         ActionBar actionBar = getActionBar();
-        actionBar.hide();
+        if(actionBar != null)
+            actionBar.hide();
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -32,7 +33,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         String[] projection = {
                 FeedReaderContract.FeedEntry._ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
         };
         String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
         Cursor c = db.query(
@@ -49,7 +50,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
                 Frag_GraphButton fragment = Frag_GraphButton.newInstance(
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT)));
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
                 fragmentTransaction.add(R.id.categoryLayout, fragment, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)));
 
 //                String btnText = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE));
@@ -70,6 +71,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
 
             ll.addView(myButton, ll.getChildCount()-1, lp);
         }*/
+        db.close();
     }
 
     protected void onResume() {
@@ -81,7 +83,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         String[] projection = {
                 FeedReaderContract.FeedEntry._ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
         };
         String sortOrder = FeedReaderContract.FeedEntry._ID + " DESC";
         String limit = "1";
@@ -100,7 +102,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
                 Frag_GraphButton fragment = Frag_GraphButton.newInstance(
                     c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
                     c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
-                    c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CONTENT)));
+                    c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
                 fragmentTransaction.add(R.id.categoryLayout, fragment, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)));
             }
         }
