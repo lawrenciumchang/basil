@@ -26,7 +26,7 @@
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:text="@string/str_btn_addTransaction"
                 android:id="@+id/btn_addTransaction"
                 android:layout_gravity="center_horizontal"
@@ -62,6 +62,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:layout_marginLeft="10dp"
                     android:progress="@string/str_progress"
                     android:progressDrawable="@drawable/progress_bar"
                     android:clickable="true"
@@ -73,7 +74,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/str_Overview"
-                android:textSize="20sp"/>
+                android:layout_marginTop="30dp"
+                android:textSize="25sp"/>
         </LinearLayout>
     </ScrollView>
 
