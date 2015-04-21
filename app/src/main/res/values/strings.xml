@@ -20,6 +20,8 @@
     <string name="str_btn_categorySubmit">Submit</string>
 
     <!--<string name="str_monthlyExpense">Monthly Expense</string>-->
+    <string name="str_Overview">Expense Overview</string>
+    <string name="str_progress">50</string>
     <string name="str_week1">1</string>
     <string name="str_week2">2</string>
     <string name="str_week3">3</string>
