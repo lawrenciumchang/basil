@@ -29,7 +29,8 @@
         android:text="Log In"
         android:onClick="signIn"
         android:id="@+id/button"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal"
+        android:visibility="gone" />
 
     <Button
         android:layout_height="wrap_content"
@@ -51,13 +52,14 @@
     <Button
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:text="Log Out"
+        android:text="Sign out"
         android:onClick="signOut"
-        android:id="@+id/button6"
+        android:id="@+id/signOut"
         android:singleLine="false"
         android:gravity="center_vertical|center_horizontal"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="50dp" />
+        android:visibility="visible"
+        android:layout_below="@+id/signIn"
+        android:layout_alignParentRight="true" />
 
     <!--com.google.android.gms.common.SignInButton-->
     <Button
@@ -67,7 +69,20 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         android:onClick="googleSignIn"
-        android:text="Sign In with Google+" />
+        android:text="Sign In with Google+"
+        android:visibility="gone" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/signIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:onClick="onClick"
+        android:measureAllChildren="true"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignRight="@+id/signOut"
+        android:layout_marginTop="10dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -76,7 +91,8 @@
         android:id="@+id/loggedInAs"
         android:layout_above="@+id/button8"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp" />
+        android:layout_marginBottom="15dp"
+        android:visibility="gone" />
 
 </RelativeLayout>
 

@@ -1,11 +1,7 @@
 package com.lawrencium.basil;
 
-
-
-
 // *****************************************************************
 // this class is for Google+ login
-// currently not implemented
 // *****************************************************************
 
 import android.app.Activity;
@@ -14,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentSender;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -55,8 +50,6 @@ public class Act_LoginPage extends Activity implements GoogleApiClient.OnConnect
      */
     private boolean mSignInClicked;
 
-
-
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_login_page);
@@ -74,21 +67,19 @@ public class Act_LoginPage extends Activity implements GoogleApiClient.OnConnect
     }
 
     protected void onStart() {
-        Toast.makeText(this, "START!", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "START!", Toast.LENGTH_SHORT).show();
         super.onStart();
         mGoogleApiClient.connect();
     }
 
     protected void onStop() {
-        Toast.makeText(this, "STOP", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "STOP", Toast.LENGTH_SHORT).show();
         super.onStop();
 
         if (mGoogleApiClient.isConnected()) {
             mGoogleApiClient.disconnect();
         }
     }
-
-
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -157,6 +148,7 @@ public class Act_LoginPage extends Activity implements GoogleApiClient.OnConnect
         };
         task.execute((Void) null);
 
+        //GET USERNAME
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
             Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
             String personName = currentPerson.getDisplayName();
@@ -186,11 +178,13 @@ public class Act_LoginPage extends Activity implements GoogleApiClient.OnConnect
                 mGoogleApiClient.connect();
                 Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
             }
-            Toast.makeText(this, "User was not logged in!", Toast.LENGTH_SHORT).show();
+            else {
+                Toast.makeText(this, "User was not logged in!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
-    public void logOutClick(View v) {
+//    public void logOutClick(View v) {
 //        if (v.getId() == R.id.sign_out_button) {
 //            if (mGoogleApiClient.isConnected()) {
 //                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
@@ -199,11 +193,11 @@ public class Act_LoginPage extends Activity implements GoogleApiClient.OnConnect
 //                Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
 //            }
 //        }
-    }
+//    }
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-        Toast.makeText(this, "LOGIN FAILED!", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "LOGIN FAILED!", Toast.LENGTH_SHORT).show();
         if (!mIntentInProgress) {
             if (mSignInClicked && result.hasResolution()) {
                 // The user has already clicked 'sign-in' so we attempt to resolve all
@@ -232,8 +226,6 @@ public class Act_LoginPage extends Activity implements GoogleApiClient.OnConnect
 //            }
 //        }
     }
-
-
 
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
         if (requestCode == RC_SIGN_IN) {
