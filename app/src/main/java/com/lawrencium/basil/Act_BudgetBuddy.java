@@ -128,4 +128,11 @@ public class Act_BudgetBuddy extends Activity {
             startActivity(intent);
         }
     }
+
+    public void googleSignIn(View v){
+
+        Intent intent = new Intent(this, Act_LoginPage.class);
+        startActivity(intent);
+
+    }
 }
