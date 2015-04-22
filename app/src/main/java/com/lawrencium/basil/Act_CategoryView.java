@@ -32,6 +32,10 @@ public class Act_CategoryView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_view);
+
+        TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
+        progress_overview.setText(getString(R.string.str_progress) +"%");
+
         ActionBar actionBar = getActionBar();
         if(actionBar != null)
             actionBar.hide();
@@ -96,12 +100,12 @@ public class Act_CategoryView extends Activity {
             do {
                 TextView nextTransaction = new TextView(this);
                 String[] date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)).split("[ :/]");
-                String text = "[" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)) + "] " +
+                String text = date[1]+"/"+date[2] + " " +
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)) + " " +
                         //"(" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY)) + ") " +
-                        date[2]+"/"+date[1] + " $" +
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
+                         " $" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 nextTransaction.setText(text);
+                nextTransaction.setTextSize(15);
 
                 switch(calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {
                     case 1: lo_week1.addView(nextTransaction); break;

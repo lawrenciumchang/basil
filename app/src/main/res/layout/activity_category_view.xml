@@ -15,6 +15,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/monthlyExpense"/>
+        <TextView
+            android:id="@+id/progress_overview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_progress"
+            android:textColor="#44aa00"
+            android:textStyle="bold"
+            android:typeface="sans"
+            android:layout_below="@id/monthlyExpense"
+            android:textSize="30sp"/>
+        <ProgressBar
+            android:id="@+id/catProgessBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="10dp"
+            android:progress="@string/str_progress"
+            android:progressDrawable="@drawable/progress_bar"
+            android:clickable="true"
+            android:layout_below="@id/monthlyExpense"
+            android:layout_toRightOf="@id/progress_overview"
+            android:onClick="gotoOverview"/>
     </RelativeLayout>
 
     <LinearLayout
@@ -80,7 +103,8 @@
                     android:text="@string/txt_week1Content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txt_week1"/>
+                    android:id="@+id/txt_week1"
+                    android:textSize="18sp"/>
 
             </LinearLayout>
 
@@ -94,7 +118,8 @@
                     android:text="@string/txt_week2Content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txt_week2"/>
+                    android:id="@+id/txt_week2"
+                    android:textSize="18sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -107,7 +132,8 @@
                     android:text="@string/txt_week3Content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txt_week3"/>
+                    android:id="@+id/txt_week3"
+                    android:textSize="18sp"/>
             </LinearLayout>
 
             <LinearLayout
@@ -120,7 +146,8 @@
                     android:text="@string/txt_week4Content"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/txt_week4"/>
+                    android:id="@+id/txt_week4"
+                    android:textSize="18sp"/>
             </LinearLayout>
 
         </LinearLayout>

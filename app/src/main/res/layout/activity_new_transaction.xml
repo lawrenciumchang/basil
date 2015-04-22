@@ -28,7 +28,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/inputName"
         android:layout_alignParentLeft="true"
-        android:hint="Name" />
+        android:hint="Name"
+        android:capitalize="words" />
 
     <Button
         android:layout_width="match_parent"

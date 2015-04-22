@@ -63,7 +63,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="10dp"
-                    android:progress="@string/str_progress"
+                    android:progress=
+                        "@string/str_progress"
                     android:progressDrawable="@drawable/progress_bar"
                     android:clickable="true"
                     android:onClick="gotoOverview"/>
