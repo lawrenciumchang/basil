@@ -15,6 +15,7 @@
 
 
         <LinearLayout
+            android:id="@+id/lo_budgetmain"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -44,7 +45,9 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+                android:layout_height="fill_parent"
+                android:clickable="true"
+                android:onClick="gotoOverview">
 
                 <TextView
                     android:id="@+id/progress_overview"
@@ -63,11 +66,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:layout_marginLeft="10dp"
-                    android:progress=
-                        "@string/str_progress"
-                    android:progressDrawable="@drawable/progress_bar"
-                    android:clickable="true"
-                    android:onClick="gotoOverview"/>
+                    android:progress="@string/str_progress"
+                    android:progressDrawable="@drawable/progress_bar"/>
 
             </LinearLayout>
 

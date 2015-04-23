@@ -14,6 +14,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -87,8 +89,8 @@ public class Act_NewTransaction extends Activity {
     public void createTransaction(View view) {
         SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
         Date tempDate = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
-        String date = format.format(tempDate);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
+        String date = dateFormat.format(tempDate);
         ContentValues values = new ContentValues();
         String newName = inputName.getText().toString().trim();
         String newBudget = inputValue.getText().toString().trim();
@@ -103,8 +105,14 @@ public class Act_NewTransaction extends Activity {
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                 values);
 
-//        Intent intent = new Intent(this, Act_TransactionConfirm.class);
-//        startActivity(intent);
+        Intent resultIntent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putString("TITLE", newName);
+        bundle.putString("CATEGORY", newCategory);
+        bundle.putString("VALUE", newBudget);
+        bundle.putString("DATE", date);
+        resultIntent.putExtras(bundle);
+        setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }
 }

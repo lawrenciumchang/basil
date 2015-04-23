@@ -23,9 +23,9 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_overview);
-        ActionBar actionBar = getActionBar();
+        /*ActionBar actionBar = getActionBar();
         if(actionBar != null)
-            actionBar.hide();
+            actionBar.hide();*/
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -109,7 +109,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         fragmentTransaction.commit();
     }
 
-    public void gotoNewCategory(View view){
+    public void gotoNewCategory(){
         Intent intent = new Intent(this, Act_NewCategory.class);
         startActivity(intent);
     }
@@ -129,7 +129,8 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_new_category) {
+            gotoNewCategory();
             return true;
         }
 
@@ -142,7 +143,6 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
     }
 
     public void removeCategory(Frag_GraphButton fragment) {
-        System.out.println("\n id from act:  " + fragment.getCatId());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry._ID+"="+fragment.getCatId(), null);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

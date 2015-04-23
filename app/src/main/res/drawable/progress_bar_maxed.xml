@@ -17,8 +17,8 @@
                 <corners android:radius="0dip" />
                 <gradient
                     android:angle="0"
-                    android:endColor="#44aa00"
-                    android:startColor="#44aa00" />
+                    android:endColor="#ffd81500"
+                    android:startColor="#ffd81500" />
             </shape>
         </clip>
     </item>

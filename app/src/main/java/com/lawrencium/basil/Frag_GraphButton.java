@@ -1,8 +1,10 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +18,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -40,7 +48,8 @@ public class Frag_GraphButton extends Fragment {
     private String cat_total;
 
     private OnFragmentInteractionListener mListener;
-//    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(getActivity());
+    SQLiteDbHelper mDbHelper;
+    ProgressBar catGraph;
 
     /**
      * Use this factory method to create a new instance of
@@ -84,10 +93,11 @@ public class Frag_GraphButton extends Fragment {
         // Inflate the layout for this fragment
         //things a user sees
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
-        Button catName = (Button) v.findViewById(R.id.catButton);
-        catName.setText("[" + cat_id + "] " + cat_name + ": " + cat_total);
-        ProgressBar catGraph = (ProgressBar) v.findViewById(R.id.catGraph);
-        catGraph.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout frame = (RelativeLayout) v.findViewById(R.id.frame);
+        TextView catName = (TextView) v.findViewById(R.id.catTitle);
+        catName.setText(cat_name + ": $" + cat_total);
+        catGraph = (ProgressBar) v.findViewById(R.id.catGraph);
+        frame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // here you set what you want to do when user clicks your button,
@@ -102,9 +112,46 @@ public class Frag_GraphButton extends Fragment {
 
             }
         });
-        registerForContextMenu(catName);
+        registerForContextMenu(frame);
 
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Calendar calendar = Calendar.getInstance();
+        Date tempDate = new Date();
+        calendar.setTime(tempDate);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        tempDate = calendar.getTime();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
+        String dateLastMonth = format.format(tempDate);
+
+        mDbHelper = new SQLiteDbHelper(getActivity());
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        db = mDbHelper.getReadableDatabase();
+        String[] projection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
+        };
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
+        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + dateLastMonth + "\' AND " +
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + cat_name + "\'";
+        Cursor c = db.rawQuery("SELECT SUM("+ FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE +
+                ") AS total FROM "+ FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS +
+                " WHERE "+ filter, null);
+        c.moveToFirst();
+        int total = c.getInt(c.getColumnIndex("total"));
+        db.close();
+
+        catGraph.setMax(Integer.parseInt(cat_total));
+        catGraph.setProgress(total);
+        if(total > Integer.parseInt(cat_total)) {
+            catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_maxed));
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -183,8 +230,20 @@ public class Frag_GraphButton extends Fragment {
         return cat_id;
     }
     public void deleteCategory() {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, "Uncategorized");
+        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + cat_name + "\'";
+
+        int numUpdated = db.update(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                values, filter, null);
+
+        Context context = getActivity().getApplicationContext();
+        CharSequence text = numUpdated + " transactions uncategorized";
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+        toast.show();
+
         Act_BudgetOverview budgetOverviewActivity = (Act_BudgetOverview) getActivity();
-        System.out.println("\n id from frag: " + cat_id);
         budgetOverviewActivity.removeCategory(this);
     }
 }

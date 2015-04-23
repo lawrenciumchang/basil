@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:id="@+id/frame"
     android:layout_height="match_parent" tools:context="com.lawrencium.basil.Frag_GraphButton"
     android:clickable="true"
     android:padding="16dp">
@@ -9,19 +10,20 @@
         <!--android:id="@+id/txt_catName"-->
         <!--android:layout_width="match_parent" android:layout_height="wrap_content" />-->
 
-    <Button
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/catButton"
-        android:layout_alignParentLeft="true" />
+        android:text="Category"
+        android:id="@+id/catTitle"
+        android:layout_alignParentLeft="true"
+        android:textSize="20dp" />
     <ProgressBar
         android:id="@+id/catGraph"
-        android:layout_below="@id/catButton"
+        android:layout_below="@id/catTitle"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:progress="25"
         android:progressDrawable="@drawable/progress_bar"/>
     <!--New Button placeholder, text set in onCreateView-->

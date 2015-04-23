@@ -36,10 +36,6 @@ public class Act_CategoryView extends Activity {
         TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
         progress_overview.setText(getString(R.string.str_progress) +"%");
 
-        ActionBar actionBar = getActionBar();
-        if(actionBar != null)
-            actionBar.hide();
-
         Bundle bundle = getIntent().getExtras();
         String catName = bundle.getString("CAT_NAME");
         String catTotal = bundle.getString("CAT_TOTAL");
@@ -78,13 +74,12 @@ public class Act_CategoryView extends Activity {
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
-                FeedReaderContract.FeedEntry._ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
         };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE;
         String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + dateLastMonth + "\' AND " +
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + catName + "\'";
         Cursor c = db.query(
@@ -102,12 +97,11 @@ public class Act_CategoryView extends Activity {
                 String[] date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)).split("[ :/]");
                 String text = date[1]+"/"+date[2] + " " +
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)) + " " +
-                        //"(" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY)) + ") " +
                          " $" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 nextTransaction.setText(text);
                 nextTransaction.setTextSize(15);
 
-                switch(calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {
+                switch(Budget.calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {
                     case 1: lo_week1.addView(nextTransaction); break;
                     case 2: lo_week2.addView(nextTransaction); break;
                     case 3: lo_week3.addView(nextTransaction); break;
@@ -214,34 +208,6 @@ public class Act_CategoryView extends Activity {
 
     }
 
-    /**
-     * calculateWeek - calculates which week the given date is in
-     * @param day
-     * @param daysMax
-     * @return
-     * @throws java.lang.IllegalArgumentException If the date or number of days in the month is invalid
-     */
-    private int calculateWeek(int day, int daysMax) {
-        final int[] feb = {7, 14, 21, 28};
-        final int[] leapFeb = {8, 15, 26, 29};
-        final int[] small = {8, 16, 23, 30};
-        final int[] big = {8, 16, 24, 31};
-        int[] weekRange = big;
 
-        if(day > daysMax)
-            throw new IllegalArgumentException("The date ["+day+"] cannot be greater than the number of days in the month");
-        switch(daysMax) {
-            case 28: weekRange = feb; break;
-            case 29: weekRange = leapFeb; break;
-            case 30: weekRange = small; break;
-            case 31: weekRange = big; break;
-            default: throw new IllegalArgumentException(daysMax + " is not a valid number of days in a month");
-        }
-        for(int i=0; i<4; i++) {
-            if(day <= weekRange[i])
-                return i+1;
-        }
-        return 0;
-    }
 
 }
