@@ -22,4 +22,15 @@
             </shape>
         </clip>
     </item>
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <corners android:radius="0dip" />
+                <gradient
+                    android:angle="0"
+                    android:endColor="#8044aa00"
+                    android:startColor="#8044aa00" />
+            </shape>
+        </clip>
+    </item>
 </layer-list>

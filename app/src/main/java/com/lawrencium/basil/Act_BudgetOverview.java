@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 
 public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnFragmentInteractionListener {
     SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
@@ -47,10 +50,17 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         );
         if(c.moveToFirst()) {
             do {
+                BigDecimal bdValue = new BigDecimal(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
+                DecimalFormat df = new DecimalFormat();
+                df.setMinimumFractionDigits(2);
+                df.setMinimumIntegerDigits(1);
+                String valueStr = df.format(bdValue);
+                System.out.println("Fragment creation: value = " + valueStr);
+
                 Frag_GraphButton fragment = Frag_GraphButton.newInstance(
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
+                        valueStr);
                 fragmentTransaction.add(R.id.categoryLayout, fragment, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)));
 
 //                String btnText = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE));

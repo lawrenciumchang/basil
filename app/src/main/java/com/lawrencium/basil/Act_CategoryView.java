@@ -102,10 +102,10 @@ public class Act_CategoryView extends Activity {
                 nextTransaction.setTextSize(15);
 
                 switch(Budget.calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {
-                    case 1: lo_week1.addView(nextTransaction); break;
-                    case 2: lo_week2.addView(nextTransaction); break;
-                    case 3: lo_week3.addView(nextTransaction); break;
-                    case 4: lo_week4.addView(nextTransaction); break;
+                    case 0: lo_week1.addView(nextTransaction); break;
+                    case 1: lo_week2.addView(nextTransaction); break;
+                    case 2: lo_week3.addView(nextTransaction); break;
+                    case 3: lo_week4.addView(nextTransaction); break;
                 }
             } while (c.moveToNext());
         }

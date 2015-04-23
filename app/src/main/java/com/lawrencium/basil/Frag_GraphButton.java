@@ -22,7 +22,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -85,6 +88,7 @@ public class Frag_GraphButton extends Fragment {
             cat_name = getArguments().getString(ARG_NAME);
             cat_total = getArguments().getString(ARG_TOTAL);
         }
+        mDbHelper = new SQLiteDbHelper(getActivity());
     }
 
     @Override
@@ -120,36 +124,63 @@ public class Frag_GraphButton extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Calendar calendar = Calendar.getInstance();
         Date tempDate = new Date();
-        calendar.setTime(tempDate);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        tempDate = calendar.getTime();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
-        String dateLastMonth = format.format(tempDate);
+        Calendar calendar = Calendar.getInstance();
+        int daysThisMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        System.out.println("Days this month: " + daysThisMonth);
+        int quarter = Budget.calculateWeek(calendar.get(Calendar.DAY_OF_MONTH), daysThisMonth);
 
-        mDbHelper = new SQLiteDbHelper(getActivity());
+        BigDecimal[] totals = new BigDecimal[5];
+        Arrays.fill(totals, BigDecimal.ZERO);
+        BigDecimal rollover = new BigDecimal(BigInteger.ZERO);
+        String[] bounds = Budget.calculateBounds(tempDate);
+
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        db = mDbHelper.getReadableDatabase();
-        String[] projection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
-        };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
-        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + dateLastMonth + "\' AND " +
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + cat_name + "\'";
-        Cursor c = db.rawQuery("SELECT SUM("+ FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE +
-                ") AS total FROM "+ FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS +
-                " WHERE "+ filter, null);
-        c.moveToFirst();
-        int total = c.getInt(c.getColumnIndex("total"));
+        for(int i=0; i<4; i++) {
+            String[] projection = {
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
+            };
+            String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
+            String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + bounds[i] + "\' AND " +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " < \'" + bounds[i+1] + "\' AND " +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" +
+                    cat_name + "\'";
+            Cursor c = db.query(
+                    FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                    projection,
+                    filter,
+                    null,
+                    null,
+                    null,
+                    sortOrder
+            );
+            if (c.moveToFirst()) {
+                do {
+                    BigDecimal transactionValue = new BigDecimal(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
+                    totals[i] = totals[i].add(transactionValue);
+                } while (c.moveToNext());
+            }
+        }
         db.close();
 
-        catGraph.setMax(Integer.parseInt(cat_total));
-        catGraph.setProgress(total);
-        if(total > Integer.parseInt(cat_total)) {
+        for(int i=0; i<4; i++) {
+            totals[4] = totals[4].add(totals[i]);
+        }
+
+        BigDecimal categoryBudget = new BigDecimal(cat_total);
+        categoryBudget.setScale(2);
+        BigDecimal quarterBudget = categoryBudget.divide(new BigDecimal("4"), categoryBudget.scale(), BigDecimal.ROUND_HALF_DOWN);
+        System.out.println(categoryBudget+"/4 = "+quarterBudget);
+
+        for(int i=0; i<quarter; i++) {
+            BigDecimal diff = quarterBudget.subtract(totals[i]);
+            rollover = rollover.add(diff);
+        }
+        System.out.println("Rollover: $" + rollover);
+        catGraph.setMax(categoryBudget.intValue() + rollover.intValue());
+        catGraph.setProgress(totals[quarter].intValue());
+        catGraph.setSecondaryProgress(totals[4].intValue());
+        if(totals[4].intValue() > categoryBudget.intValue()) {
             catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_maxed));
         }
     }
