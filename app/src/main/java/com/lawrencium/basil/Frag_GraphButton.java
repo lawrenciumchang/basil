@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Html;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -21,6 +22,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -99,7 +102,7 @@ public class Frag_GraphButton extends Fragment {
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
         RelativeLayout frame = (RelativeLayout) v.findViewById(R.id.frame);
         TextView catName = (TextView) v.findViewById(R.id.catTitle);
-        catName.setText(cat_name + ": $" + cat_total);
+        catName.setText(cat_name);
         catGraph = (ProgressBar) v.findViewById(R.id.catGraph);
         frame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +130,7 @@ public class Frag_GraphButton extends Fragment {
         Date tempDate = new Date();
         Calendar calendar = Calendar.getInstance();
         int daysThisMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        System.out.println("Days this month: " + daysThisMonth);
+        //System.out.println("Days this month: " + daysThisMonth);
         int quarter = Budget.calculateWeek(calendar.get(Calendar.DAY_OF_MONTH), daysThisMonth);
 
         BigDecimal[] totals = new BigDecimal[5];
@@ -170,19 +173,27 @@ public class Frag_GraphButton extends Fragment {
         BigDecimal categoryBudget = new BigDecimal(cat_total);
         categoryBudget.setScale(2);
         BigDecimal quarterBudget = categoryBudget.divide(new BigDecimal("4"), categoryBudget.scale(), BigDecimal.ROUND_HALF_DOWN);
-        System.out.println(categoryBudget+"/4 = "+quarterBudget);
+        //System.out.println(categoryBudget+"/4 = "+quarterBudget);
 
         for(int i=0; i<quarter; i++) {
             BigDecimal diff = quarterBudget.subtract(totals[i]);
             rollover = rollover.add(diff);
         }
-        System.out.println("Rollover: $" + rollover);
+        //System.out.println("Rollover: $" + rollover);
         catGraph.setMax(categoryBudget.intValue() + rollover.intValue());
         catGraph.setProgress(totals[quarter].intValue());
         catGraph.setSecondaryProgress(totals[4].intValue());
         if(totals[4].intValue() > categoryBudget.intValue()) {
             catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_maxed));
         }
+
+        TextView budget = (TextView) getView().findViewById(R.id.textBudget);
+        switch(rollover.compareTo(BigDecimal.ZERO)) {
+            case -1: budget.setText(Html.fromHtml("$"+quarterBudget+"<font color=#D81500> +$"+rollover+"</font>")); break;
+            case 0: budget.setText("$"+quarterBudget); break;
+            case 1: budget.setText(Html.fromHtml("$"+quarterBudget+"<font color=#44AA00> +$"+rollover+"</font>"));
+        }
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
