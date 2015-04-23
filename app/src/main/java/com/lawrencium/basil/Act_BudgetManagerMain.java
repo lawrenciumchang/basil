@@ -2,14 +2,24 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class Act_BudgetManagerMain extends Activity {
+
+//    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
+//    LinearLayout lo_expenseOverview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +28,57 @@ public class Act_BudgetManagerMain extends Activity {
 
         TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
         progress_overview.setText(getString(R.string.str_progress) +"%");
+
+//        Calendar calendar = Calendar.getInstance();
+//        Date tempDate = new Date();
+//        calendar.setTime(tempDate);
+//        calendar.set(Calendar.DAY_OF_MONTH, 1);
+//        calendar.set(Calendar.HOUR_OF_DAY, 0);
+//        calendar.set(Calendar.MINUTE, 0);
+//        calendar.set(Calendar.SECOND, 0);
+//        tempDate = calendar.getTime();
+//        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
+//        String dateLastMonth = format.format(tempDate);
+//        int daysThisMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+//
+//        lo_expenseOverview = (LinearLayout) findViewById(R.id.lo_expenseOverview);
+//
+//        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+//        String[] projection = {
+//                FeedReaderContract.FeedEntry._ID,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
+//        };
+//        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE ;
+//        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + dateLastMonth + "\' AND " +
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + catName + "\'";
+//        Cursor c = db.query(
+//                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+//                projection,
+//                filter,
+//                null,
+//                null,
+//                null,
+//                sortOrder
+//        );
+//        if(c.moveToFirst()) {
+//            do {
+//                TextView nextTransaction = new TextView(this);
+//                String[] date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)).split("[ :/]");
+//                String text = date[1]+"/"+date[2] + " " +
+//                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)) + " " +
+//                        //"(" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY)) + ") " +
+//                        " $" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
+//                nextTransaction.setText(text);
+//                nextTransaction.setTextSize(15);
+//
+//                lo_expenseOverview.addView(nextTransaction);
+//
+//            } while (c.moveToNext());
+//        }
+//        db.close();
     }
 
     public void gotoNewTransaction(View view){
