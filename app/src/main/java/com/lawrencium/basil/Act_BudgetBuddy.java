@@ -218,8 +218,8 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         AsyncTask task = new AsyncTask() {
             @Override
             protected Object doInBackground(Object... params) {
-                String scopes = "oauth2:server:client_id:508206130718-m4jc139av45c9h853padqejam69kpm0q.apps.googleusercontent.com:api_scope:" + Scopes.PLUS_LOGIN;
-
+                String scopes = "oauth2:server:client_id:508206130718-gqprkkft766leju5tuac9vv3tvjol8ec.apps.googleusercontent.com:api_scope:" + Scopes.PLUS_LOGIN;
+                // above used to be 508206130718-m4jc139av45c9h853padqejam69kpm0q.apps.googleusercontent.com:api_scope
                 try {
                     String code = GoogleAuthUtil.getToken(
                             context,                                              // Context context
