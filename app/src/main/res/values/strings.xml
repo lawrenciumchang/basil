@@ -20,5 +20,34 @@
     <string name="title_activity_act__customized_split_page">Act_CustomizedSplitPage</string>
     <string name="title_activity_act__custom_split_people_page">Act_CustomSplitPeoplePage</string>
     <string name="title_activity_act__custom_confirm_page">Act_CustomConfirmPage</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_new_category">New Category</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_budget_manager">BudgetManager</string>
+    <string name="title_activity_budget_overview">BudgetOverviewActivity</string>
+    <string name="title_activity_new_transaction">NewTransactionActivity</string>
+    <string name="title_activity_category_view">CategoryViewActivity</string>
+    <string name="str_btn_addTransaction">Add Transaction</string>
+    <string name="str_btn_overview">Graphical</string>
+    <string name="str_btn_newCategory">New Category</string>
+    <string name="title_activity_new_category">NewCategory</string>
+    <string name="str_btn_categorySubmit">Submit</string>
 
+    <!--<string name="str_monthlyExpense">Monthly Expense</string>-->
+    <string name="str_Overview">Expense Overview</string>
+    <string name="str_progress">50</string>
+    <string name="str_week1">1</string>
+    <string name="str_week2">2</string>
+    <string name="str_week3">3</string>
+    <string name="str_week4">4</string>
+    <string name="txt_week1Content">-------Week one transactions-------</string>
+    <string name="txt_week2Content">-------Week two transactions-------</string>
+    <string name="txt_week3Content">------Week three transactions------</string>
+    <string name="txt_week4Content">-------Week four transactions------</string>
+
+    <!-- Activity and Fragment Titles -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_act__category_view">Act_CategoryView</string>
+    <string name="title_activity_act__transaction_confirm">Act_TransactionConfirm</string>
+    <string name="title_activity_act__overview_settings">Act_OverviewSettings</string>
 </resources>

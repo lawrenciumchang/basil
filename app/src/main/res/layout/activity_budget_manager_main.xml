@@ -1,0 +1,109 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.lawrencium.basil.Act_BudgetManagerMain"
+    android:orientation="vertical"
+    android:background="#ffeeeeee">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:fillViewport="true">
+
+
+        <LinearLayout
+            android:id="@+id/lo_budgetmain"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:weightSum="1">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="@string/str_btn_addTransaction"
+                android:id="@+id/btn_addTransaction"
+                android:layout_gravity="center_horizontal"
+                android:onClick="gotoNewTransaction" />
+
+            <!--<Button-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="150dp"-->
+                <!--android:text="@string/str_btn_overview"-->
+                <!--android:id="@+id/btn_overview"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:onClick="gotoOverview" />-->
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal">
+
+                <Button
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:id="@+id/btn_overview"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="gotoOverview" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent">
+
+
+                    <TextView
+                        android:id="@+id/progress_overview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/str_progress"
+                        android:textColor="#44aa00"
+                        android:textStyle="bold"
+                        android:typeface="sans"
+                        android:textSize="30sp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginLeft="15dp"/>
+
+                    <ProgressBar
+                        android:id="@+id/graph_overview"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="15dp"
+                        android:progress=
+                            "@string/str_progress"
+                        android:progressDrawable="@drawable/progress_bar"/>
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/lo_expenseOverview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/str_Overview"
+                android:layout_marginTop="15dp"
+                android:textSize="25sp"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>

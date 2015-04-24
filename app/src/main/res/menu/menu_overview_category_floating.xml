@@ -1,0 +1,6 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.lawrencium.basil.Frag_GraphButton">
+    <!--<item android:id="@+id/category_delete" android:title="@string/action_delete"
+        android:orderInCategory="100" android:showAsAction="never" />-->
+</menu>
