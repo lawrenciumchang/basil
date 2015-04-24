@@ -73,7 +73,7 @@
                         android:layout_marginLeft="15dp"/>
 
                     <ProgressBar
-                        android:id="@+id/btn_overviewProgress"
+                        android:id="@+id/graph_overview"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
