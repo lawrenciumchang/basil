@@ -14,6 +14,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+
 
 public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnFragmentInteractionListener {
     SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
@@ -23,9 +26,9 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_overview);
-        ActionBar actionBar = getActionBar();
+        /*ActionBar actionBar = getActionBar();
         if(actionBar != null)
-            actionBar.hide();
+            actionBar.hide();*/
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -47,10 +50,17 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         );
         if(c.moveToFirst()) {
             do {
+                BigDecimal bdValue = new BigDecimal(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
+                DecimalFormat df = new DecimalFormat();
+                df.setMinimumFractionDigits(2);
+                df.setMinimumIntegerDigits(1);
+                String valueStr = df.format(bdValue);
+                System.out.println("Fragment creation: value = " + valueStr);
+
                 Frag_GraphButton fragment = Frag_GraphButton.newInstance(
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
+                        valueStr);
                 fragmentTransaction.add(R.id.categoryLayout, fragment, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)));
 
 //                String btnText = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE));
@@ -109,7 +119,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         fragmentTransaction.commit();
     }
 
-    public void gotoNewCategory(View view){
+    public void gotoNewCategory(){
         Intent intent = new Intent(this, Act_NewCategory.class);
         startActivity(intent);
     }
@@ -129,7 +139,8 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_new_category) {
+            gotoNewCategory();
             return true;
         }
 
@@ -142,7 +153,6 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
     }
 
     public void removeCategory(Frag_GraphButton fragment) {
-        System.out.println("\n id from act:  " + fragment.getCatId());
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry._ID+"="+fragment.getCatId(), null);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

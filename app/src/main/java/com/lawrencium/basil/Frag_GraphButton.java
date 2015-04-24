@@ -1,12 +1,15 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Html;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -16,7 +19,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 
 /**
@@ -40,7 +54,8 @@ public class Frag_GraphButton extends Fragment {
     private String cat_total;
 
     private OnFragmentInteractionListener mListener;
-//    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(getActivity());
+    SQLiteDbHelper mDbHelper;
+    ProgressBar catGraph;
 
     /**
      * Use this factory method to create a new instance of
@@ -76,6 +91,7 @@ public class Frag_GraphButton extends Fragment {
             cat_name = getArguments().getString(ARG_NAME);
             cat_total = getArguments().getString(ARG_TOTAL);
         }
+        mDbHelper = new SQLiteDbHelper(getActivity());
     }
 
     @Override
@@ -84,10 +100,11 @@ public class Frag_GraphButton extends Fragment {
         // Inflate the layout for this fragment
         //things a user sees
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
-        Button catName = (Button) v.findViewById(R.id.catButton);
-        catName.setText("[" + cat_id + "] " + cat_name + ": " + cat_total);
-        ProgressBar catGraph = (ProgressBar) v.findViewById(R.id.catGraph);
-        catGraph.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout frame = (RelativeLayout) v.findViewById(R.id.frame);
+        TextView catName = (TextView) v.findViewById(R.id.catTitle);
+        catName.setText(cat_name);
+        catGraph = (ProgressBar) v.findViewById(R.id.catGraph);
+        frame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // here you set what you want to do when user clicks your button,
@@ -97,14 +114,95 @@ public class Frag_GraphButton extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("CAT_NAME", cat_name);
                 bundle.putString("CAT_TOTAL", cat_total);
+                bundle.putInt("GRAPH_MAX", catGraph.getMax());
+                bundle.putInt("GRAPH_PROGRESS", catGraph.getProgress());
+                bundle.putInt("GRAPH_SECONDARY", catGraph.getSecondaryProgress());
                 intent.putExtras(bundle);
                 startActivity(intent);
 
             }
         });
-        registerForContextMenu(catName);
+        registerForContextMenu(frame);
 
         return v;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Date tempDate = new Date();
+        Calendar calendar = Calendar.getInstance();
+        int daysThisMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        //System.out.println("Days this month: " + daysThisMonth);
+        int quarter = Budget.calculateWeek(calendar.get(Calendar.DAY_OF_MONTH), daysThisMonth);
+
+        BigDecimal[] totals = new BigDecimal[5];
+        Arrays.fill(totals, BigDecimal.ZERO);
+        BigDecimal rollover = new BigDecimal(BigInteger.ZERO);
+        String[] bounds = Budget.calculateBounds(tempDate);
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        for(int i=0; i<4; i++) {
+            String[] projection = {
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
+            };
+            String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
+            String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + bounds[i] + "\' AND " +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " < \'" + bounds[i+1] + "\' AND " +
+                    FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" +
+                    cat_name + "\'";
+            Cursor c = db.query(
+                    FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                    projection,
+                    filter,
+                    null,
+                    null,
+                    null,
+                    sortOrder
+            );
+            if (c.moveToFirst()) {
+                do {
+                    BigDecimal transactionValue = new BigDecimal(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
+                    totals[i] = totals[i].add(transactionValue);
+                } while (c.moveToNext());
+            }
+        }
+        db.close();
+
+        for(int i=0; i<4; i++) {
+            totals[4] = totals[4].add(totals[i]);
+            System.out.println(totals[i]);
+        }
+
+        BigDecimal categoryBudget = new BigDecimal(cat_total);
+        categoryBudget.setScale(2);
+        BigDecimal quarterBudget = categoryBudget.divide(new BigDecimal("4"), categoryBudget.scale(), BigDecimal.ROUND_HALF_DOWN);
+        //System.out.println(categoryBudget+"/4 = "+quarterBudget);
+
+        for(int i=0; i<quarter; i++) {
+            BigDecimal diff = quarterBudget.subtract(totals[i]);
+            rollover = rollover.add(diff);
+        }
+        //System.out.println("Rollover: $" + rollover);
+        catGraph.setMax(quarterBudget.intValue() /*+ rollover.intValue()*/);
+        catGraph.setProgress(totals[quarter].intValue());
+        catGraph.setSecondaryProgress(totals[4].divide(new BigDecimal("4")).intValue());
+        if(totals[4].intValue() > categoryBudget.intValue()) {
+            catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_maxed));
+        }
+        else if(totals[quarter].compareTo(quarterBudget) == 1) {
+            catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_warning));
+        }
+
+        TextView budget = (TextView) getView().findViewById(R.id.textBudget);
+        switch(rollover.compareTo(BigDecimal.ZERO)) {
+            case -1: budget.setText(Html.fromHtml("$"+quarterBudget+"<font color=#D81500> +$"+rollover+"</font>")); break;
+            case 0: budget.setText("$"+quarterBudget); break;
+            case 1: budget.setText(Html.fromHtml("$"+quarterBudget+"<font color=#44AA00> +$"+rollover+"</font>"));
+        }
+        System.out.println("Quarter Budget: $"+quarterBudget);
+        System.out.println("Quarter Total:  $"+totals[quarter]);
+        System.out.println("Monthly Total:  $"+totals[4]);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -183,8 +281,20 @@ public class Frag_GraphButton extends Fragment {
         return cat_id;
     }
     public void deleteCategory() {
+        SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, "Uncategorized");
+        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + cat_name + "\'";
+
+        int numUpdated = db.update(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                values, filter, null);
+
+        Context context = getActivity().getApplicationContext();
+        CharSequence text = numUpdated + " transactions uncategorized";
+        Toast toast = Toast.makeText(context, text, Toast.LENGTH_LONG);
+        toast.show();
+
         Act_BudgetOverview budgetOverviewActivity = (Act_BudgetOverview) getActivity();
-        System.out.println("\n id from frag: " + cat_id);
         budgetOverviewActivity.removeCategory(this);
     }
 }

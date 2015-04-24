@@ -11,8 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,17 +36,26 @@ public class Act_CategoryView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_view);
 
-        TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
-        progress_overview.setText(getString(R.string.str_progress) +"%");
-
-        ActionBar actionBar = getActionBar();
-        if(actionBar != null)
-            actionBar.hide();
-
         Bundle bundle = getIntent().getExtras();
         String catName = bundle.getString("CAT_NAME");
         String catTotal = bundle.getString("CAT_TOTAL");
+        int graphMax = bundle.getInt("GRAPH_MAX");
+        int graphProgress = bundle.getInt("GRAPH_PROGRESS");
+        int graphSecondary = bundle.getInt("GRAPH_SECONDARY");
 
+        TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
+        progress_overview.setText(graphSecondary*100/graphMax +"%");
+
+        ProgressBar catGraph = (ProgressBar) findViewById(R.id.catProgessBar);
+        catGraph.setMax(graphMax);
+        catGraph.setProgress(graphProgress);
+        catGraph.setSecondaryProgress(graphSecondary);
+        if(graphSecondary >= graphMax) {
+            catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_maxed));
+        }
+        else if(graphProgress >= graphMax) {
+            catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_warning));
+        }
 
         Calendar calendar = Calendar.getInstance();
         Date tempDate = new Date();
@@ -78,13 +90,12 @@ public class Act_CategoryView extends Activity {
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
-                FeedReaderContract.FeedEntry._ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
         };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE;
         String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + dateLastMonth + "\' AND " +
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + catName + "\'";
         Cursor c = db.query(
@@ -98,26 +109,47 @@ public class Act_CategoryView extends Activity {
         );
         if(c.moveToFirst()) {
             do {
-                TextView nextTransaction = new TextView(this);
+                TextView nextTransaction;
                 String[] date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)).split("[ :/]");
-                String text = date[1]+"/"+date[2] + " " +
+                /*String text = date[1]+"/"+date[2] + " " +
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)) + " " +
-                        //"(" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY)) + ") " +
                          " $" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 nextTransaction.setText(text);
-                nextTransaction.setTextSize(15);
+                nextTransaction.setTextSize(15);*/
+                nextTransaction = getTransactionTextView(
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)),
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)),
+                        null);
 
-                switch(calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {
-                    case 1: lo_week1.addView(nextTransaction); break;
-                    case 2: lo_week2.addView(nextTransaction); break;
-                    case 3: lo_week3.addView(nextTransaction); break;
-                    case 4: lo_week4.addView(nextTransaction); break;
+                switch(Budget.calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {
+                    case 0: lo_week1.addView(nextTransaction); break;
+                    case 1: lo_week2.addView(nextTransaction); break;
+                    case 2: lo_week3.addView(nextTransaction); break;
+                    case 3: lo_week4.addView(nextTransaction); break;
                 }
             } while (c.moveToNext());
         }
         db.close();
     }
 
+    private TextView getTransactionTextView(String title, String value, String date, String category) {
+        TextView nextTransaction = new TextView(this);
+
+        BigDecimal bdValue = new BigDecimal(value);
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMinimumIntegerDigits(1);
+        String valueStr = df.format(bdValue);
+
+        String[] splitDate = date.split("[ :/]");
+        String text = splitDate[1]+"/"+splitDate[2] + " " +
+                title + " " +
+                " $" + valueStr;
+        nextTransaction.setText(text);
+        nextTransaction.setTextSize(15);
+        return nextTransaction;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -166,82 +198,5 @@ public class Act_CategoryView extends Activity {
 
 
         }
-
-//        switch(v.getId()){
-//            case R.id.week1:
-//                if(txt_week1.isShown()){
-//                    Fx.slide_up(this, txt_week1);
-//                    txt_week1.setVisibility(View.GONE);
-//                }
-//                else{
-//                    txt_week1.setVisibility(View.VISIBLE);
-//                    Fx.slide_down(this, txt_week1);
-//                }
-//                break;
-//            case R.id.week2:
-//                if(txt_week2.isShown()){
-//                    Fx.slide_up(this, txt_week2);
-//                    txt_week2.setVisibility(View.GONE);
-//                }
-//                else{
-//                    txt_week2.setVisibility(View.VISIBLE);
-//                    Fx.slide_down(this, txt_week2);
-//                }
-//                break;
-//            case R.id.week3:
-//                if(txt_week3.isShown()){
-//                    Fx.slide_up(this, txt_week3);
-//                    txt_week3.setVisibility(View.GONE);
-//                }
-//                else{
-//                    txt_week3.setVisibility(View.VISIBLE);
-//                    Fx.slide_down(this, txt_week3);
-//                }
-//                break;
-//            case R.id.week4:
-//                if(txt_week4.isShown()){
-//                    Fx.slide_up(this, txt_week4);
-//                    txt_week4.setVisibility(View.GONE);
-//                }
-//                else{
-//                    txt_week4.setVisibility(View.VISIBLE);
-//                    Fx.slide_down(this, txt_week4);
-//                }
-//
-//
-//        }
-
-
     }
-
-    /**
-     * calculateWeek - calculates which week the given date is in
-     * @param day
-     * @param daysMax
-     * @return
-     * @throws java.lang.IllegalArgumentException If the date or number of days in the month is invalid
-     */
-    private int calculateWeek(int day, int daysMax) {
-        final int[] feb = {7, 14, 21, 28};
-        final int[] leapFeb = {8, 15, 26, 29};
-        final int[] small = {8, 16, 23, 30};
-        final int[] big = {8, 16, 24, 31};
-        int[] weekRange = big;
-
-        if(day > daysMax)
-            throw new IllegalArgumentException("The date ["+day+"] cannot be greater than the number of days in the month");
-        switch(daysMax) {
-            case 28: weekRange = feb; break;
-            case 29: weekRange = leapFeb; break;
-            case 30: weekRange = small; break;
-            case 31: weekRange = big; break;
-            default: throw new IllegalArgumentException(daysMax + " is not a valid number of days in a month");
-        }
-        for(int i=0; i<4; i++) {
-            if(day <= weekRange[i])
-                return i+1;
-        }
-        return 0;
-    }
-
 }
