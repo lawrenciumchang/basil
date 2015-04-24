@@ -114,6 +114,9 @@ public class Frag_GraphButton extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putString("CAT_NAME", cat_name);
                 bundle.putString("CAT_TOTAL", cat_total);
+                bundle.putInt("GRAPH_MAX", catGraph.getMax());
+                bundle.putInt("GRAPH_PROGRESS", catGraph.getProgress());
+                bundle.putInt("GRAPH_SECONDARY", catGraph.getSecondaryProgress());
                 intent.putExtras(bundle);
                 startActivity(intent);
 
@@ -180,11 +183,14 @@ public class Frag_GraphButton extends Fragment {
             rollover = rollover.add(diff);
         }
         //System.out.println("Rollover: $" + rollover);
-        catGraph.setMax(categoryBudget.intValue() + rollover.intValue());
+        catGraph.setMax(quarterBudget.intValue() /*+ rollover.intValue()*/);
         catGraph.setProgress(totals[quarter].intValue());
-        catGraph.setSecondaryProgress(totals[4].intValue());
+        catGraph.setSecondaryProgress(totals[4].divide(new BigDecimal("4")).intValue());
         if(totals[4].intValue() > categoryBudget.intValue()) {
             catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_maxed));
+        }
+        else if(totals[quarter].compareTo(quarterBudget) == 1) {
+            catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_warning));
         }
 
         TextView budget = (TextView) getView().findViewById(R.id.textBudget);

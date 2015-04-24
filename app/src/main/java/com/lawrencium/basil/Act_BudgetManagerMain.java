@@ -9,9 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -27,18 +29,29 @@ public class Act_BudgetManagerMain extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_manager_main);
 
-        TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
-        progress_overview.setText(getString(R.string.str_progress) +"%");
+        TextView textProgress = (TextView) findViewById(R.id.progress_overview);
+        ProgressBar graphProgress = (ProgressBar) findViewById(R.id.graph_overview);
 
+        // Save the dates for the first day of this month and two months ago
         Calendar calendar = Calendar.getInstance();
-        Date tempDate = new Date();
-        calendar.setTime(tempDate);
-        calendar.add(Calendar.MONTH, -2);
-        tempDate = calendar.getTime();
+        Date today = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
-        String dateLastMonth = format.format(tempDate);
+        calendar.setTime(today);     // Resetting time of day
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        today = calendar.getTime();
+        calendar.set(Calendar.DAY_OF_MONTH, 1); // First day of this month
+        String dayOneThisMonth = format.format(calendar.getTime());
+        calendar.setTime(today);     // Two months ago
+        calendar.add(Calendar.MONTH, -1);
+        String twoMonthsAgo = format.format(calendar.getTime());
+
         LinearLayout ll = (LinearLayout) findViewById(R.id.lo_budgetmain);
 
+        BigDecimal total = new BigDecimal(BigInteger.ZERO);
+
+        // Get transactions from the last 60 days
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
@@ -47,7 +60,7 @@ public class Act_BudgetManagerMain extends Activity {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
         };
         String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
-        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + dateLastMonth + "\'";
+        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + twoMonthsAgo + "\'";
         Cursor c = db.query(
                 FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
                 projection,
@@ -59,15 +72,51 @@ public class Act_BudgetManagerMain extends Activity {
         );
         if(c.moveToFirst()) {
             do {
+                String value = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
+                String date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
                 TextView nextTransaction = getTransactionTextView(
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)),
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)),
+                        value,
+                        date,
                         null);
                 ll.addView(nextTransaction);
+                if(date.compareTo(dayOneThisMonth) > 0) {
+                    BigDecimal transactionValue = new BigDecimal(value);
+                    total = total.add(transactionValue);
+                }
             } while (c.moveToNext());
         }
+        c.close();
+        // Get sum of category values
+        String[] catProjection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
+        };
+        c = db.rawQuery("SELECT SUM("+ FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE +
+                ") AS myTotal FROM " + FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, null);
+        String catSum;
+        if(c.moveToFirst()) {
+            catSum = c.getString(c.getColumnIndex("myTotal"));
+            if(catSum == null)
+                catSum = "0.00";
+        }
+        else
+            catSum = "0";
+        System.out.println("myTotal = "+catSum);
         db.close();
+
+        BigDecimal totalBudget = new BigDecimal(catSum);
+        BigDecimal percentProgress = total.multiply(new BigDecimal(100));
+        try {
+            percentProgress = percentProgress.divide(totalBudget, BigDecimal.ROUND_HALF_DOWN);
+        } catch(ArithmeticException e) {
+            if(e.getMessage() == "Division by zero"){
+                percentProgress = new BigDecimal(BigInteger.ZERO);
+            }
+        }
+
+        graphProgress.setProgress(percentProgress.intValue());
+        textProgress.setText(percentProgress + "%");
+
     }
 
     private TextView getTransactionTextView(String title, String value, String date, String category) {

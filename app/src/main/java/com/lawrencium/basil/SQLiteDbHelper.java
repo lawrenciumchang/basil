@@ -10,7 +10,7 @@ import com.lawrencium.basil.FeedReaderContract.FeedEntry;
  */
 public class SQLiteDbHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
-    private static final String CURRENCY_TYPE = " DECIMAL(10,2)";
+    private static final String CURRENCY_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_CATEGORIES =
             "CREATE TABLE " + FeedEntry.TABLE_NAME_CATEGORIES + " (" +

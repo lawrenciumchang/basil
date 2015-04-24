@@ -11,8 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,13 +36,26 @@ public class Act_CategoryView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_view);
 
-        TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
-        progress_overview.setText(getString(R.string.str_progress) +"%");
-
         Bundle bundle = getIntent().getExtras();
         String catName = bundle.getString("CAT_NAME");
         String catTotal = bundle.getString("CAT_TOTAL");
+        int graphMax = bundle.getInt("GRAPH_MAX");
+        int graphProgress = bundle.getInt("GRAPH_PROGRESS");
+        int graphSecondary = bundle.getInt("GRAPH_SECONDARY");
 
+        TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
+        progress_overview.setText(graphSecondary*100/graphMax +"%");
+
+        ProgressBar catGraph = (ProgressBar) findViewById(R.id.catProgessBar);
+        catGraph.setMax(graphMax);
+        catGraph.setProgress(graphProgress);
+        catGraph.setSecondaryProgress(graphSecondary);
+        if(graphSecondary >= graphMax) {
+            catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_maxed));
+        }
+        else if(graphProgress >= graphMax) {
+            catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_warning));
+        }
 
         Calendar calendar = Calendar.getInstance();
         Date tempDate = new Date();
@@ -93,13 +109,18 @@ public class Act_CategoryView extends Activity {
         );
         if(c.moveToFirst()) {
             do {
-                TextView nextTransaction = new TextView(this);
+                TextView nextTransaction;
                 String[] date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)).split("[ :/]");
-                String text = date[1]+"/"+date[2] + " " +
+                /*String text = date[1]+"/"+date[2] + " " +
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)) + " " +
                          " $" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 nextTransaction.setText(text);
-                nextTransaction.setTextSize(15);
+                nextTransaction.setTextSize(15);*/
+                nextTransaction = getTransactionTextView(
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)),
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)),
+                        null);
 
                 switch(Budget.calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {
                     case 0: lo_week1.addView(nextTransaction); break;
@@ -112,6 +133,23 @@ public class Act_CategoryView extends Activity {
         db.close();
     }
 
+    private TextView getTransactionTextView(String title, String value, String date, String category) {
+        TextView nextTransaction = new TextView(this);
+
+        BigDecimal bdValue = new BigDecimal(value);
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMinimumIntegerDigits(1);
+        String valueStr = df.format(bdValue);
+
+        String[] splitDate = date.split("[ :/]");
+        String text = splitDate[1]+"/"+splitDate[2] + " " +
+                title + " " +
+                " $" + valueStr;
+        nextTransaction.setText(text);
+        nextTransaction.setTextSize(15);
+        return nextTransaction;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -160,54 +198,5 @@ public class Act_CategoryView extends Activity {
 
 
         }
-
-//        switch(v.getId()){
-//            case R.id.week1:
-//                if(txt_week1.isShown()){
-//                    Fx.slide_up(this, txt_week1);
-//                    txt_week1.setVisibility(View.GONE);
-//                }
-//                else{
-//                    txt_week1.setVisibility(View.VISIBLE);
-//                    Fx.slide_down(this, txt_week1);
-//                }
-//                break;
-//            case R.id.week2:
-//                if(txt_week2.isShown()){
-//                    Fx.slide_up(this, txt_week2);
-//                    txt_week2.setVisibility(View.GONE);
-//                }
-//                else{
-//                    txt_week2.setVisibility(View.VISIBLE);
-//                    Fx.slide_down(this, txt_week2);
-//                }
-//                break;
-//            case R.id.week3:
-//                if(txt_week3.isShown()){
-//                    Fx.slide_up(this, txt_week3);
-//                    txt_week3.setVisibility(View.GONE);
-//                }
-//                else{
-//                    txt_week3.setVisibility(View.VISIBLE);
-//                    Fx.slide_down(this, txt_week3);
-//                }
-//                break;
-//            case R.id.week4:
-//                if(txt_week4.isShown()){
-//                    Fx.slide_up(this, txt_week4);
-//                    txt_week4.setVisibility(View.GONE);
-//                }
-//                else{
-//                    txt_week4.setVisibility(View.VISIBLE);
-//                    Fx.slide_down(this, txt_week4);
-//                }
-//
-//
-//        }
-
-
     }
-
-
-
 }

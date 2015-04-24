@@ -60,7 +60,7 @@
                     android:textSize="30sp"/>
 
                 <ProgressBar
-                    android:id="@+id/btn_overview"
+                    android:id="@+id/graph_overview"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
