@@ -76,15 +76,18 @@ public class Budget {
 
         c.setTime(d);
         c.set(Calendar.DAY_OF_MONTH, 1);
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.SECOND, 0);
+        c.add(Calendar.DAY_OF_MONTH, -1);
+        c.set(Calendar.HOUR_OF_DAY, 23);
+        c.set(Calendar.MINUTE, 59);
+        c.set(Calendar.SECOND, 59);
         d = c.getTime();
         bounds[0] = format.format(d);
+        System.out.println(bounds[0]);
         for(int i=0; i<4; i++) {
             c.add(Calendar.DAY_OF_MONTH, weekRange[i]);
             d = c.getTime();
             bounds[i+1] = format.format(d);
+            System.out.println(bounds[i+1]);
         }
 
         return bounds;

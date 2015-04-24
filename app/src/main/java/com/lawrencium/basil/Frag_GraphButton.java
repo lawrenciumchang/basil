@@ -171,6 +171,7 @@ public class Frag_GraphButton extends Fragment {
 
         for(int i=0; i<4; i++) {
             totals[4] = totals[4].add(totals[i]);
+            System.out.println(totals[i]);
         }
 
         BigDecimal categoryBudget = new BigDecimal(cat_total);
@@ -199,7 +200,9 @@ public class Frag_GraphButton extends Fragment {
             case 0: budget.setText("$"+quarterBudget); break;
             case 1: budget.setText(Html.fromHtml("$"+quarterBudget+"<font color=#44AA00> +$"+rollover+"</font>"));
         }
-
+        System.out.println("Quarter Budget: $"+quarterBudget);
+        System.out.println("Quarter Total:  $"+totals[quarter]);
+        System.out.println("Monthly Total:  $"+totals[4]);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
