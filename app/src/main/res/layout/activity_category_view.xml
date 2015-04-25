@@ -34,10 +34,8 @@
             android:layout_marginLeft="10dp"
             android:progress="@string/str_progress"
             android:progressDrawable="@drawable/progress_bar"
-            android:clickable="true"
             android:layout_below="@id/monthlyExpense"
-            android:layout_toRightOf="@id/progress_overview"
-            android:onClick="gotoOverview"/>
+            android:layout_toRightOf="@id/progress_overview"/>
     </RelativeLayout>
 
     <LinearLayout
