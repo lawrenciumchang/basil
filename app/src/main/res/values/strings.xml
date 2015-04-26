@@ -27,10 +27,10 @@
     <string name="str_week2">2</string>
     <string name="str_week3">3</string>
     <string name="str_week4">4</string>
-    <string name="txt_week1Content">-------Week one transactions-------</string>
-    <string name="txt_week2Content">-------Week two transactions-------</string>
-    <string name="txt_week3Content">------Week three transactions------</string>
-    <string name="txt_week4Content">-------Week four transactions------</string>
+    <string name="txt_week1Content"><b>-------First quarter transactions-------</b></string>
+    <string name="txt_week2Content"><b>-------Second quarter transactions-------</b></string>
+    <string name="txt_week3Content"><b>-------Third quarter transactions------</b></string>
+    <string name="txt_week4Content"><b>-------Fourth quarter transactions------</b></string>
 
     <!-- Activity and Fragment Titles -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
