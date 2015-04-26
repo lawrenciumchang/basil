@@ -13,9 +13,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.lawrencium.basil.james.backend.messaging.Messaging;
+
+import java.io.IOException;
+
 
 public class Act_PayPage extends Activity {
 
+    private static Messaging msg = null;
     String title;
     String category;
     String amount;
@@ -134,7 +141,7 @@ public class Act_PayPage extends Activity {
         amount = Double.toString(tempAmount);
         //System.out.println("Temp Amount: "+tempAmount);
 
-        IouRequestTab.getInstance().createTab(userName, user, tempAmount, category, title);
+        IouRequestTab.getInstance().createTab(user, userName, tempAmount, category, title);
         temp = IouRequestTab.getInstance().getCreatedTab().getTabId();
         tabId = Integer.toString(temp);
         date = IouRequestTab.getInstance().getCreatedTab().getDate();
@@ -146,6 +153,10 @@ public class Act_PayPage extends Activity {
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, category);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
+
+        new GcmSendAsyncTask(this, userName).execute();
+
+
         long newRowId = db.insert(
                 FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,

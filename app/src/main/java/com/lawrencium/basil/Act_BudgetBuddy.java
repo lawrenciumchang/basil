@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +32,8 @@ import java.io.IOException;
 public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConnectionFailedListener , GoogleApiClient.ConnectionCallbacks, View.OnClickListener, ResultCallback<People.LoadPeopleResult> {
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
+//    SharedPreferences pref = getApplicationContext().getSharedPreferences("RegInfo", MODE_PRIVATE);
+//    SharedPreferences.Editor editor = pref.edit();
     //GOOGLE PLUS----
     private static final String TAG = "SignInTestActivity";
 
@@ -45,6 +48,8 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
      */
     private boolean mIntentInProgress;
 
+    private static boolean isConnected;
+
     /**
      * True if the sign-in button was clicked.  When true, we know to resolve all
      * issues preventing sign-in without waiting.
@@ -52,7 +57,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
     private boolean mSignInClicked;
     //GOOGLE PLUS----
 
-    String userName;
+    private static String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,37 +72,27 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
 
-        findViewById(R.id.signIn).setOnClickListener(this);
-        findViewById(R.id.signIn).setVisibility(View.VISIBLE);
-        findViewById(R.id.signOut).setOnClickListener(this);
-        findViewById(R.id.signOut).setVisibility(View.VISIBLE);
+        System.out.println("Current User: " + userName);
+        if(userName == null) {
+            findViewById(R.id.signIn).setOnClickListener(this);
+//          findViewById(R.id.signIn).setVisibility(View.VISIBLE);
+            findViewById(R.id.signOut).setOnClickListener(this);
+            findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
+        }
+        else{ //userName != null
+            findViewById(R.id.signIn).setOnClickListener(this);
+            findViewById(R.id.signIn).setVisibility(View.INVISIBLE);
+            findViewById(R.id.signOut).setOnClickListener(this);
+            findViewById(R.id.signOut).setVisibility(View.VISIBLE);
+
+        }
         //GOOGLE PLUS----
 
-//        Intent intent = getIntent();
 
-//        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
 
-        System.out.println("Current User: " + userName);
 
-//        //logged out
-//        if(userName == null){
-//            Button signOut = (Button)findViewById(R.id.signOut);
-//            signOut.setVisibility(View.GONE);
-//            findViewById(R.id.signIn).setVisibility(View.VISIBLE);
-//
-//            TextView loggedInAs = (TextView)findViewById(R.id.loggedInAs);
-//            loggedInAs.setVisibility(View.GONE);
-//        }
-//
-//        //logged in
-//        else if(userName != null){
-//            findViewById(R.id.signIn).setVisibility(View.GONE);
-//            Button signOut = (Button)findViewById(R.id.signOut);
-//            signOut.setVisibility(View.VISIBLE);
-//
-//            TextView loggedInAs = (TextView)findViewById(R.id.loggedInAs);
-//            loggedInAs.setText("Logged in as " + userName);
-//        }
+
+
     }
 
 
@@ -129,27 +124,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         //leave empty
     }
 
-//    public void logIn(View view){
-////        Intent intent = new Intent(this, login.class);
-////        startActivity(intent);
-//    }
 
-    //sign in for String userName
-//    public void signIn(View view){
-//        Intent intent = new Intent(this, Act_SignInPage.class);
-//        intent.putExtra(PASS_CURRENT_USER, userName);
-//        startActivity(intent);
-//    }
-
-    //sign out for String userName
-//    public void signOut(View view){
-//        userName = null;
-//        Intent i;
-//        i = new Intent(this, Act_BudgetBuddy.class);
-//        i.putExtra(PASS_CURRENT_USER, userName);
-//        startActivityForResult(i, 0);
-//        Toast.makeText(getApplicationContext(), "You have been successfully logged out.", Toast.LENGTH_SHORT).show();
-//    }
 
     public void budgetView(View view){
         if(userName == null){
@@ -181,11 +156,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         }
     }
 
-    //google sign in activity page
-//    public void googleSignIn(View v){
-//        Intent intent = new Intent(this, Act_LoginPage.class);
-//        startActivity(intent);
-//    }
 
 
 
@@ -193,7 +163,10 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
     protected void onStart() {
 //        Toast.makeText(this, "START!", Toast.LENGTH_SHORT).show();
         super.onStart();
-        mGoogleApiClient.connect();
+        if (!mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.connect();
+        }
+
     }
 
     protected void onStop() {
@@ -210,15 +183,16 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         // We've resolved any connection errors.  mGoogleApiClient can be used to
         // access Google APIs on behalf of the user.
         mSignInClicked = false;
-//        Toast.makeText(this, "User is connected!", Toast.LENGTH_SHORT).show();
-//        Bundle appActivities = new Bundle();
-//        appActivities.putString(GoogleAuthUtil.KEY_REQUEST_VISIBLE_ACTIVITIES,
-//                "<APP-ACTIVITY1> <APP-ACTIVITY2>");
+
+        // Hide the sign in button, show the sign out buttons.
+        findViewById(R.id.signIn).setVisibility(View.INVISIBLE);
+        findViewById(R.id.signOut).setVisibility(View.VISIBLE);
+
         final Context context = this.getApplicationContext();
         AsyncTask task = new AsyncTask() {
             @Override
             protected Object doInBackground(Object... params) {
-                String scopes = "oauth2:server:client_id:508206130718-m4jc139av45c9h853padqejam69kpm0q.apps.googleusercontent.com:api_scope:" + Scopes.PLUS_LOGIN;
+                String scopes = "oauth2:server:client_id:508206130718-m4jc139av45c9h853padqejam69kpm0q.apps.googleusercontent.com:api_scope:" + Scopes.PLUS_LOGIN+" email";
 
                 try {
                     String code = GoogleAuthUtil.getToken(
@@ -274,21 +248,29 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
         //GET USERNAME
         if (Plus.PeopleApi.getCurrentPerson(mGoogleApiClient) != null) {
-            Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
-            userName = currentPerson.getDisplayName();
+            if(userName == null) {
+                Person currentPerson = Plus.PeopleApi.getCurrentPerson(mGoogleApiClient);
+                userName = currentPerson.getDisplayName();
+                String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
+
 //            String personPhoto = currentPerson.getImage();
 //            String personGooglePlusProfile = currentPerson.getUrl();
-//            Toast.makeText(this, "User is: " + userName, Toast.LENGTH_SHORT).show();
-        }
-        Plus.PeopleApi.loadVisible(mGoogleApiClient, null)
-                .setResultCallback(this);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Welcome, " + userName + "!");
-        builder.setCancelable(true);
-        builder.setPositiveButton("Continue", null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
+
+                new GcmRegistrationAsyncTask(this, userName, email).execute();
+            }
+        }
+
+        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(this);
+        if(!isConnected) {
+            isConnected = true;
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Welcome, " + userName + "!");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Continue", null);
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
     }
 
     @Override
@@ -302,20 +284,26 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             mSignInClicked = true;
             mGoogleApiClient.connect();
         }
-        if (v.getId() == R.id.signOut) {
+        else if (v.getId() == R.id.signOut && !mGoogleApiClient.isConnecting()) {
             if (mGoogleApiClient.isConnected()) {
+                // Hide the sign out buttons, show the sign in button.
+                findViewById(R.id.signIn).setVisibility(View.VISIBLE);
+                findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
                 Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
                 mGoogleApiClient.disconnect();
                 mGoogleApiClient.connect();
 //                Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
                 userName = null;
 
+
+                isConnected = false;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("You have been successfully signed out.");
                 builder.setCancelable(true);
                 builder.setPositiveButton("Okay", null);
                 AlertDialog dialog = builder.create();
                 dialog.show();
+
             }
             else {
                 Toast.makeText(this, "User was not logged in!", Toast.LENGTH_SHORT).show();
@@ -323,16 +311,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         }
     }
 
-//    public void logOutClick(View v) {
-//        if (v.getId() == R.id.sign_out_button) {
-//            if (mGoogleApiClient.isConnected()) {
-//                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
-//                mGoogleApiClient.disconnect();
-//                mGoogleApiClient.connect();
-//                Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
+
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
@@ -352,18 +331,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 }
             }
         }
-//        if (!mIntentInProgress && connectionResult.hasResolution()) {
-//            try {
-//                mIntentInProgress = true;
-//                startIntentSenderForResult(connectionResult.getResolution().getIntentSender(),
-//                        RC_SIGN_IN, null, 0, 0, 0);
-//            } catch (IntentSender.SendIntentException e) {
-//                // The intent was canceled before it was sent.  Return to the default
-//                // state and attempt to connect to get an updated ConnectionResult.
-//                mIntentInProgress = false;
-//                mGoogleApiClient.connect();
-//            }
-//        }
+
     }
 
     protected void onActivityResult(int requestCode, int responseCode, Intent intent) {
@@ -378,13 +346,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 mGoogleApiClient.reconnect();
             }
         }
-//        if (requestCode == RC_SIGN_IN) {
-//            mIntentInProgress = false;
-//
-//            if (!mGoogleApiClient.isConnecting()) {
-//                mGoogleApiClient.connect();
-//            }
-//        }
+
     }
 
     @Override
