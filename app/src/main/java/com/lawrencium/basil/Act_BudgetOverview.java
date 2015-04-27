@@ -117,8 +117,8 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
 //        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
+
+        //noinspection SimplifiableIfStatement
 //        if (id == R.id.action_new_category) {
 //            gotoNewCategory();
 //            return true;
@@ -135,6 +135,9 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
 //                startActivityForResult(i, 0);
                 finish();
                 break;
+            case R.id.action_new_category:
+                gotoNewCategory();
+                return true;
             default:
                 break;
         }
