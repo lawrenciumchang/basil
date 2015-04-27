@@ -22,6 +22,7 @@ import java.util.logging.Logger;
 class GcmRegistrationAsyncTask extends AsyncTask<Void, Void, String> {
     private static Registration regService = null;
     private GoogleCloudMessaging gcm;
+    private String registrationID;
     private Context context;
     private String username;
     private String email;
@@ -63,6 +64,8 @@ class GcmRegistrationAsyncTask extends AsyncTask<Void, Void, String> {
             // The request to your server should be authenticated if your app
             // is using accounts.
             regService.register(regId, username, email).execute();
+            registrationID = regId;
+
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -85,4 +88,7 @@ class GcmRegistrationAsyncTask extends AsyncTask<Void, Void, String> {
         this.username = username;
     }
 
+    public String getRegistrationID() {
+        return registrationID;
+    }
 }
