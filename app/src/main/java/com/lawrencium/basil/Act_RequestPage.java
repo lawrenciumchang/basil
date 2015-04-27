@@ -130,7 +130,7 @@ public class Act_RequestPage extends Activity {
 
         System.out.println("Temp Amount: "+tempAmount);
 
-        IouRequestTab.getInstance().createTab(user, userName, tempAmount, category, title);
+        IouRequestTab.getInstance().createTab(userName, user, tempAmount, category, title);
         temp = IouRequestTab.getInstance().getCreatedTab().getTabId();
         tabId = Integer.toString(temp);
         date = IouRequestTab.getInstance().getCreatedTab().getDate();
