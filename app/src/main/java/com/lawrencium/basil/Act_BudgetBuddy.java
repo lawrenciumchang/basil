@@ -22,12 +22,14 @@ import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.lawrencium.basil.james.backend.registration.Registration;
+import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -103,12 +105,15 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             findViewById(R.id.signIn).setVisibility(View.VISIBLE);
             findViewById(R.id.signOut).setOnClickListener(this);
             findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
+            findViewById(R.id.revokeAccess).setOnClickListener(this);
+            findViewById(R.id.revokeAccess).setVisibility(View.INVISIBLE);
         }
         else{ //userName != null
             findViewById(R.id.signIn).setOnClickListener(this);
             findViewById(R.id.signIn).setVisibility(View.INVISIBLE);
             findViewById(R.id.signOut).setOnClickListener(this);
             findViewById(R.id.signOut).setVisibility(View.VISIBLE);
+            findViewById(R.id.revokeAccess).setVisibility(View.VISIBLE);
 
         }
         //GOOGLE PLUS----
@@ -147,7 +152,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
 
     public void budgetView(View view){
-        if(userName == null){
+        if(userName.isEmpty()){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Please log in before managing your finances.");
             builder.setCancelable(true);
@@ -210,6 +215,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         // Hide the sign in button, show the sign out buttons.
         findViewById(R.id.signIn).setVisibility(View.INVISIBLE);
         findViewById(R.id.signOut).setVisibility(View.VISIBLE);
+        findViewById(R.id.revokeAccess).setVisibility(View.VISIBLE);
 
         //final Context gplusContext = this.getApplicationContext();
         AsyncTask task = new AsyncTask() {
@@ -317,6 +323,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 // Hide the sign out buttons, show the sign in button.
                 findViewById(R.id.signIn).setVisibility(View.VISIBLE);
                 findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
+                findViewById(R.id.revokeAccess).setVisibility(View.INVISIBLE);
                 Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
                 mGoogleApiClient.disconnect();
                 mGoogleApiClient.connect();
@@ -339,8 +346,40 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 Toast.makeText(this, "User was not logged in!", Toast.LENGTH_SHORT).show();
             }
         }
-    }
+        else if(v.getId() == R.id.revokeAccess  && !mGoogleApiClient.isConnecting()){
+            if (mGoogleApiClient.isConnected()) {
 
+                Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+                Plus.AccountApi.revokeAccessAndDisconnect(mGoogleApiClient)
+                        .setResultCallback(new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(Status status) {
+                                Log.e(TAG, "User access revoked!");
+
+                                unRegisterInBackground(userName, regID);
+                                userName = "";
+                                storeUserName(context, userName);
+                                findViewById(R.id.signIn).setVisibility(View.VISIBLE);
+                                findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.revokeAccess).setVisibility(View.INVISIBLE);
+                            }
+                        });
+                mGoogleApiClient.connect();
+//                Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
+                isConnected = false;
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("You have been successfully signed out of Basil's server.");
+                builder.setCancelable(true);
+                builder.setPositiveButton("Okay", null);
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+            else {
+                Toast.makeText(this, "User was not logged in!", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    }
 
 
     @Override
@@ -481,7 +520,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 //            if(regService.)
 //            msg = "Device registered, registration ID=" + regId+"/n"+"User Name is "+username;
 
-                    Logger.getLogger("REGISTRATION").log(Level.INFO, "Device registered, registration ID=" + regId+"/n"+"User Name is "+username);
+                    Logger.getLogger("REGISTRATION").log(Level.INFO, "Device registered, registration ID=" + regId+"\n"+"User Name is "+username);
                     // You should send the registration ID to your server over HTTP,
                     // so it can use GCM/HTTP or CCS to send messages to your app.
                     // The request to your server should be authenticated if your app

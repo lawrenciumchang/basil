@@ -94,6 +94,18 @@
         android:layout_marginBottom="15dp"
         android:visibility="gone" />
 
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:text="Revoke Basil Access"
+        android:onClick="onClick"
+        android:id="@+id/revokeAccess"
+        android:singleLine="false"
+        android:gravity="center_vertical|center_horizontal"
+        android:visibility="visible"
+        android:layout_below="@+id/signOut"
+        android:layout_alignParentRight="true" />
+
 </RelativeLayout>
 
 
