@@ -21,14 +21,10 @@ import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
-import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.android.gms.plus.People;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-import com.google.android.gms.plus.model.people.PersonBuffer;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.lawrencium.basil.james.backend.registration.Registration;
@@ -37,7 +33,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConnectionFailedListener , GoogleApiClient.ConnectionCallbacks, View.OnClickListener, ResultCallback<People.LoadPeopleResult> {
+public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConnectionFailedListener , GoogleApiClient.ConnectionCallbacks, View.OnClickListener{
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
 
@@ -77,8 +73,8 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static Registration regService = null;
     private GoogleCloudMessaging gcm;
-    String regid;
-    Context context;
+    private String regID;
+    private Context context;
     //SharedPreferences prefs;
     private static final String SENDER_ID = "508206130718";
     /*Used for device Registration*/
@@ -97,9 +93,9 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 .build();
         context = getApplicationContext();
         gcm = GoogleCloudMessaging.getInstance(this);
-        regid = getRegistrationId(context);
+        regID = getRegistrationId(context);
         userName = getUserName(context);
-        System.out.println("Current RegID: " + regid);
+        System.out.println("Current RegID: " + regID);
 
         System.out.println("Current User: " + userName);
         if(userName.isEmpty()) {
@@ -283,15 +279,13 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 //            String personGooglePlusProfile = currentPerson.getUrl();
 
 
-                if (regid.isEmpty()) {
+                if (regID.isEmpty()) {
 //                    new GcmRegistrationAsyncTask(this, userName, email).execute();
                     registerInBackground(userName, email);
                 }
             }
         }
 
-
-        Plus.PeopleApi.loadVisible(mGoogleApiClient, null).setResultCallback(this);
         if(!isConnected) {
             isConnected = true;
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -323,6 +317,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 mGoogleApiClient.disconnect();
                 mGoogleApiClient.connect();
 //                Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
+                unRegisterInBackground(userName, regID);
                 userName = "";
                 storeUserName(context, userName);
 
@@ -380,23 +375,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
     }
 
-    @Override
-    public void onResult(People.LoadPeopleResult peopleData) {
-        if (peopleData.getStatus().getStatusCode() == CommonStatusCodes.SUCCESS) {
-            PersonBuffer personBuffer = peopleData.getPersonBuffer();
-            try {
-                int count = personBuffer.getCount();
-                for (int i = 0; i < count; i++) {
-                    Log.d(TAG, "Display name: " + personBuffer.get(i).getDisplayName());
-                }
-            } finally {
-                personBuffer.close();
-            }
-        } else {
-            Log.e(TAG, "Error requesting visible circles: " + peopleData.getStatus());
-        }
-    }
-
     private String getRegistrationId(Context context) {
         final SharedPreferences prefs = getGCMPreferences(context);
         String registrationId = prefs.getString(PROPERTY_REG_ID, "");
@@ -428,8 +406,8 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
     private String getUserName(Context context) {
         final SharedPreferences prefs = getGCMPreferences(context);
-        String registrationId = prefs.getString(PROPERTY_USER_NAME, "");
-        if (registrationId.isEmpty()) {
+        String user_name = prefs.getString(PROPERTY_USER_NAME, "");
+        if (user_name.isEmpty()) {
             Log.i(TAG, "userName not found.");
             return "";
         }
@@ -442,7 +420,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             Log.i(TAG, "App version changed.");
             return "";
         }
-        return registrationId;
+        return user_name;
     }
 
     private void storeUserName(Context context, String username) {
@@ -506,6 +484,57 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                     // is using accounts.
                     regService.register(regId, username, email).execute();
                     storeRegistrationId(context, regId);
+
+
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    msg = "Error: " + ex.getMessage();
+                }
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                //        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                Logger.getLogger("REGISTRATION").log(Level.INFO, msg);
+            }
+
+
+        }.execute(null, null, null);
+
+    }
+
+    private void unRegisterInBackground(final String username, final String regid) {
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                if (regService == null) {
+
+
+                    Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                            .setRootUrl("https://eternal-ruler-92119.appspot.com/_ah/api/");
+                    regService = builder.build();
+
+                }
+
+                String msg = "";
+                try {
+
+
+//            if(regService.)
+//            msg = "Device registered, registration ID=" + regId+"/n"+"User Name is "+username;
+
+
+                    // You should send the registration ID to your server over HTTP,
+                    // so it can use GCM/HTTP or CCS to send messages to your app.
+                    // The request to your server should be authenticated if your app
+                    // is using accounts.
+                    regService.unregister(regid).execute();
+                    regID ="";
+                    storeRegistrationId(context, regID);
+                    Logger.getLogger("REGISTRATION").log(Level.INFO, "Device unregistered, registration ID=" + regid+"/n"+"User Name is "+username);
 
 
 
