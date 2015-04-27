@@ -34,7 +34,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
+        android:text="Submit"
         android:id="@+id/button"
         android:layout_below="@+id/inputValue"
         android:layout_alignParentLeft="true"

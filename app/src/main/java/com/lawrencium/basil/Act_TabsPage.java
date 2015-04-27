@@ -19,7 +19,7 @@ public class Act_TabsPage extends Activity {
     String userName;
 
     private ArrayList<Tab> Tabs = new ArrayList<Tab>();
-    TabsDbHelper tabDbHelper = new TabsDbHelper(this);
+    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

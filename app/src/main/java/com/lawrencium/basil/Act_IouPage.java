@@ -2,15 +2,22 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 
 public class Act_IouPage extends Activity {
@@ -20,6 +27,8 @@ public class Act_IouPage extends Activity {
     public final static String PASS_USER = "com.lawrencium.basil.USER";
 
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+
+    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
 
     String title;
     String category;
@@ -51,11 +60,47 @@ public class Act_IouPage extends Activity {
         EditText titleSet = (EditText)findViewById(R.id.editText2);
         titleSet.setText(title);
 
+        // Load categories from Budget side
         Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
-        String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
+        categorySet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+                if(parent.getItemAtPosition(pos).toString().equals("Add New Category")) {
+                    Intent intent = new Intent(parent.getContext(), Act_NewCategory.class);
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        ArrayList<String> items = new ArrayList<String>();
+        items.add("Select Category");
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String[] projection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
+        };
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
+            } while (c.moveToNext());
+        }
+        db.close();
         if(category != null) {
-            for (int i = 0; i < items.length; i++) {
-                if (category.equals(items[i])) {
+            for (int i = 0; i < items.size(); i++) {
+                if (category.equals(items.get(i))) {
                     categorySet.setSelection(i);
                 }
             }
@@ -77,9 +122,80 @@ public class Act_IouPage extends Activity {
 
     }
 
+    protected void onResume(){
+        super.onResume();
+
+        ArrayList<String> items = new ArrayList<String>();
+        createDropdown();
+        Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
+        items.add("Select Category");
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String[] projection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
+        };
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
+            } while (c.moveToNext());
+        }
+        db.close();
+
+        if(category != null) {
+            for (int i = 0; i < items.size(); i++) {
+                if (category.equals(items.get(i))) {
+                    categorySet.setSelection(i);
+                }
+            }
+        }
+
+        Spinner userSet = (Spinner)findViewById(R.id.spinner2);
+        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        if(user != null) {
+            for (int i = 0; i < items2.length; i++) {
+                if (user.equals(items2[i])) {
+                    userSet.setSelection(i);
+                }
+            }
+        }
+
+    }
+
     public void createDropdown(){
         Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
-        String[] items = new String[]{"Select Category", "Restaurants", "Groceries", "Shopping", "Entertainment"};
+        ArrayList<String> items = new ArrayList<String>();
+        items.add("Select Category");
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String[] projection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
+        };
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
+            } while (c.moveToNext());
+        }
+        db.close();
+        items.add("Add New Category");
         //use simple_spinner_item to make the spinner display smaller
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

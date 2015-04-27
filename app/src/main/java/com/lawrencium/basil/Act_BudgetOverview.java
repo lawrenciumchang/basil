@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +27,8 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_overview);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         /*ActionBar actionBar = getActionBar();
         if(actionBar != null)
             actionBar.hide();*/
@@ -50,37 +53,14 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         );
         if(c.moveToFirst()) {
             do {
-                BigDecimal bdValue = new BigDecimal(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
-                DecimalFormat df = new DecimalFormat();
-                df.setMinimumFractionDigits(2);
-                df.setMinimumIntegerDigits(1);
-                String valueStr = df.format(bdValue);
-                System.out.println("Fragment creation: value = " + valueStr);
-
                 Frag_GraphButton fragment = Frag_GraphButton.newInstance(
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
-                        valueStr);
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)));
                 fragmentTransaction.add(R.id.categoryLayout, fragment, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)));
-
-//                String btnText = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE));
-//                Button myButton = new Button(this);
-//                myButton.setText(btnText);
-//                LinearLayout ll = (LinearLayout) findViewById(R.id.categoryLayout);
-//                LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-//
-//                ll.addView(myButton, ll.getChildCount() - 1, lp);
             } while (c.moveToNext());
         }
         fragmentTransaction.commit();
-        /*for(Category c : categories){
-            Button myButton = new Button(this);
-            myButton.setText(c.getName());
-            LinearLayout ll = (LinearLayout)findViewById(R.id.categoryLayout);
-            LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-
-            ll.addView(myButton, ll.getChildCount()-1, lp);
-        }*/
         db.close();
     }
 
@@ -136,15 +116,29 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_new_category) {
+//            gotoNewCategory();
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_new_category) {
-            gotoNewCategory();
-            return true;
+        Intent i;
+
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+//                i = new Intent(this, Act_BudgetManagerMain.class);
+//                startActivityForResult(i, 0);
+                finish();
+                break;
+            default:
+                break;
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @Override

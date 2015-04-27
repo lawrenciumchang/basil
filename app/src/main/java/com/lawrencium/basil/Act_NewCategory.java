@@ -1,6 +1,7 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -51,23 +52,42 @@ public class Act_NewCategory extends Activity {
     }
 
     public void createCategory(View view){
-        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        String newName = inputName.getText().toString().trim();
-        String newBudget = inputBudget.getText().toString().trim();
+        String name = inputName.getText().toString();
+        String value = inputBudget.getText().toString();
 
-        /*Category newCategory = new Category(newName, newBudget);
-        Budget.getInstance().getCategories().add(newCategory);*/
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
-        long newRowId = db.insert(
-                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
-                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                values);
+        if(name.matches("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please enter a title for your request.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
 
-//        Intent intent = new Intent(this, Act_BudgetOverview.class);
-//        startActivity(intent);
-        finish();
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else if(value.matches("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please enter an amount for your request.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else {
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            String newName = inputName.getText().toString().trim();
+            String newBudget = inputBudget.getText().toString().trim();
+
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
+            long newRowId = db.insert(
+                    FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                    values);
+
+            finish();
+        }
     }
 
     public void fillFields(final String name, final String budget) {

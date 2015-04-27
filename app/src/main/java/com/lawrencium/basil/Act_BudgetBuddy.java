@@ -161,7 +161,10 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             dialog.show();
         }
         else{
-            Toast.makeText(getApplicationContext(), "This is Evan and Annie's job!", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "This is Evan and Annie's job!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, Act_BudgetManagerMain.class);
+            intent.putExtra(PASS_CURRENT_USER, userName);
+            startActivity(intent);
         }
     }
 

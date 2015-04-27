@@ -1,6 +1,7 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -30,6 +31,7 @@ public class Act_NewTransaction extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_transaction);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         SQLiteDatabase db = SQLiteDbHelper.getReadableDatabase();
         inputName = (EditText)findViewById(R.id.inputName);
@@ -52,6 +54,7 @@ public class Act_NewTransaction extends Activity {
                 sortOrder
         );
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
+        adapter.add("Select Category");
         if(c.moveToFirst()) {
             do {
                 adapter.add(
@@ -76,43 +79,90 @@ public class Act_NewTransaction extends Activity {
         // Handle action bar item clicks here. The action bar will.
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        Intent i;
+
+        switch (item.getItemId())
+        {
+            case android.R.id.home:
+//                i = new Intent(this, Act_BudgetManagerMain.class);
+//                startActivityForResult(i, 0);
+                finish();
+                break;
+            default:
+                break;
         }
-
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     public void createTransaction(View view) {
-        SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
-        Date tempDate = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
-        String date = dateFormat.format(tempDate);
-        ContentValues values = new ContentValues();
-        String newName = inputName.getText().toString().trim();
-        String newBudget = inputValue.getText().toString().trim();
-        String newCategory = inputCategory.getSelectedItem().toString().trim();
+        String name = inputName.getText().toString();
+        String value = inputValue.getText().toString();
+        String category = inputCategory.getSelectedItem().toString();
 
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, newCategory);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
-        long newRowId = db.insert(
-                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
-                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                values);
+        if(name.matches("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please enter a title for your request.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
 
-        Intent resultIntent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putString("TITLE", newName);
-        bundle.putString("CATEGORY", newCategory);
-        bundle.putString("VALUE", newBudget);
-        bundle.putString("DATE", date);
-        resultIntent.putExtras(bundle);
-        setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else if(category.matches("Select Category")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please select a category for your request.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else if(value.matches("")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please enter an amount for your request.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else {
+            SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
+            Date tempDate = new Date();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
+            String date = dateFormat.format(tempDate);
+            ContentValues values = new ContentValues();
+            String newName = inputName.getText().toString().trim();
+            String newBudget = inputValue.getText().toString().trim();
+            String newCategory = inputCategory.getSelectedItem().toString().trim();
+
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, newCategory);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
+            long newRowId = db.insert(
+                    FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                    values);
+
+            Intent resultIntent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putString("TITLE", newName);
+            bundle.putString("CATEGORY", newCategory);
+            bundle.putString("VALUE", newBudget);
+            bundle.putString("DATE", date);
+            resultIntent.putExtras(bundle);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        }
     }
 }

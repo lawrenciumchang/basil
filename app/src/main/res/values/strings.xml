@@ -23,14 +23,14 @@
     <string name="action_delete">Delete</string>
     <string name="action_new_category">New Category</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_activity_budget_manager">BudgetManager</string>
-    <string name="title_activity_budget_overview">BudgetOverviewActivity</string>
-    <string name="title_activity_new_transaction">NewTransactionActivity</string>
-    <string name="title_activity_category_view">CategoryViewActivity</string>
+    <string name="title_activity_budget_manager">Budget Manager</string>
+    <string name="title_activity_budget_overview">Budget Overview</string>
+    <string name="title_activity_new_transaction">New Transaction</string>
+    <string name="title_activity_category_view">Category View</string>
     <string name="str_btn_addTransaction">Add Transaction</string>
     <string name="str_btn_overview">Graphical</string>
     <string name="str_btn_newCategory">New Category</string>
-    <string name="title_activity_new_category">NewCategory</string>
+    <string name="title_activity_new_category">New Category</string>
     <string name="str_btn_categorySubmit">Submit</string>
 
     <!--<string name="str_monthlyExpense">Monthly Expense</string>-->
@@ -47,7 +47,7 @@
 
     <!-- Activity and Fragment Titles -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_act__category_view">Act_CategoryView</string>
+    <string name="title_activity_act__category_view">Category Details</string>
     <string name="title_activity_act__transaction_confirm">Act_TransactionConfirm</string>
     <string name="title_activity_act__overview_settings">Act_OverviewSettings</string>
 </resources>
