@@ -24,6 +24,10 @@ public class RegistrationRecord {
 
     public RegistrationRecord() {
     }
+    public RegistrationRecord(RegistrationRecord record){
+        if(record != null)
+            this.userName = record.getUserName();
+    }
 
     public String getRegId() {
         return regId;

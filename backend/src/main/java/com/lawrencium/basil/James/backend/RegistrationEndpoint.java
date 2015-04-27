@@ -42,7 +42,7 @@ public class RegistrationEndpoint {
     @ApiMethod(name = "register")
     public void registerDevice(@Named("regId") String regId, @Named("userName") String userName, @Named("emailAddress") String emailAddress) {
         if (findRecord(regId) != null) {
-            log.info("Device " + regId + " already registered, skipping register");
+            log.info("Device " + regId + " already registered for "+userName+", skipping register");
             return;
         }
         RegistrationRecord record = new RegistrationRecord();
@@ -80,8 +80,19 @@ public class RegistrationEndpoint {
         return CollectionResponse.<RegistrationRecord>builder().setItems(records).build();
     }
 
+
     private RegistrationRecord findRecord(String regId) {
         return ofy().load().type(RegistrationRecord.class).filter("regId", regId).first().now();
+    }
+
+    @ApiMethod(name = "isRegistered")
+    public RegistrationRecord isRegistered(@Named("regId") String regId){
+        RegistrationRecord temp = null;
+        temp =  findRecord(regId);
+//            log.info("Device " + regId + " already registered, skipping register");
+        return temp;
+
+
     }
 
 }

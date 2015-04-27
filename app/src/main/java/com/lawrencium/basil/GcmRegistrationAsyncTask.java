@@ -39,20 +39,7 @@ class GcmRegistrationAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... params) {
         if (regService == null) {
-            //Used for local host
-//            Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(),
-//                    new AndroidJsonFactory(), null)
-//                    // Need setRootUrl and setGoogleClientRequestInitializer only for local testing,
-//                    // otherwise they can be skipped
-//                    .setRootUrl("http://10.0.2.2:8080/_ah/api/")
-//                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-//                        @Override
-//                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
-//                                throws IOException {
-//                            abstractGoogleClientRequest.setDisableGZipContent(true);
-//                        }
-//                    });
-            // end of optional local run code
+
 
             Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
                     .setRootUrl("https://eternal-ruler-92119.appspot.com/_ah/api/");
@@ -67,13 +54,14 @@ class GcmRegistrationAsyncTask extends AsyncTask<Void, Void, String> {
                 gcm = GoogleCloudMessaging.getInstance(context);
             }
             String regId = gcm.register(SENDER_ID);
-            msg = "Device registered, registration ID=" + regId+"/n"+"User Name is "+username;
+//            if(regService.)
+//            msg = "Device registered, registration ID=" + regId+"/n"+"User Name is "+username;
 
+            Logger.getLogger("REGISTRATION").log(Level.INFO, "Device registered, registration ID=" + regId+"/n"+"User Name is "+username);
             // You should send the registration ID to your server over HTTP,
             // so it can use GCM/HTTP or CCS to send messages to your app.
             // The request to your server should be authenticated if your app
             // is using accounts.
-//            regService.listDevices()
             regService.register(regId, username, email).execute();
 
         } catch (IOException ex) {
@@ -85,7 +73,7 @@ class GcmRegistrationAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+//        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         Logger.getLogger("REGISTRATION").log(Level.INFO, msg);
     }
 

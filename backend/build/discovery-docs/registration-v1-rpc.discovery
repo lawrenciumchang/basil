@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/QTcMuJMas_SLqC1xBZsSix434kk\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/SJrUsEs_ns8j33VMcj_hcU_ZT4g\"",
  "discoveryVersion": "v1",
  "id": "registration:v1",
  "name": "registration",
@@ -103,6 +103,24 @@
   }
  },
  "methods": {
+  "registration.isRegistered": {
+   "id": "registration.isRegistered",
+   "parameters": {
+    "regId": {
+     "type": "string",
+     "required": true
+    }
+   },
+   "parameterOrder": [
+    "regId"
+   ],
+   "returns": {
+    "$ref": "RegistrationRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
   "registration.listDevices": {
    "id": "registration.listDevices",
    "allowGet": true,
