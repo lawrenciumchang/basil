@@ -40,6 +40,9 @@
         <activity
             android:name=".Act_BudgetManagerMain"
             android:label="@string/title_activity_budget_manager" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Act_BudgetBuddy" />
         </activity>
         <activity
             android:name=".Act_TabsPage"
@@ -128,6 +131,11 @@
             </intent-filter>
         </receiver>
         <service android:name=".GcmIntentService" />
+
+        <service android:name=".AlarmService"
+            android:enabled="true" />
+        <receiver android:name=".AlarmReceiver"/>
+
     </application>
 
 </manifest>
