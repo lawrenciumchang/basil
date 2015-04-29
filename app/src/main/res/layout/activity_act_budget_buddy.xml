@@ -11,16 +11,6 @@
         android:layout_marginTop="20dp"
         android:id="@+id/textView" />
 
-    <!--<com.google.android.gms.common.SignInButton-->
-        <!--android:id="@+id/sign_in_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="25dp"-->
-        <!--android:layout_below="@+id/textView"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:editable="true"-->
-        <!--android:onClick="signIn"/>-->
-
     <Button
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
@@ -52,7 +42,7 @@
     <Button
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:text="Sign out"
+        android:text="Sign Out"
         android:onClick="onClick"
         android:id="@+id/signOut"
         android:singleLine="false"
@@ -61,7 +51,6 @@
         android:layout_below="@+id/signIn"
         android:layout_alignParentRight="true" />
 
-    <!--com.google.android.gms.common.SignInButton-->
     <Button
         android:id="@+id/sign_in_button"
         android:layout_width="wrap_content"

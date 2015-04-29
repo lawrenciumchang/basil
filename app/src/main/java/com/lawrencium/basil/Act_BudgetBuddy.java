@@ -149,8 +149,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         //leave empty
     }
 
-
-
     public void budgetView(View view){
         if(userName.isEmpty()){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -183,8 +181,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             startActivity(intent);
         }
     }
-
-
 
 
     //GOOGLE PLUS---------------------------------------- from this point onwards
@@ -320,6 +316,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         }
         else if (v.getId() == R.id.signOut  && !mGoogleApiClient.isConnecting()) {//
             if (mGoogleApiClient.isConnected()) {
+                Log.e(TAG, "User signed out!");
                 // Hide the sign out buttons, show the sign in button.
                 findViewById(R.id.signIn).setVisibility(View.VISIBLE);
                 findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
@@ -328,9 +325,12 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 mGoogleApiClient.disconnect();
                 mGoogleApiClient.connect();
 //                Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
+//                unRegisterInBackground(userName, regID);
                 unRegisterInBackground(userName, regID);
                 userName = "";
                 storeUserName(context, userName);
+                regID ="";
+                storeRegistrationId(context, regID);
 
 
                 isConnected = false;
@@ -355,16 +355,24 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                             @Override
                             public void onResult(Status status) {
                                 Log.e(TAG, "User access revoked!");
-
+                                mGoogleApiClient.disconnect();
+                                mGoogleApiClient.connect();
                                 unRegisterInBackground(userName, regID);
+
                                 userName = "";
                                 storeUserName(context, userName);
+                                regID ="";
+                                storeRegistrationId(context, regID);
+
                                 findViewById(R.id.signIn).setVisibility(View.VISIBLE);
                                 findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
                                 findViewById(R.id.revokeAccess).setVisibility(View.INVISIBLE);
+
+
                             }
                         });
-                mGoogleApiClient.connect();
+
+
 //                Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
                 isConnected = false;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -494,8 +502,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         }
     }
 
-
-
     private void registerInBackground(final String username, final String email) {
         new AsyncTask<Void, Void, String>() {
 
@@ -527,6 +533,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                     // is using accounts.
                     regService.register(regId, username, email).execute();
                     storeRegistrationId(context, regId);
+                    regID = getRegistrationId(context);
 
 
 
@@ -575,9 +582,9 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                     // The request to your server should be authenticated if your app
                     // is using accounts.
                     regService.unregister(regid).execute();
-                    regID ="";
-                    storeRegistrationId(context, regID);
-                    Logger.getLogger("REGISTRATION").log(Level.INFO, "Device unregistered, registration ID=" + regid+"/n"+"User Name is "+username);
+//                    regID ="";
+//                    storeRegistrationId(context, regID);
+                    Logger.getLogger("REGISTRATION").log(Level.INFO, "Device unregistered, registration ID=" + regid+"\n"+"User Name is "+username);
 
 
 
