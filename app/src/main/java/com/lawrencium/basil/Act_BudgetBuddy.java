@@ -1,7 +1,10 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -10,6 +13,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,13 +37,14 @@ import com.lawrencium.basil.james.backend.registration.Registration;
 import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConnectionFailedListener , GoogleApiClient.ConnectionCallbacks, View.OnClickListener{
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
-
+    int mId = 0;
 
 
     //GOOGLE PLUS----
@@ -117,6 +123,21 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
         }
         //GOOGLE PLUS----
+
+
+        //NOTIFICATIONS----------------
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Intent alarmIntent = new Intent(Act_BudgetBuddy.this, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(Act_BudgetBuddy.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Calendar alarmStartTime = Calendar.getInstance();
+
+        alarmStartTime.set(Calendar.HOUR_OF_DAY, 21);
+        alarmStartTime.set(Calendar.MINUTE, 42);
+        alarmStartTime.set(Calendar.SECOND, 0);
+        alarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), getInterval(), pendingIntent);
+        //NOTIFICATIONS----------------
+
 
     }
 
@@ -579,6 +600,56 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             }
         }.execute(null, null, null);
 
+    }
+
+
+    // NOTIFICATION STUFF STARTS HERE -------------------------------------------------------------------
+
+    private int getInterval(){
+        int days = 1;
+        int hours = 24;
+        int minutes = 60;
+        int seconds = 60;
+        int milliseconds = 1000;
+//        int repeatMS = days * hours * minutes * seconds * milliseconds;
+        int repeatMS = minutes * seconds * milliseconds;
+        return repeatMS;
+    }
+
+    public void notify(View view){
+
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.mipmap.basil_icon)
+                        .setContentTitle("Your Budget Buddy")
+//                        .setContentText("You have overspent in eating out this week. Better hit the gym!")
+                        .setAutoCancel(true)
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText("You have overspent in eating out this week. Better hit the gym!"));
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, Act_BudgetManagerMain.class);
+
+        // The stack builder object will contain an artificial back stack for the
+        // started Activity.
+        // This ensures that navigating backward from the Activity leads out of
+        // your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(Act_BudgetManagerMain.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        0,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+
+        mNotificationManager.notify(mId, mBuilder.build());
+
+        mId++;
     }
 
 
