@@ -12,9 +12,9 @@ import com.google.android.gcm.server.Result;
 import com.google.android.gcm.server.Sender;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiNamespace;
-import com.googlecode.objectify.cmd.Query;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -46,7 +46,7 @@ public class MessagingEndpoint {
      *
      * @param message The message to send
      */
-    public void sendMessage(@Named("message") String message) throws IOException {
+    public void sendMessage(@Named("message") String message, @Named("recipient") String recipient) throws IOException {
         if (message == null || message.trim().length() == 0) {
             log.warning("Not sending message because it is empty");
             return;
@@ -57,11 +57,14 @@ public class MessagingEndpoint {
         }
         Sender sender = new Sender(API_KEY);
 
-        RegistrationRecord recs = ofy().load().type(RegistrationRecord.class).id("lawrencium.chang@gmail.com").get();
+        RegistrationRecord recs = ofy().load().type(RegistrationRecord.class).id(recipient).now();
+        ArrayList<RegistrationRecord> records= new ArrayList<RegistrationRecord>();
+        records.add(recs);
         String email = recs.getUserName();
         Message msg = new Message.Builder().addData("message", message+" "+recs.getUserName()).build();
-        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).limit(10).list();
+//        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).limit(10).list();
 //        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).filter("userName =", email).list();
+//        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).filter("Id =", email).list();
         for (RegistrationRecord record : records) {
             Result result = sender.send(msg, record.getRegId(), 5);
             if (result.getMessageId() != null) {

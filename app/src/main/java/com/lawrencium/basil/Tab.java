@@ -26,8 +26,6 @@ public class Tab {
         TabId = tabId;
     }
 
-
-
     //Normal Constructor
     public Tab(String userOwed, String userOwing, double amountOwed, String category, String title) {
         UserOwed = userOwed;
@@ -120,20 +118,6 @@ public class Tab {
         return true;
     }
 
-//    @Override
-//    public String toString() {
-//        DecimalFormat dec = new DecimalFormat("0.00");
-//        return "Tab{" +
-//                "UserOwed='" + UserOwed + '\'' +
-//                ", UserOwing='" + UserOwing + '\'' +
-//                ", AmountOwed=" + dec.format(AmountOwed) +
-//                ", Category='" + Category + '\'' +
-//                ", Title='" + Title + '\'' +
-//                ", TabId=" + TabId +
-//                ", Date=" + Date +
-//                '}';
-//    }
-
     public String reformatDate(String date){
 
         String tempString = "";
@@ -152,6 +136,13 @@ public class Tab {
 
 
         return tempString;
+    }
+    public String sendTabMsg(){
+        DecimalFormat dec = new DecimalFormat("0.00");
+        String amnt = dec.format(AmountOwed);
+        String msg = "/"+UserOwing+"/"+UserOwed+"/"+Title+"/"+Category+"/"+amnt+"/"+Date;
+
+        return msg;
     }
 
     @Override

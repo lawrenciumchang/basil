@@ -22,39 +22,25 @@ class GcmSendAsyncTask extends AsyncTask<Void, Void, String> {
     private Context context;
     private String username;
     private String email;
+    private String tabMsg;
 
 
     // TODO: change to your own sender ID to Google Developers Console project number, as per instructions above
     private static final String SENDER_ID = "508206130718";
 
-    public GcmSendAsyncTask(Context context, String username) {
+    public GcmSendAsyncTask(Context context, String username, String email, String tabMsg) {
         this.username = username;
         this.context = context;
         this.email = email;
+        this.tabMsg = tabMsg;
     }
 
     @Override
     protected String doInBackground(Void... params) {
         if (msg == null) {
-            //Used for local host
-//            Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(),
-//                    new AndroidJsonFactory(), null)
-//                    // Need setRootUrl and setGoogleClientRequestInitializer only for local testing,
-//                    // otherwise they can be skipped
-//                    .setRootUrl("http://10.0.2.2:8080/_ah/api/")
-//                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-//                        @Override
-//                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
-//                                throws IOException {
-//                            abstractGoogleClientRequest.setDisableGZipContent(true);
-//                        }
-//                    });
-            // end of optional local run code
-
             Messaging.Builder builderMsg = new Messaging.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
                     .setRootUrl("https://eternal-ruler-92119.appspot.com/_ah/api/");
             msg = builderMsg.build();
-
         }
 
         String message = "";
@@ -71,7 +57,7 @@ class GcmSendAsyncTask extends AsyncTask<Void, Void, String> {
             // The request to your server should be authenticated if your app
             // is using accounts.
 //            regService.listDevices()
-            msg.messagingEndpoint().sendMessage("Hi there. I am Working "+username).execute();
+            msg.messagingEndpoint().sendMessage(tabMsg, email).execute();
 
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -82,7 +68,7 @@ class GcmSendAsyncTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String msg) {
-        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+        //Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
         Logger.getLogger("SENTOUT").log(Level.INFO, msg);
     }
 

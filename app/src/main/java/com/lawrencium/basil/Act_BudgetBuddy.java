@@ -367,8 +367,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                                 findViewById(R.id.signIn).setVisibility(View.VISIBLE);
                                 findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
                                 findViewById(R.id.revokeAccess).setVisibility(View.INVISIBLE);
-
-
                             }
                         });
 
@@ -508,12 +506,9 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             @Override
             protected String doInBackground(Void... params) {
                 if (regService == null) {
-
-
                     Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
                             .setRootUrl("https://eternal-ruler-92119.appspot.com/_ah/api/");
                     regService = builder.build();
-
                 }
 
                 String msg = "";
@@ -523,8 +518,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                         gcm = GoogleCloudMessaging.getInstance(context);
                     }
                     String regId = gcm.register(SENDER_ID);
-//            if(regService.)
-//            msg = "Device registered, registration ID=" + regId+"/n"+"User Name is "+username;
 
                     Logger.getLogger("REGISTRATION").log(Level.INFO, "Device registered, registration ID=" + regId+"\n"+"User Name is "+username);
                     // You should send the registration ID to your server over HTTP,
@@ -534,9 +527,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                     regService.register(regId, username, email).execute();
                     storeRegistrationId(context, regId);
                     regID = getRegistrationId(context);
-
-
-
                 } catch (IOException ex) {
                     ex.printStackTrace();
                     msg = "Error: " + ex.getMessage();
@@ -549,8 +539,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 //        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                 Logger.getLogger("REGISTRATION").log(Level.INFO, msg);
             }
-
-
         }.execute(null, null, null);
 
     }
@@ -561,22 +549,13 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             @Override
             protected String doInBackground(Void... params) {
                 if (regService == null) {
-
-
                     Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
                             .setRootUrl("https://eternal-ruler-92119.appspot.com/_ah/api/");
                     regService = builder.build();
-
                 }
 
                 String msg = "";
                 try {
-
-
-//            if(regService.)
-//            msg = "Device registered, registration ID=" + regId+"/n"+"User Name is "+username;
-
-
                     // You should send the registration ID to your server over HTTP,
                     // so it can use GCM/HTTP or CCS to send messages to your app.
                     // The request to your server should be authenticated if your app
@@ -585,8 +564,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 //                    regID ="";
 //                    storeRegistrationId(context, regID);
                     Logger.getLogger("REGISTRATION").log(Level.INFO, "Device unregistered, registration ID=" + regid+"\n"+"User Name is "+username);
-
-
 
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -600,8 +577,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 //        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                 Logger.getLogger("REGISTRATION").log(Level.INFO, msg);
             }
-
-
         }.execute(null, null, null);
 
     }
