@@ -140,7 +140,7 @@ public class Tab {
     public String sendTabMsg(){
         DecimalFormat dec = new DecimalFormat("0.00");
         String amnt = dec.format(AmountOwed);
-        String msg = "/"+UserOwing+"/"+UserOwed+"/"+Title+"/"+Category+"/"+amnt+"/"+Date;
+        String msg = "**"+UserOwing+"**"+UserOwed+"**"+Title+"**"+Category+"**"+amnt+"**"+Date;
 
         return msg;
     }

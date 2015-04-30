@@ -148,7 +148,7 @@ public class Act_RequestPage extends Activity {
                 values);
 
 
-        new GcmSendAsyncTask(this, userName, "lawrencium.chang@gmail.com", IouRequestTab.getInstance().getCreatedTab().sendTabMsg()).execute();
+        new GcmSendAsyncTask(this, userName, "lawrencium.chang@gmail.com", userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()).execute();
 
         if(newRowId >= 0) {
             AlertDialog dialog = builder.create();

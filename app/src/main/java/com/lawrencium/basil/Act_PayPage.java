@@ -154,7 +154,7 @@ public class Act_PayPage extends Activity {
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
 
-        new GcmSendAsyncTask(this, userName, "jdtdrakes@gmail.com",  IouRequestTab.getInstance().getCreatedTab().sendTabMsg()).execute();
+        new GcmSendAsyncTask(this, userName, "jdtdrakes@gmail.com",  userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()).execute();
 
 
         long newRowId = db.insert(
