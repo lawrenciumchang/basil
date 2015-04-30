@@ -30,6 +30,7 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -127,15 +128,22 @@
             android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="com.lawrencium.basil" />
             </intent-filter>
         </receiver>
+
         <service android:name=".GcmIntentService" />
-
-        <service android:name=".AlarmService"
+        <service
+            android:name=".AlarmService"
             android:enabled="true" />
-        <receiver android:name=".AlarmReceiver"/>
 
+        <receiver android:name=".AlarmReceiver" />
+
+        <activity
+            android:name=".Act_FriendsPage"
+            android:label="@string/title_activity_act__friends_page" >
+        </activity>
     </application>
 
 </manifest>

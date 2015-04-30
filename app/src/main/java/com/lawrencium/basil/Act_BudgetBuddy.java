@@ -653,4 +653,14 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
     }
 
 
+    // TESTING FOR FRIENDS STARTS HERE -------------------------------------------------------------------
+
+    public void friends(View view) {
+
+        Intent intent = new Intent(this, Act_FriendsPage.class);
+        intent.putExtra(PASS_CURRENT_USER, userName);
+        startActivity(intent);
+
+    }
+
 }

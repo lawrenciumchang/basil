@@ -106,6 +106,16 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I like to think that I have friends."
+        android:id="@+id/friends"
+        android:layout_below="@+id/revokeAccess"
+        android:layout_alignRight="@+id/revokeAccess"
+        android:layout_alignParentLeft="true"
+        android:onClick="friends" />
+
 </RelativeLayout>
 
 
