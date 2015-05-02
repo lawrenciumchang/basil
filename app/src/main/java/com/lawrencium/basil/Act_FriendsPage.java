@@ -2,17 +2,41 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.lawrencium.basil.james.backend.messaging.Messaging;
+import com.lawrencium.basil.james.backend.registration.Registration;
+import com.lawrencium.basil.james.backend.registration.model.CollectionResponseStringCollection;
+
+
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Act_FriendsPage extends Activity {
 
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
-
+    Registration regService = null;
+    private static ArrayList<ArrayList<String>> friendsList;
     String userName;
+    Boolean waitFriends = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,8 +46,18 @@ public class Act_FriendsPage extends Activity {
 
         Intent intent = getIntent();
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+        viewAllFriends();
+//        while(!waitFriends){
+//
+//        }
+        for(ArrayList<String> aS: friendsList){
+            System.out.println(aS);
+        }
+//        createDropdown();
 
         Spinner friends = (Spinner)findViewById(R.id.spinFriends);
+
+//        createDropdown();
 
         //code from Act_EqualSplitPage.java for Activity to start on spinner select-----------------
         /*Spinner categorySet = (Spinner)findViewById(R.id.equalCategory);
@@ -79,6 +113,85 @@ public class Act_FriendsPage extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_act__friends_page, menu);
         return true;
+    }
+    public void createDropdown(){
+        Spinner dropdown = (Spinner)findViewById(R.id.spinFriends);
+        ArrayList<String> items = new ArrayList<String>();
+        items.add("Select Friend");
+        //items.add("Add New Category");
+        for(ArrayList<String> temp : friendsList){
+            if(!temp.isEmpty())
+                items.add(temp.get(0));
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdown.setAdapter(adapter);
+    }
+
+    public void viewAllFriends(){
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                if (regService == null) {
+                    Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                            .setRootUrl("https://eternal-ruler-92119.appspot.com/_ah/api/");
+                    regService = builder.build();
+                }
+
+                String msg = "";
+                try {
+
+
+
+//                    Logger.getLogger("REGISTRATION").log(Level.INFO, "Device registered, registration ID=" + regId+"\n"+"User Name is "+username);
+                    CollectionResponseStringCollection temp3 = regService.listFriends().execute();
+                    List<List<String>> test = temp3.getItems();
+
+                    ListIterator<List<String>> litr2 = test.listIterator();
+//                    ArrayList<ArrayList<String>> friendsList = new ArrayList<ArrayList<String>>();
+                    friendsList = new ArrayList<ArrayList<String>>();
+
+                    ArrayList<String> tempArr = new ArrayList<String>();
+//                    friendsList.add(tempArr);
+//                    tempArr = new ArrayList<String>();
+//                    friendsList.add(tempArr);
+
+
+                    while (litr2.hasNext()) {
+
+                        tempArr = new ArrayList<String>(litr2.next());
+//                        friendsList.get(0).add(tempArr.get(0));
+//                        friendsList.get(1).add(tempArr.get(1));
+                        friendsList.add(tempArr);
+
+                    }
+                    waitFriends = true;
+//                    for(ArrayList<String> aS: friendsList){
+//                        System.out.println(aS);
+//                    }
+//                    createDropdown();
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    msg = "Error: " + ex.getMessage();
+                }
+//                for(ArrayList<String> aS: friendsList){
+//                    System.out.println(aS);
+//                }
+//                createDropdown();
+
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                //        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                Logger.getLogger("REGISTRATION").log(Level.INFO, msg);
+            }
+        }.execute(null, null, null);
+
+//        createDropdown();
     }
 
     @Override

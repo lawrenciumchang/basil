@@ -4,6 +4,8 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
+
+
 /**
  * The Objectify object model for device registrations we are persisting
  */
@@ -52,4 +54,5 @@ public class RegistrationRecord {
     public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
+
 }

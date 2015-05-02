@@ -11,7 +11,9 @@ import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.logging.Logger;
 
 import javax.inject.Named;
@@ -91,8 +93,42 @@ public class RegistrationEndpoint {
         temp =  findRecord(regId);
 //            log.info("Device " + regId + " already registered, skipping register");
         return temp;
-
-
     }
+
+    @ApiMethod(name = "listFriends")
+    public CollectionResponse<ArrayList<String>> listFriends(){
+        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).list();
+        List<ArrayList<String>> temp = new ArrayList<ArrayList<String>>();
+        ListIterator<RegistrationRecord> litr = records.listIterator();
+        ArrayList<String> tempArr = new ArrayList<String>();
+        RegistrationRecord rec;
+        while (litr.hasNext()){
+            rec = litr.next();
+            tempArr.add(rec.getUserName());
+            tempArr.add(rec.getEmailAddress());
+            temp.add(tempArr);
+            tempArr = new ArrayList<String>();
+
+
+        }
+//        temp.add(tempArr);
+
+
+        return CollectionResponse.<ArrayList<String>>builder().setItems(temp).build();
+    }
+
+//    public ArrayList<ArrayList<String>> listFriends(){
+//      public ArrayList<RegistrationRecord> listFriends(){
+//        List<RegistrationRecord> temp = ofy().load().type(RegistrationRecord.class).list();
+//        ArrayList<RegistrationRecord> list = new ArrayList<RegistrationRecord>(ofy().load().type(RegistrationRecord.class).list());
+//        ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
+//
+//        for(int i = 0; i < temp.size(); i++){
+//            list.get(i).add(0, temp.get(i).getUserName());
+//            list.get(i).add(1, temp.get(i).getEmailAddress());
+////        }
+//
+//        return list;
+//    }
 
 }
