@@ -140,19 +140,21 @@ public class Act_NewTransaction extends Activity {
             Date tempDate = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
             String date = dateFormat.format(tempDate);
-            ContentValues values = new ContentValues();
+            //ContentValues values = new ContentValues();
             String newName = inputName.getText().toString().trim();
             String newBudget = inputValue.getText().toString().trim();
             String newCategory = inputCategory.getSelectedItem().toString().trim();
 
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
+            /*values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, newCategory);
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
             long newRowId = db.insert(
                     FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
                     FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                    values);
+                    values);*/
+
+            Budget.newTransaction(SQLiteDbHelper, newName, newBudget, newCategory);
 
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();
