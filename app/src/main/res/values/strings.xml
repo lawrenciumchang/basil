@@ -50,4 +50,8 @@
     <string name="title_activity_act__category_view">Category Details</string>
     <string name="title_activity_act__transaction_confirm">Act_TransactionConfirm</string>
     <string name="title_activity_act__overview_settings">Act_OverviewSettings</string>
+    <string name="title_activity_act__friends_page">Friends</string>
+
+
+    <string name="confirm">Confirm</string>
 </resources>

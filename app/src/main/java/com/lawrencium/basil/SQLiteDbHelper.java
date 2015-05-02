@@ -36,7 +36,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
     private static final String SQL_CREATE_TABS =
             "CREATE TABLE " + FeedEntry.TABLE_NAME_TABS + " (" +
-                    FeedEntry._ID + " INTEGER PRIMARY KEY," +
+                    FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     FeedEntry.COLUMN_NAME_USEROWED + TEXT_TYPE + COMMA_SEP +
                     FeedEntry.COLUMN_NAME_USEROWING + TEXT_TYPE + COMMA_SEP +
@@ -49,6 +49,15 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     " )";
     private static final String SQL_DELETE_TABS =
             "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME_TABS;
+    private static final String SQL_CREATE_FRIENDS =
+            "CREATE TABLE " + FeedEntry.TABLE_NAME_FRIENDS + " (" +
+                    FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    FeedEntry.COLUMN_NAME_FRIEND + TEXT_TYPE + COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_EMAIL + CURRENCY_TYPE + //COMMA_SEP +
+                    // Any other options for the CREATE command
+                    " )";
+    private static final String SQL_DELETE_FRIENDS =
+            "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME_FRIENDS;
 
     // If you change the database schema, you must increment the database version.
 
@@ -62,6 +71,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_CATEGORIES);
         db.execSQL(SQL_CREATE_TRANSACTIONS);
         db.execSQL(SQL_CREATE_TABS);
+        db.execSQL(SQL_CREATE_FRIENDS);
     }
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
@@ -69,6 +79,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_CATEGORIES);
         db.execSQL(SQL_DELETE_TRANSACTIONS);
         db.execSQL(SQL_CREATE_TABS);
+        db.execSQL(SQL_CREATE_FRIENDS);
         onCreate(db);
     }
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
