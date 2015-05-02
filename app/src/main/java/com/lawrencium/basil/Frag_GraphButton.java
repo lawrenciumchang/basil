@@ -100,11 +100,11 @@ public class Frag_GraphButton extends Fragment {
         // Inflate the layout for this fragment
         //things a user sees
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
-        RelativeLayout frame = (RelativeLayout) v.findViewById(R.id.frame);
+        Button btn_budgetOverview = (Button) v.findViewById(R.id.btn_budgetOverview);
         TextView catName = (TextView) v.findViewById(R.id.catTitle);
         catName.setText(cat_name);
         catGraph = (ProgressBar) v.findViewById(R.id.catGraph);
-        frame.setOnClickListener(new View.OnClickListener() {
+        btn_budgetOverview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // here you set what you want to do when user clicks your button,
@@ -122,7 +122,7 @@ public class Frag_GraphButton extends Fragment {
 
             }
         });
-        registerForContextMenu(frame);
+        registerForContextMenu(btn_budgetOverview);
 
         return v;
     }
