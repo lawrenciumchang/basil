@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,9 +46,30 @@ public class Act_CategoryView extends Activity {
         int graphMax = bundle.getInt("GRAPH_MAX");
         int graphProgress = bundle.getInt("GRAPH_PROGRESS");
         int graphSecondary = bundle.getInt("GRAPH_SECONDARY");
-
+        BigDecimal catLeftOver = new BigDecimal(bundle.getString("CAT_LEFTOVER"));
+        BigDecimal quartLeftOver = new BigDecimal(bundle.getString("QUART_LEFTOVER"));
         TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
         progress_overview.setText(graphSecondary*100/graphMax +"%");
+
+        if(catLeftOver.compareTo(new BigDecimal(BigInteger.ZERO)) == -1){
+            catLeftOver = catLeftOver.negate();
+            TextView catLeft = (TextView) findViewById(R.id.catAmountLeftTxt);
+            catLeft.setText("Monthly: $"+catLeftOver+" over");
+            catLeft.setTextColor(Color.parseColor("#ffd81500"));
+        }else {
+            TextView overallCatLeft = (TextView) findViewById(R.id.catAmountLeftTxt);
+            overallCatLeft.setText("Monthly: $" + catLeftOver + " left");
+        }
+        if(quartLeftOver.compareTo(new BigDecimal(BigInteger.ZERO)) == -1){
+            quartLeftOver = quartLeftOver.negate();
+            TextView quartLeft = (TextView) findViewById(R.id.quartAmountLeftTxt);
+            quartLeft.setText("Quarterly: $"+quartLeftOver+" over");
+            quartLeft.setTextColor(Color.parseColor("#ffd81500"));
+        }else {
+            TextView quartLeft = (TextView) findViewById(R.id.quartAmountLeftTxt);
+            quartLeft.setText("Quarterly: $" + quartLeftOver + " left");
+            quartLeft.setTextColor(Color.parseColor("#44aa00"));
+        }
 
         ProgressBar catGraph = (ProgressBar) findViewById(R.id.catProgessBar);
         catGraph.setMax(graphMax);

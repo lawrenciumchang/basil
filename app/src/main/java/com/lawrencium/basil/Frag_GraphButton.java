@@ -52,6 +52,8 @@ public class Frag_GraphButton extends Fragment {
     private String cat_id;
     private String cat_name;
     private String cat_total;
+    private BigDecimal catAmountLeft;
+    private BigDecimal quarterAmountLeft;
 
     private OnFragmentInteractionListener mListener;
     SQLiteDbHelper mDbHelper;
@@ -117,6 +119,8 @@ public class Frag_GraphButton extends Fragment {
                 bundle.putInt("GRAPH_MAX", catGraph.getMax());
                 bundle.putInt("GRAPH_PROGRESS", catGraph.getProgress());
                 bundle.putInt("GRAPH_SECONDARY", catGraph.getSecondaryProgress());
+                bundle.putString("CAT_LEFTOVER", catAmountLeft.toString());
+                bundle.putString("QUART_LEFTOVER", quarterAmountLeft.toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
 
@@ -174,6 +178,7 @@ public class Frag_GraphButton extends Fragment {
             System.out.println(totals[i]);
         }
 
+
         BigDecimal categoryBudget = new BigDecimal(cat_total);
         categoryBudget.setScale(2);
         BigDecimal quarterBudget = categoryBudget.divide(new BigDecimal("4"), categoryBudget.scale(), BigDecimal.ROUND_HALF_DOWN);
@@ -200,6 +205,9 @@ public class Frag_GraphButton extends Fragment {
             case 0: budget.setText("$"+quarterBudget); break;
             case 1: budget.setText(Html.fromHtml("$"+quarterBudget+"<font color=#44AA00> +$"+rollover+"</font>"));
         }
+
+        catAmountLeft=categoryBudget.subtract(totals[4]);
+        quarterAmountLeft=quarterBudget.subtract(totals[quarter]);
         System.out.println("Quarter Budget: $"+quarterBudget);
         System.out.println("Quarter Total:  $"+totals[quarter]);
         System.out.println("Monthly Total:  $"+totals[4]);

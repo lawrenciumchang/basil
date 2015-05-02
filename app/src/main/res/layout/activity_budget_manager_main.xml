@@ -54,37 +54,41 @@
                     android:layout_gravity="center_horizontal"
                     android:onClick="gotoOverview" />
 
-                <LinearLayout
-                    android:orientation="horizontal"
+                <TextView
+                    android:id="@+id/progress_overview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/str_progress"
+                    android:textColor="#44aa00"
+                    android:textStyle="bold"
+                    android:typeface="sans"
+                    android:textSize="30sp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="5dp"/>
+
+                <TextView
+                    android:id="@+id/monthLeftOverTxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="money left over"
+                    android:textSize="15sp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_below="@+id/monthlyExpense"
+                    android:layout_alignParentRight="true"/>
+
+                <ProgressBar
+                    android:id="@+id/graph_overview"
+                    style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="fill_parent"
-                    android:layout_height="fill_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:progress=
+                        "@string/str_progress"
+                    android:progressDrawable="@drawable/progress_bar"
+                    android:layout_below="@+id/progress_overview"/>
 
-
-                    <TextView
-                        android:id="@+id/progress_overview"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/str_progress"
-                        android:textColor="#44aa00"
-                        android:textStyle="bold"
-                        android:typeface="sans"
-                        android:textSize="30sp"
-                        android:layout_marginTop="25dp"
-                        android:layout_marginLeft="15dp"/>
-
-                    <ProgressBar
-                        android:id="@+id/graph_overview"
-                        style="?android:attr/progressBarStyleHorizontal"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="40dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="15dp"
-                        android:progress=
-                            "@string/str_progress"
-                        android:progressDrawable="@drawable/progress_bar"/>
-
-                </LinearLayout>
             </RelativeLayout>
 
             <LinearLayout
