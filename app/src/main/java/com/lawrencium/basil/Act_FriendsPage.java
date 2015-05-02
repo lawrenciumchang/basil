@@ -2,8 +2,6 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,21 +9,15 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.lawrencium.basil.james.backend.messaging.Messaging;
 import com.lawrencium.basil.james.backend.registration.Registration;
 import com.lawrencium.basil.james.backend.registration.model.CollectionResponseStringCollection;
 
-
 import java.io.IOException;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,13 +39,13 @@ public class Act_FriendsPage extends Activity {
         Intent intent = getIntent();
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
         viewAllFriends();
-//        while(!waitFriends){
-//
-//        }
+        while(!waitFriends){
+
+        }
         for(ArrayList<String> aS: friendsList){
             System.out.println(aS);
         }
-//        createDropdown();
+        createDropdown();
 
         Spinner friends = (Spinner)findViewById(R.id.spinFriends);
 

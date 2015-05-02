@@ -144,6 +144,13 @@
             android:name=".Act_FriendsPage"
             android:label="@string/title_activity_act__friends_page" >
         </activity>
+
+        <activity
+            android:name=".NotificationActivity"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+        </activity>
+
     </application>
 
 </manifest>

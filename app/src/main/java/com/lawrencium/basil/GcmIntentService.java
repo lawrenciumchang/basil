@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class GcmIntentService extends IntentService {
 
-    int mId = 0;
+    int notID = 0;
 
     public GcmIntentService() {
         super("GcmIntentService");
@@ -98,8 +98,8 @@ public class GcmIntentService extends IntentService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         // mId allows you to update the notification later on.
 
-        mNotificationManager.notify(mId, mBuilder.build());
+        mNotificationManager.notify(notID, mBuilder.build());
 
-        mId++;
+        notID++;
     }
 }
