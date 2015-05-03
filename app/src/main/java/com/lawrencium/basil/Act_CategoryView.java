@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -97,21 +98,39 @@ public class Act_CategoryView extends Activity {
         TextView monthlyExpense = (TextView) findViewById(R.id.monthlyExpense);
         monthlyExpense.setText(catName +" Monthly Expenses");
 
+        int boundsDate[] = Budget.calculateBoundsDate();
+        int boundsDate1 = boundsDate[1]-1;
+        int boundsDate2 = boundsDate[2]-1;
+        int boundsDate3 = boundsDate[3]-1;
+        int boundsDate4 = boundsDate[4]-1;
+
         lo_week1 = (LinearLayout) findViewById(R.id.lo_week1);
         // hide until its title is clicked
         lo_week1.setVisibility(View.GONE);
+        TextView txtWeek1 = (TextView) findViewById(R.id.txt_week1);
+        txtWeek1.setText("--------Quarter 1: " + boundsDate[5]+"/0"+boundsDate[0] +" - "+boundsDate[5]+"/0"+boundsDate1 + "--------");
+        txtWeek1.setTypeface(null, Typeface.BOLD);
 
         lo_week2 = (LinearLayout) findViewById(R.id.lo_week2);
         // hide until its title is clicked
         lo_week2.setVisibility(View.GONE);
+        TextView txtWeek2 = (TextView) findViewById(R.id.txt_week2);
+        txtWeek2.setText("--------Quarter 2: " + boundsDate[5]+"/0"+boundsDate[1] +" - "+boundsDate[5]+"/"+boundsDate2 +"--------");
+        txtWeek2.setTypeface(null, Typeface.BOLD);
 
         lo_week3 = (LinearLayout) findViewById(R.id.lo_week3);
         // hide until its title is clicked
         lo_week3.setVisibility(View.GONE);
+        TextView txtWeek3 = (TextView) findViewById(R.id.txt_week3);
+        txtWeek3.setText("--------Quarter 3: " + boundsDate[5]+"/"+boundsDate[2] +" - "+boundsDate[5]+"/"+boundsDate3 +"--------");
+        txtWeek3.setTypeface(null, Typeface.BOLD);
 
         lo_week4 = (LinearLayout) findViewById(R.id.lo_week4);
         // hide until its title is clicked
         lo_week4.setVisibility(View.GONE);
+        TextView txtWeek4 = (TextView) findViewById(R.id.txt_week4);
+        txtWeek4.setText("--------Quarter 4: " + boundsDate[5]+"/"+boundsDate[3] +" - "+boundsDate[5]+"/"+boundsDate4 +"--------");
+        txtWeek4.setTypeface(null, Typeface.BOLD);
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {

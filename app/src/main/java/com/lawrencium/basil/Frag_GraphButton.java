@@ -54,6 +54,11 @@ public class Frag_GraphButton extends Fragment {
     private String cat_total;
     private BigDecimal catAmountLeft;
     private BigDecimal quarterAmountLeft;
+    private String bZero;
+    private String bOne;
+    private String bTwo;
+    private String bThree;
+    private String bFour;
 
     private OnFragmentInteractionListener mListener;
     SQLiteDbHelper mDbHelper;
@@ -208,6 +213,11 @@ public class Frag_GraphButton extends Fragment {
 
         catAmountLeft=categoryBudget.subtract(totals[4]);
         quarterAmountLeft=quarterBudget.subtract(totals[quarter]);
+        bZero = bounds[0];
+        bOne = bounds[1];
+        bTwo = bounds[2];
+        bThree = bounds[3];
+        bFour = bounds[4];
         System.out.println("Quarter Budget: $"+quarterBudget);
         System.out.println("Quarter Total:  $"+totals[quarter]);
         System.out.println("Monthly Total:  $"+totals[4]);
