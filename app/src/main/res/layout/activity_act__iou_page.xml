@@ -12,7 +12,8 @@
         android:id="@+id/editText2"
         android:layout_alignParentTop="true"
         android:hint="Title"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:capitalize="words" />
 
     <Spinner
         android:id="@+id/spinner1"

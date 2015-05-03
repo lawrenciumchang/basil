@@ -31,7 +31,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
     Bundle b;
     String users = "";
 
-    TabsDbHelper tabDbHelper = new TabsDbHelper(this);
+    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
     ArrayList<Tab> Tabs = new ArrayList<Tab>();
     String[] ppl;

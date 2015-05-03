@@ -41,7 +41,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
     double tax = 0;
     double taxSum = 0;
 
-    TabsDbHelper tabDbHelper = new TabsDbHelper(this);
+    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
     ArrayList<Tab> Tabs = new ArrayList<Tab>();
     String[] people;
     double[] prices;

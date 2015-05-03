@@ -49,11 +49,12 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
                     " )";
     private static final String SQL_DELETE_TABS =
             "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME_TABS;
+
     private static final String SQL_CREATE_FRIENDS =
             "CREATE TABLE " + FeedEntry.TABLE_NAME_FRIENDS + " (" +
                     FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FeedEntry.COLUMN_NAME_FRIEND + TEXT_TYPE + COMMA_SEP +
-                    FeedEntry.COLUMN_NAME_EMAIL + CURRENCY_TYPE + //COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_EMAIL + TEXT_TYPE + //COMMA_SEP +
                     // Any other options for the CREATE command
                     " )";
     private static final String SQL_DELETE_FRIENDS =

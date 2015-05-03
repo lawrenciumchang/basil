@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -97,7 +98,6 @@ public class Act_IouPage extends Activity {
                 items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
             } while (c.moveToNext());
         }
-        db.close();
         if(category != null) {
             for (int i = 0; i < items.size(); i++) {
                 if (category.equals(items.get(i))) {
@@ -111,14 +111,37 @@ public class Act_IouPage extends Activity {
         amountSet.setText(amount);
 
         Spinner userSet = (Spinner)findViewById(R.id.spinner2);
-        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        //String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        ArrayList<String> items2 = new ArrayList<String>();
+        items2.add("Select User");
+
+        String[] userProjection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
+        };
+        sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
+        c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                userProjection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+            } while (c.moveToNext());
+        }
         if(user != null) {
-            for (int i = 0; i < items2.length; i++) {
-                if (user.equals(items2[i])) {
+            for (int i = 0; i < items2.size(); i++) {
+                if (user.equals(items2.get(i))) {
                     userSet.setSelection(i);
                 }
             }
         }
+
+        db.close();
 
     }
 
@@ -149,7 +172,6 @@ public class Act_IouPage extends Activity {
                 items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
             } while (c.moveToNext());
         }
-        db.close();
 
         if(category != null) {
             for (int i = 0; i < items.size(); i++) {
@@ -160,15 +182,37 @@ public class Act_IouPage extends Activity {
         }
 
         Spinner userSet = (Spinner)findViewById(R.id.spinner2);
-        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        //String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        ArrayList<String> items2 = new ArrayList<String>();
+        items2.add("Select User");
+
+        String[] userProjection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
+        };
+        sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
+        c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                userProjection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+            } while (c.moveToNext());
+        }
         if(user != null) {
-            for (int i = 0; i < items2.length; i++) {
-                if (user.equals(items2[i])) {
+            for (int i = 0; i < items2.size(); i++) {
+                if (user.equals(items2.get(i))) {
                     userSet.setSelection(i);
                 }
             }
         }
 
+        db.close();
     }
 
     public void createDropdown(){
@@ -194,7 +238,6 @@ public class Act_IouPage extends Activity {
                 items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
             } while (c.moveToNext());
         }
-        db.close();
         items.add("Add New Category");
         //use simple_spinner_item to make the spinner display smaller
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -202,10 +245,33 @@ public class Act_IouPage extends Activity {
         dropdown.setAdapter(adapter);
 
         Spinner dropdown2 = (Spinner)findViewById(R.id.spinner2);
-        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        //String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        ArrayList<String> items2 = new ArrayList<String>();
+        items2.add("Select User");
+
+        String[] userProjection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
+        };
+        sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
+        c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                userProjection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+                Log.i(null, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+            } while (c.moveToNext());
+        }
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items2);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown2.setAdapter(adapter2);
+        db.close();
     }
 
 

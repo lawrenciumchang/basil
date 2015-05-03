@@ -1,9 +1,12 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -15,7 +18,9 @@ import com.lawrencium.basil.james.backend.registration.Registration;
 import com.lawrencium.basil.james.backend.registration.model.CollectionResponseStringCollection;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
@@ -29,6 +34,7 @@ public class Act_FriendsPage extends Activity {
     private static ArrayList<ArrayList<String>> friendsList;
     String userName;
     Boolean waitFriends = false;
+    SQLiteDbHelper SQLiteDbHelper = new SQLiteDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +48,26 @@ public class Act_FriendsPage extends Activity {
         while(!waitFriends){
 
         }
+
+        SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
+
         for(ArrayList<String> aS: friendsList){
-            System.out.println(aS);
+            System.out.println("sop: "+aS);
+            ContentValues values = new ContentValues();
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, aS.get(0));
+            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL, aS.get(1));
+            long newRowId = db.insert(
+                    FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                    values);
+            Log.v("Database", aS.get(0) + " " + aS.get(1));
         }
-        createDropdown();
 
         Spinner friends = (Spinner)findViewById(R.id.spinFriends);
+        createDropdown();
 
-//        createDropdown();
+
+
 
         //code from Act_EqualSplitPage.java for Activity to start on spinner select-----------------
         /*Spinner categorySet = (Spinner)findViewById(R.id.equalCategory);

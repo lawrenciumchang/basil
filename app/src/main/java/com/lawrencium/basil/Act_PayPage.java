@@ -28,7 +28,7 @@ public class Act_PayPage extends Activity {
     String amount;
     String user;
     String userName;
-    TabsDbHelper tabDbHelper = new TabsDbHelper(this);
+    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
