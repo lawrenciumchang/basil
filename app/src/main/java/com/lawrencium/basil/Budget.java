@@ -105,7 +105,7 @@ public class Budget {
         1) 1st day of the second quarter
         2) 1st day of the third quarter
         3) 1st day of the fourth quarter
-        4) last day of the month
+        4) last day of the month plus one day
         5) current month
         */
         int[] bounds = new int[6];

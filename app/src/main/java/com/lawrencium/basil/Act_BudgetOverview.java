@@ -151,9 +151,9 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
 
     public void removeCategory(Frag_GraphButton fragment) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
-        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry._ID+"="+fragment.getCatId(), null);
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.remove(fragment);
-        fragmentTransaction.commit();
+            db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry._ID + "=" + fragment.getCatId(), null);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commit();
     }
 }

@@ -54,11 +54,6 @@ public class Frag_GraphButton extends Fragment {
     private String cat_total;
     private BigDecimal catAmountLeft;
     private BigDecimal quarterAmountLeft;
-    private String bZero;
-    private String bOne;
-    private String bTwo;
-    private String bThree;
-    private String bFour;
 
     private OnFragmentInteractionListener mListener;
     SQLiteDbHelper mDbHelper;
@@ -213,11 +208,6 @@ public class Frag_GraphButton extends Fragment {
 
         catAmountLeft=categoryBudget.subtract(totals[4]);
         quarterAmountLeft=quarterBudget.subtract(totals[quarter]);
-        bZero = bounds[0];
-        bOne = bounds[1];
-        bTwo = bounds[2];
-        bThree = bounds[3];
-        bFour = bounds[4];
         System.out.println("Quarter Budget: $"+quarterBudget);
         System.out.println("Quarter Total:  $"+totals[quarter]);
         System.out.println("Monthly Total:  $"+totals[4]);
@@ -266,7 +256,9 @@ public class Frag_GraphButton extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(Integer.parseInt(cat_id), 1, 0, "Delete");
+        if(!cat_name.equals("Uncategorized")) {
+            menu.add(Integer.parseInt(cat_id), 1, 0, "Delete");
+        }
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.menu_overview_category_floating, menu);
     }
@@ -276,7 +268,9 @@ public class Frag_GraphButton extends Fragment {
             System.out.println("\n id from menu: " + cat_id);
             switch (item.getItemId()) {
                 case 1:
-                    deleteCategory();
+                    if(!cat_name.equals("Uncategorized")){
+                        deleteCategory();
+                    }
                     return true;
                 default:
                     return super.onContextItemSelected(item);
@@ -298,7 +292,8 @@ public class Frag_GraphButton extends Fragment {
     public String getCatId() {
         return cat_id;
     }
-    public void deleteCategory() {
+
+    public void deleteCategory() { //called from onContextItemSelected
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, "Uncategorized");
@@ -313,6 +308,6 @@ public class Frag_GraphButton extends Fragment {
         toast.show();
 
         Act_BudgetOverview budgetOverviewActivity = (Act_BudgetOverview) getActivity();
-        budgetOverviewActivity.removeCategory(this);
+        budgetOverviewActivity.removeCategory(this); //method from Act_BudgetOverview
     }
 }
