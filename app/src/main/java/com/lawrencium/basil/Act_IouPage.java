@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -66,6 +67,10 @@ public class Act_IouPage extends Activity {
 
         EditText titleSet = (EditText)findViewById(R.id.editText2);
         titleSet.setText(title);
+
+        Button requestButton = (Button) findViewById(R.id.button);
+        Button payButton = (Button) findViewById(R.id.button2);
+        payButton.setVisibility(View.INVISIBLE);
 
         // Load categories from Budget side
         Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
@@ -157,6 +162,8 @@ public class Act_IouPage extends Activity {
                 getApplicationContext().MODE_PRIVATE);
         String userName = prefs.getString("user_name", "");
         if(b.getBoolean("IOU")) {
+            requestButton.setVisibility(View.INVISIBLE);
+            payButton.setVisibility(View.VISIBLE);
             String userOwed = b.getString("USER_OWED");
             System.out.println("User Name: "+userName+" - User Owed: "+userOwed);
             if(userOwed.equals(userName)) {
@@ -167,6 +174,7 @@ public class Act_IouPage extends Activity {
 
                 long transactionId;
                 String[] updateProjection = {
+                        FeedReaderContract.FeedEntry._ID,
                         FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID
                 };
                 String filter = FeedReaderContract.FeedEntry._ID + " = \'" + b.getString("TAB_ID") + "\'";
@@ -175,6 +183,7 @@ public class Act_IouPage extends Activity {
                         updateProjection, filter, null, null, null, null
                 );
                 if(c.moveToFirst()) {
+                    Long tabId = c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
                     transactionId = c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID));
                     Log.i("Transaction ID from Tab", ""+transactionId);
 
@@ -200,6 +209,7 @@ public class Act_IouPage extends Activity {
 
                     if(balance.toString().equals("0.00")) {
                         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS, FeedReaderContract.FeedEntry._ID+"="+transactionId, null);
+                        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TABS, FeedReaderContract.FeedEntry._ID+"="+tabId, null);
                         Log.i("Transaction deleted", ""+transactionId);
                     }
                     else {
@@ -211,6 +221,7 @@ public class Act_IouPage extends Activity {
                         Log.i("Transaction updated", ""+transactionId);
                     }
                 }
+
 
                 finish();
             }

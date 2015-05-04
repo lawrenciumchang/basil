@@ -31,6 +31,62 @@ public class Act_BudgetManagerMain extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_manager_main);
         getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // Save the dates for the first day of this month and two months ago
+        Calendar calendar = Calendar.getInstance();
+        Date today = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
+        calendar.setTime(today);     // Resetting time of day
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        today = calendar.getTime();
+        calendar.set(Calendar.DAY_OF_MONTH, 1); // First day of this month
+        String dayOneThisMonth = format.format(calendar.getTime());
+        calendar.setTime(today);     // Two months ago
+        calendar.add(Calendar.MONTH, -1);
+        String twoMonthsAgo = format.format(calendar.getTime());
+
+        LinearLayout ll = (LinearLayout) findViewById(R.id.lo_budgetmain);
+
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+        String[] projection = {
+                FeedReaderContract.FeedEntry._ID,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
+        };
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
+        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + twoMonthsAgo + "\'";
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                projection,
+                filter,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                String id = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
+                String value = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
+                String date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
+                TextView nextTransaction = getTransactionTextView(
+                        /*"["+id+"] "+*/c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
+                        value,
+                        date,
+                        null);
+                ll.addView(nextTransaction);
+
+                /*if(date.compareTo(dayOneThisMonth) > 0) {
+                    BigDecimal transactionValue = new BigDecimal(value);
+                    total = total.add(transactionValue);
+                }*/
+            } while (c.moveToNext());
+        }
+        c.close();
     }
 
     private TextView getTransactionTextView(String title, String value, String date, String category) {
@@ -168,12 +224,12 @@ public class Act_BudgetManagerMain extends Activity {
                 String id = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
                 String value = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 String date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
-                TextView nextTransaction = getTransactionTextView(
-                        "["+id+"] "+c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
+                /*TextView nextTransaction = getTransactionTextView(
+                        *//*"["+id+"] "+*//*c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         value,
                         date,
                         null);
-                ll.addView(nextTransaction);
+                ll.addView(nextTransaction);*/
                 if(date.compareTo(dayOneThisMonth) > 0) {
                     BigDecimal transactionValue = new BigDecimal(value);
                     total = total.add(transactionValue);
