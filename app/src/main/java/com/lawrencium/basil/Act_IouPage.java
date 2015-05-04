@@ -143,6 +143,23 @@ public class Act_IouPage extends Activity {
 
         db.close();
 
+        EditText title = (EditText)findViewById(R.id.editText2);
+        EditText amount = (EditText)findViewById(R.id.editText);
+
+        Bundle b = getIntent().getExtras();
+        if(b.getBoolean("IOU")) {
+            title.setText(b.getString("TITLE"));
+            amount.setText(b.getString("AMOUNT"));
+            System.out.println("USER_OWED: " + b.getString("USER_OWED"));
+            for (int i = 0; i < items2.size(); i++) {
+                if (b.getString("USER_OWED").equals(items2.get(i))) {
+                    userSet.setSelection(i);
+                    user = b.getString("USER_OWED");
+                    System.out.println("User Spinner set to: " + b.getString("USER_OWED") + " (Item "+i+")");
+                }
+            }
+        }
+
     }
 
     protected void onResume(){
@@ -438,6 +455,11 @@ public class Act_IouPage extends Activity {
             intent.putExtra(PASS_AMOUNT, amount);
             intent.putExtra(PASS_USER, user);
             intent.putExtra(PASS_CURRENT_USER, userName);
+            Bundle bOut = new Bundle();
+            Bundle bIn = getIntent().getExtras();
+            bOut.putString("OWED_TABID", bIn.getString("TAB_ID"));
+            bOut.putString("USER_OWED", bIn.getString("USER_OWED"));
+            intent.putExtras(bOut);
             startActivity(intent);
         }
     }

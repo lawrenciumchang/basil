@@ -138,6 +138,9 @@ public class Act_RequestPage extends Activity {
         tabId = Integer.toString(temp);
         date = IouRequestTab.getInstance().getCreatedTab().getDate();
 
+        // Create new corresponding transaction
+        long newTransactionId = Budget.newTransaction(db, title, amount, category);
+        // Store tab in db
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, userName);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING, user);
@@ -145,10 +148,12 @@ public class Act_RequestPage extends Activity {
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, category);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID, newTransactionId);
         long newRowId = db.insert(
                 FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                 values);
+
 
         // Get email of user
         String owingEmail = "";
@@ -170,7 +175,7 @@ public class Act_RequestPage extends Activity {
             owingEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
         }
 
-        new GcmSendAsyncTask(this, userName, owingEmail, userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()).execute();
+        new GcmSendAsyncTask(this, userName, owingEmail, userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()+"**"+newRowId).execute();
 
         if(newRowId >= 0) {
             AlertDialog dialog = builder.create();

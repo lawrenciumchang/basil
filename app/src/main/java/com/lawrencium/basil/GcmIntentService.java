@@ -47,12 +47,22 @@ public class GcmIntentService extends IntentService {
                 String message = extras.getString("message");
                 String [] tokens = message.split("[**]+");
 
+                String m = /*tokens[0] +*/ "You owe " + tokens[2] + " $" + tokens[5] + " for " + tokens[3] + ".";
+                System.out.println(m);
 
-                System.out.println(tokens[0] + ", you owe " + tokens[2] + " $" + tokens[5] + ".");
+                Bundle b = new Bundle();
+                //b.putString("USER_NAME", tokens[0]);
+                //b.putString("USER_OWING", tokens[1]);
+                b.putString("USER_OWED", tokens[2]);
+                b.putString("TITLE", tokens[3]);
+                //b.putString("CATEGORY", tokens[4]);
+                b.putString("AMOUNT", tokens[5]);
+                //b.putString("DATE", tokens[6]);
+                b.putString("TAB_ID", tokens[7]);
 
-                String m = tokens[0] + ", you owe " + tokens[2] + " $" + tokens[5] + ".";
+                b.putBoolean("IOU", true);
 
-                notify(m);
+                notify(m, b);
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
@@ -67,7 +77,7 @@ public class GcmIntentService extends IntentService {
         });
     }
 
-    public void notify(String m){
+    public void notify(String m, Bundle b){
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
@@ -77,7 +87,9 @@ public class GcmIntentService extends IntentService {
                         .setAutoCancel(true)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(m));
         // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, Act_BudgetManagerMain.class);
+        Intent resultIntent = new Intent(this, Act_IouPage.class);
+        resultIntent.putExtras(b);
+        //resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
@@ -85,7 +97,7 @@ public class GcmIntentService extends IntentService {
         // your application to the Home screen.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(Act_BudgetManagerMain.class);
+        stackBuilder.addParentStack(Act_TabsPage.class);
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =

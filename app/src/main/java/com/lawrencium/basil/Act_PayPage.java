@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
@@ -154,14 +155,32 @@ public class Act_PayPage extends Activity {
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
 
-        new GcmSendAsyncTask(this, userName, "jdtdrakes@gmail.com",  userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()).execute();
-
-
         long newRowId = db.insert(
                 FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                 values);
 
+        // Get email of user
+        String owedEmail = "";
+        String[] projection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL
+        };
+        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND + " = \'" +
+                user + "\'";
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                projection,
+                filter,
+                null,
+                null,
+                null,
+                null
+        );
+        if (c.moveToFirst()) {
+            owedEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
+        }
+
+        new GcmSendAsyncTask(this, userName, owedEmail,  userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()).execute();
 
         if(newRowId >= 0) {
             AlertDialog dialog = builder.create();

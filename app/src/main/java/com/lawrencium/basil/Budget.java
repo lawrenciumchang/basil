@@ -96,8 +96,7 @@ public class Budget {
         return bounds;
     }
 
-    public static void newTransaction(SQLiteDbHelper SQLiteDbHelper, String name, String value, String category) {
-        SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
+    public static long newTransaction(SQLiteDatabase db, String name, String value, String category) {
         Date tempDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
         String date = dateFormat.format(tempDate);
@@ -114,5 +113,6 @@ public class Budget {
                 FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                 values);
+        return newRowId;
     }
 }

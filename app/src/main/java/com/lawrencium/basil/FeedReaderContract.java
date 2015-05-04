@@ -30,6 +30,7 @@ public final class FeedReaderContract {
         public static final String COLUMN_NAME_DATE = "date";
         public static final String COLUMN_NAME_FRIEND = "friend";
         public static final String COLUMN_NAME_EMAIL = "email";
+        public static final String COLUMN_NAME_TRANSACTIONID = "transactionid";
 
     }
 }

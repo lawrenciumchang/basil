@@ -126,7 +126,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
 
         //NOTIFICATIONS----------------
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        /*AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(Act_BudgetBuddy.this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(Act_BudgetBuddy.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -135,7 +135,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         alarmStartTime.set(Calendar.HOUR_OF_DAY, 21);
         alarmStartTime.set(Calendar.MINUTE, 42);
         alarmStartTime.set(Calendar.SECOND, 0);
-        alarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), getInterval(), pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), getInterval(), pendingIntent);*/
         //NOTIFICATIONS----------------
 
 
