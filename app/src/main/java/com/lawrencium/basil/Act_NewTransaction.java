@@ -25,6 +25,7 @@ public class Act_NewTransaction extends Activity {
     protected EditText inputName;
     protected EditText inputValue;
     protected Spinner inputCategory;
+    protected boolean isIOU;
     SQLiteDbHelper SQLiteDbHelper = new SQLiteDbHelper(this);
 
     @Override
@@ -39,26 +40,33 @@ public class Act_NewTransaction extends Activity {
         inputCategory = (Spinner)findViewById(R.id.spinnerCategories);
         inputValue.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
 
+        Bundle b = getIntent().getExtras();
+        isIOU = b.getBoolean("IOU");
+        if(isIOU) {
+            inputName.setText(b.getString("TITLE"));
+            inputValue.setText(b.getString("AMOUNT"));
+        }
+
         String[] projection = {
-                FeedReaderContract.FeedEntry._ID,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
+            FeedReaderContract.FeedEntry._ID,
+            FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
         };
         String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
         Cursor c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
+            FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+            projection,
+            null,
+            null,
+            null,
+            null,
+            sortOrder
         );
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
         adapter.add("Select Category");
         if(c.moveToFirst()) {
             do {
                 adapter.add(
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE))
+                    c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE))
                 );
             } while (c.moveToNext());
         }
@@ -140,19 +148,21 @@ public class Act_NewTransaction extends Activity {
             Date tempDate = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
             String date = dateFormat.format(tempDate);
-            ContentValues values = new ContentValues();
+            //ContentValues values = new ContentValues();
             String newName = inputName.getText().toString().trim();
             String newBudget = inputValue.getText().toString().trim();
             String newCategory = inputCategory.getSelectedItem().toString().trim();
 
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
+            /*values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, newCategory);
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
             values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
             long newRowId = db.insert(
                     FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
                     FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                    values);
+                    values);*/
+
+            Budget.newTransaction(db, newName, newBudget, newCategory);
 
             Intent resultIntent = new Intent();
             Bundle bundle = new Bundle();

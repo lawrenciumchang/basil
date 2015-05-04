@@ -1,6 +1,6 @@
 {
  "kind": "discovery#rpcDescription",
- "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/SJrUsEs_ns8j33VMcj_hcU_ZT4g\"",
+ "etag": "\"u_zXkMELIlX4ktyNbM2XKD4vK8E/iSpuDL-GZX1yi6HX2ulv4yXNMls\"",
  "discoveryVersion": "v1",
  "id": "registration:v1",
  "name": "registration",
@@ -86,6 +86,24 @@
     }
    }
   },
+  "CollectionResponse_StringCollection": {
+   "id": "CollectionResponse_StringCollection",
+   "type": "object",
+   "properties": {
+    "items": {
+     "type": "array",
+     "items": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    },
+    "nextPageToken": {
+     "type": "string"
+    }
+   }
+  },
   "RegistrationRecord": {
    "id": "RegistrationRecord",
    "type": "object",
@@ -136,6 +154,16 @@
    ],
    "returns": {
     "$ref": "CollectionResponse_RegistrationRecord"
+   },
+   "scopes": [
+    "https://www.googleapis.com/auth/userinfo.email"
+   ]
+  },
+  "registration.listFriends": {
+   "id": "registration.listFriends",
+   "allowGet": true,
+   "returns": {
+    "$ref": "CollectionResponse_StringCollection"
    },
    "scopes": [
     "https://www.googleapis.com/auth/userinfo.email"

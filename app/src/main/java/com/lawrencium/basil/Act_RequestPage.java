@@ -5,12 +5,15 @@ import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+
+import java.math.BigDecimal;
 
 
 public class Act_RequestPage extends Activity {
@@ -20,7 +23,7 @@ public class Act_RequestPage extends Activity {
     String amount ;
     String user;
     String userName;
-    TabsDbHelper tabDbHelper = new TabsDbHelper(this);
+    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
@@ -135,6 +138,9 @@ public class Act_RequestPage extends Activity {
         tabId = Integer.toString(temp);
         date = IouRequestTab.getInstance().getCreatedTab().getDate();
 
+        // Create new corresponding transaction
+        long newTransactionId = Budget.newTransaction(db, title, amount, category);
+        // Store tab in db
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, userName);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING, user);
@@ -142,13 +148,34 @@ public class Act_RequestPage extends Activity {
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, category);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID, newTransactionId);
         long newRowId = db.insert(
                 FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                 values);
 
 
-        new GcmSendAsyncTask(this, userName, "lawrencium.chang@gmail.com", userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()).execute();
+        // Get email of user
+        String owingEmail = "";
+        String[] projection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL
+        };
+        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND + " = \'" +
+                user + "\'";
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                projection,
+                filter,
+                null,
+                null,
+                null,
+                null
+        );
+        if (c.moveToFirst()) {
+            owingEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
+        }
+
+        new GcmSendAsyncTask(this, userName, owingEmail, userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()+newRowId+"**").execute();
 
         if(newRowId >= 0) {
             AlertDialog dialog = builder.create();

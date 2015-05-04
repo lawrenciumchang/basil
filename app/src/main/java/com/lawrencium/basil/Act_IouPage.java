@@ -3,11 +3,14 @@ package com.lawrencium.basil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 
@@ -45,7 +49,10 @@ public class Act_IouPage extends Activity {
 
         Intent intent = getIntent();
 
-        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+        SharedPreferences prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
+                getApplicationContext().MODE_PRIVATE);
+        userName = prefs.getString("user_name", "");
+//        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
         title = intent.getStringExtra(Act_PayPage.PASS_TITLE);
         title = intent.getStringExtra(Act_RequestPage.PASS_TITLE);
         category = intent.getStringExtra(Act_PayPage.PASS_CATEGORY);
@@ -97,7 +104,6 @@ public class Act_IouPage extends Activity {
                 items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
             } while (c.moveToNext());
         }
-        db.close();
         if(category != null) {
             for (int i = 0; i < items.size(); i++) {
                 if (category.equals(items.get(i))) {
@@ -111,14 +117,114 @@ public class Act_IouPage extends Activity {
         amountSet.setText(amount);
 
         Spinner userSet = (Spinner)findViewById(R.id.spinner2);
-        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        //String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        ArrayList<String> items2 = new ArrayList<String>();
+        items2.add("Select User");
+
+        String[] userProjection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
+        };
+        sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
+        c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                userProjection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+            } while (c.moveToNext());
+        }
         if(user != null) {
-            for (int i = 0; i < items2.length; i++) {
-                if (user.equals(items2[i])) {
+            for (int i = 0; i < items2.size(); i++) {
+                if (user.equals(items2.get(i))) {
                     userSet.setSelection(i);
                 }
             }
         }
+
+
+        EditText title = (EditText)findViewById(R.id.editText2);
+        EditText amount = (EditText)findViewById(R.id.editText);
+
+        Bundle b = getIntent().getExtras();
+
+         prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
+                getApplicationContext().MODE_PRIVATE);
+        String userName = prefs.getString("user_name", "");
+        if(b.getBoolean("IOU")) {
+            String userOwed = b.getString("USER_OWED");
+            System.out.println("User Name: "+userName+" - User Owed: "+userOwed);
+            if(userOwed.equals(userName)) {
+                // transaction equalizing magic
+                System.out.println("Names match");
+
+                Log.i("Tab ID", b.getString("TAB_ID"));
+
+                long transactionId;
+                String[] updateProjection = {
+                        FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID
+                };
+                String filter = FeedReaderContract.FeedEntry._ID + " = \'" + b.getString("TAB_ID") + "\'";
+                c = db.query(
+                        FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
+                        updateProjection, filter, null, null, null, null
+                );
+                if(c.moveToFirst()) {
+                    transactionId = c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID));
+                    Log.i("Transaction ID from Tab", ""+transactionId);
+
+                    String[] transactionProjection = {
+                            FeedReaderContract.FeedEntry._ID,
+                            FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
+                    };
+                    filter = FeedReaderContract.FeedEntry._ID + " = \'" + transactionId + "\'";
+                    c = db.query(
+                            FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                            transactionProjection, filter, null, null, null, null
+                    );
+                    String transactionValue = "";
+                    if(c.moveToFirst()) {
+                        Log.i("Tran ID from Tran DB", c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)));
+                        transactionValue = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
+                        Log.i("Transaction Value", transactionValue);
+                    }
+                    BigDecimal oldValue = new BigDecimal(transactionValue);
+                    BigDecimal iouPayment = new BigDecimal(b.getString("AMOUNT"));
+                    BigDecimal balance = oldValue.add(iouPayment);
+                    Log.i("New Transaction Value", balance.toString());
+
+                    if(balance.toString().equals("0.00")) {
+                        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS, FeedReaderContract.FeedEntry._ID+"="+transactionId, null);
+                        Log.i("Transaction deleted", ""+transactionId);
+                    }
+                    else {
+                        ContentValues values = new ContentValues();
+                        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, balance.toString());
+                        filter = FeedReaderContract.FeedEntry._ID + " = \'" + transactionId + "\'";
+                        int numUpdated = db.update(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                                values, filter, null);
+                        Log.i("Transaction updated", ""+transactionId);
+                    }
+                }
+
+                finish();
+            }
+            title.setText(b.getString("TITLE"));
+            amount.setText(b.getString("AMOUNT"));
+            for (int i = 0; i < items2.size(); i++) {
+                if (userOwed.equals(items2.get(i))) {
+                    userSet.setSelection(i);
+                    user = userOwed;
+                }
+            }
+        }
+
+        db.close();
 
     }
 
@@ -149,7 +255,6 @@ public class Act_IouPage extends Activity {
                 items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
             } while (c.moveToNext());
         }
-        db.close();
 
         if(category != null) {
             for (int i = 0; i < items.size(); i++) {
@@ -160,15 +265,37 @@ public class Act_IouPage extends Activity {
         }
 
         Spinner userSet = (Spinner)findViewById(R.id.spinner2);
-        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        //String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        ArrayList<String> items2 = new ArrayList<String>();
+        items2.add("Select User");
+
+        String[] userProjection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
+        };
+        sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
+        c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                userProjection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+            } while (c.moveToNext());
+        }
         if(user != null) {
-            for (int i = 0; i < items2.length; i++) {
-                if (user.equals(items2[i])) {
+            for (int i = 0; i < items2.size(); i++) {
+                if (user.equals(items2.get(i))) {
                     userSet.setSelection(i);
                 }
             }
         }
 
+        db.close();
     }
 
     public void createDropdown(){
@@ -194,7 +321,6 @@ public class Act_IouPage extends Activity {
                 items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
             } while (c.moveToNext());
         }
-        db.close();
         items.add("Add New Category");
         //use simple_spinner_item to make the spinner display smaller
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
@@ -202,10 +328,33 @@ public class Act_IouPage extends Activity {
         dropdown.setAdapter(adapter);
 
         Spinner dropdown2 = (Spinner)findViewById(R.id.spinner2);
-        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        //String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        ArrayList<String> items2 = new ArrayList<String>();
+        items2.add("Select User");
+
+        String[] userProjection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
+        };
+        sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
+        c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                userProjection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+                Log.i(null, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+            } while (c.moveToNext());
+        }
         ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items2);
         adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         dropdown2.setAdapter(adapter2);
+        db.close();
     }
 
 
@@ -372,6 +521,11 @@ public class Act_IouPage extends Activity {
             intent.putExtra(PASS_AMOUNT, amount);
             intent.putExtra(PASS_USER, user);
             intent.putExtra(PASS_CURRENT_USER, userName);
+            Bundle bOut = new Bundle();
+            Bundle bIn = getIntent().getExtras();
+            bOut.putString("OWED_TABID", bIn.getString("TAB_ID"));
+            bOut.putString("USER_OWED", bIn.getString("USER_OWED"));
+            intent.putExtras(bOut);
             startActivity(intent);
         }
     }

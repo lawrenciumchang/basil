@@ -28,13 +28,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.lawrencium.basil.james.backend.registration.Registration;
-import com.google.android.gms.common.api.Status;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -126,7 +126,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
 
         //NOTIFICATIONS----------------
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        /*AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
         Intent alarmIntent = new Intent(Act_BudgetBuddy.this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(Act_BudgetBuddy.this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -135,7 +135,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         alarmStartTime.set(Calendar.HOUR_OF_DAY, 21);
         alarmStartTime.set(Calendar.MINUTE, 42);
         alarmStartTime.set(Calendar.SECOND, 0);
-        alarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), getInterval(), pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), getInterval(), pendingIntent);*/
         //NOTIFICATIONS----------------
 
 
@@ -618,15 +618,32 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
     public void notify(View view){
 
+//        int notificationId = new Random().nextInt();
+
+        // Sets up the Snooze and Dismiss action buttons that will appear in the
+        // big view of the notification.
+
+        // REMEMBER TO CHANGE CLASS LATER
+//        Intent declineIntent = new Intent(this, Act_TabsPage.class);
+//        PendingIntent piDecline = PendingIntent.getActivity(this, 0, declineIntent, 0);
+        PendingIntent piDecline = NotificationActivity.getDeclineIntent(mId, context);
+
+//        Intent confirmIntent = new Intent(this, Act_TabsPage.class);
+//        PendingIntent piConfirm = PendingIntent.getActivity(this, 0, confirmIntent, 0);
+        PendingIntent piConfirm = NotificationActivity.getConfirmIntent(mId, context);
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.basil_icon)
                         .setContentTitle("Your Budget Buddy")
 //                        .setContentText("You have overspent in eating out this week. Better hit the gym!")
-                        .setAutoCancel(true)
-                        .setStyle(new NotificationCompat.BigTextStyle().bigText("You have overspent in eating out this week. Better hit the gym!"));
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText("You have overspent in eating out this week. Better hit the gym!"))
+                        .addAction(R.mipmap.basil_icon, getString(R.string.decline), piDecline)
+                        .addAction(R.mipmap.basil_icon, getString(R.string.confirm), piConfirm)
+                        .setAutoCancel(true);
+
         // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, Act_BudgetManagerMain.class);
+        Intent resultIntent = new Intent(this, Act_BudgetBuddy.class);
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.
@@ -652,5 +669,15 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         mId++;
     }
 
+
+    // TESTING FOR FRIENDS STARTS HERE -------------------------------------------------------------------
+
+    public void friends(View view) {
+
+        Intent intent = new Intent(this, Act_FriendsPage.class);
+        intent.putExtra(PASS_CURRENT_USER, userName);
+        startActivity(intent);
+
+    }
 
 }

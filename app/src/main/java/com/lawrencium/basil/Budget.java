@@ -1,5 +1,8 @@
 package com.lawrencium.basil;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -91,5 +94,25 @@ public class Budget {
         }
 
         return bounds;
+    }
+
+    public static long newTransaction(SQLiteDatabase db, String name, String value, String category) {
+        Date tempDate = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
+        String date = dateFormat.format(tempDate);
+        ContentValues values = new ContentValues();
+        /*String newName = inputName.getText().toString().trim();
+        String newBudget = inputValue.getText().toString().trim();
+        String newCategory = inputCategory.getSelectedItem().toString().trim();*/
+
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, name);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, category);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, value);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
+        long newRowId = db.insert(
+                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                values);
+        return newRowId;
     }
 }
