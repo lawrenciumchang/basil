@@ -143,6 +143,15 @@ public class Act_NewTransaction extends Activity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
+        else if(value.matches("0")) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Please enter a valid amount for your request.");
+            builder.setCancelable(true);
+            builder.setPositiveButton("Okay", null);
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
         else {
             SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
             Date tempDate = new Date();

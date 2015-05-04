@@ -115,4 +115,43 @@ public class Budget {
                 values);
         return newRowId;
     }
+
+    public static int[] calculateBoundsDate() {
+        final int[] feb = {7, 7, 7, 7};
+        final int[] leapFeb = {8, 7, 7, 7};
+        final int[] small = {8, 8, 7, 7};
+        final int[] big = {8, 8, 8, 7};
+        int[] weekRange = big;
+
+
+        /*array of date bounds
+        0) 1st day of the quarter
+        1) 1st day of the second quarter
+        2) 1st day of the third quarter
+        3) 1st day of the fourth quarter
+        4) last day of the month
+        5) current month
+        */
+        int[] bounds = new int[6];
+        Calendar c = Calendar.getInstance();
+        bounds[5] = c.get(Calendar.MONTH);
+        int daysThisMonth = c.getActualMaximum(Calendar.DAY_OF_MONTH);
+
+        switch(daysThisMonth) {
+            case 28: weekRange = feb; break;
+            case 29: weekRange = leapFeb; break;
+            case 30: weekRange = small; break;
+            case 31: weekRange = big; break;
+            default: throw new IllegalArgumentException(daysThisMonth + " is not a valid number of days in a month");
+        }
+
+        bounds[0] = 1;
+        System.out.println(bounds[0]);
+        for(int i=0; i<4; i++) {
+            bounds[i+1] = bounds[i] + weekRange[i];
+            System.out.println(bounds[i+1]);
+        }
+
+        return bounds;
+    }
 }

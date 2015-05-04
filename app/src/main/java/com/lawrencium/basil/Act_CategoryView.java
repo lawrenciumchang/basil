@@ -6,6 +6,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -44,9 +47,30 @@ public class Act_CategoryView extends Activity {
         int graphMax = bundle.getInt("GRAPH_MAX");
         int graphProgress = bundle.getInt("GRAPH_PROGRESS");
         int graphSecondary = bundle.getInt("GRAPH_SECONDARY");
-
+        BigDecimal catLeftOver = new BigDecimal(bundle.getString("CAT_LEFTOVER"));
+        BigDecimal quartLeftOver = new BigDecimal(bundle.getString("QUART_LEFTOVER"));
         TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
         progress_overview.setText(graphSecondary*100/graphMax +"%");
+
+        if(catLeftOver.compareTo(new BigDecimal(BigInteger.ZERO)) == -1){
+            catLeftOver = catLeftOver.negate();
+            TextView catLeft = (TextView) findViewById(R.id.catAmountLeftTxt);
+            catLeft.setText("Monthly: $"+catLeftOver+" over");
+            catLeft.setTextColor(Color.parseColor("#ffd81500"));
+        }else {
+            TextView overallCatLeft = (TextView) findViewById(R.id.catAmountLeftTxt);
+            overallCatLeft.setText("Monthly: $" + catLeftOver + " left");
+        }
+        if(quartLeftOver.compareTo(new BigDecimal(BigInteger.ZERO)) == -1){
+            quartLeftOver = quartLeftOver.negate();
+            TextView quartLeft = (TextView) findViewById(R.id.quartAmountLeftTxt);
+            quartLeft.setText("Quarterly: $"+quartLeftOver+" over");
+            quartLeft.setTextColor(Color.parseColor("#ffd81500"));
+        }else {
+            TextView quartLeft = (TextView) findViewById(R.id.quartAmountLeftTxt);
+            quartLeft.setText("Quarterly: $" + quartLeftOver + " left");
+            quartLeft.setTextColor(Color.parseColor("#44aa00"));
+        }
 
         ProgressBar catGraph = (ProgressBar) findViewById(R.id.catProgessBar);
         catGraph.setMax(graphMax);
@@ -74,21 +98,39 @@ public class Act_CategoryView extends Activity {
         TextView monthlyExpense = (TextView) findViewById(R.id.monthlyExpense);
         monthlyExpense.setText(catName +" Monthly Expenses");
 
+        int boundsDate[] = Budget.calculateBoundsDate();
+        int boundsDate1 = boundsDate[1]-1;
+        int boundsDate2 = boundsDate[2]-1;
+        int boundsDate3 = boundsDate[3]-1;
+        int boundsDate4 = boundsDate[4]-1;
+
         lo_week1 = (LinearLayout) findViewById(R.id.lo_week1);
         // hide until its title is clicked
         lo_week1.setVisibility(View.GONE);
+        TextView txtWeek1 = (TextView) findViewById(R.id.txt_week1);
+        txtWeek1.setText("--------Quarter 1: " + boundsDate[5]+"/0"+boundsDate[0] +" - "+boundsDate[5]+"/0"+boundsDate1 + "--------");
+        txtWeek1.setTypeface(null, Typeface.BOLD);
 
         lo_week2 = (LinearLayout) findViewById(R.id.lo_week2);
         // hide until its title is clicked
         lo_week2.setVisibility(View.GONE);
+        TextView txtWeek2 = (TextView) findViewById(R.id.txt_week2);
+        txtWeek2.setText("--------Quarter 2: " + boundsDate[5]+"/0"+boundsDate[1] +" - "+boundsDate[5]+"/"+boundsDate2 +"--------");
+        txtWeek2.setTypeface(null, Typeface.BOLD);
 
         lo_week3 = (LinearLayout) findViewById(R.id.lo_week3);
         // hide until its title is clicked
         lo_week3.setVisibility(View.GONE);
+        TextView txtWeek3 = (TextView) findViewById(R.id.txt_week3);
+        txtWeek3.setText("--------Quarter 3: " + boundsDate[5]+"/"+boundsDate[2] +" - "+boundsDate[5]+"/"+boundsDate3 +"--------");
+        txtWeek3.setTypeface(null, Typeface.BOLD);
 
         lo_week4 = (LinearLayout) findViewById(R.id.lo_week4);
         // hide until its title is clicked
         lo_week4.setVisibility(View.GONE);
+        TextView txtWeek4 = (TextView) findViewById(R.id.txt_week4);
+        txtWeek4.setText("--------Quarter 4: " + boundsDate[5]+"/"+boundsDate[3] +" - "+boundsDate[5]+"/"+boundsDate4 +"--------");
+        txtWeek4.setTypeface(null, Typeface.BOLD);
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
