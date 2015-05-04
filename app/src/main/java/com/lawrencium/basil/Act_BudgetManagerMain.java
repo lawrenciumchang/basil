@@ -55,6 +55,7 @@ public class Act_BudgetManagerMain extends Activity {
         // Get transactions from the last 60 days
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
+                FeedReaderContract.FeedEntry._ID,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
                 FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
@@ -73,10 +74,11 @@ public class Act_BudgetManagerMain extends Activity {
         );
         if(c.moveToFirst()) {
             do {
+                String id = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
                 String value = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 String date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
                 TextView nextTransaction = getTransactionTextView(
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
+                        "["+id+"] "+c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         value,
                         date,
                         null);

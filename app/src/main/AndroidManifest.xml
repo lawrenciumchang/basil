@@ -46,7 +46,11 @@
         </activity>
         <activity
             android:name=".Act_TabsPage"
-            android:label="@string/title_activity_tabs" >
+            android:label="@string/title_activity_tabs"
+            android:parentActivityName=".Act_BudgetBuddy">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Act_BudgetBuddy" />
         </activity>
         <activity
             android:name=".Act_LoginPage"
@@ -54,7 +58,8 @@
         </activity>
         <activity
             android:name=".Act_IouPage"
-            android:label="IOU" >
+            android:label="IOU"
+            android:parentActivityName=".Act_TabsPage">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Act_TabsPage" />

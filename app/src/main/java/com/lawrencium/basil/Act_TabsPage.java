@@ -2,6 +2,7 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -28,8 +29,10 @@ public class Act_TabsPage extends Activity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
-
-        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+        SharedPreferences prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
+                getApplicationContext().MODE_PRIVATE);
+        userName = prefs.getString("user_name", "");
+//        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
 
         System.out.println("Current User from Tabs page: " + userName);
 

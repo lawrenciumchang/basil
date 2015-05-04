@@ -3,7 +3,9 @@ package com.lawrencium.basil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -18,6 +20,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 
@@ -46,7 +49,10 @@ public class Act_IouPage extends Activity {
 
         Intent intent = getIntent();
 
-        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
+        SharedPreferences prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
+                getApplicationContext().MODE_PRIVATE);
+        userName = prefs.getString("user_name", "");
+//        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
         title = intent.getStringExtra(Act_PayPage.PASS_TITLE);
         title = intent.getStringExtra(Act_RequestPage.PASS_TITLE);
         category = intent.getStringExtra(Act_PayPage.PASS_CATEGORY);
@@ -141,24 +147,84 @@ public class Act_IouPage extends Activity {
             }
         }
 
-        db.close();
 
         EditText title = (EditText)findViewById(R.id.editText2);
         EditText amount = (EditText)findViewById(R.id.editText);
 
         Bundle b = getIntent().getExtras();
+
+         prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
+                getApplicationContext().MODE_PRIVATE);
+        String userName = prefs.getString("user_name", "");
         if(b.getBoolean("IOU")) {
+            String userOwed = b.getString("USER_OWED");
+            System.out.println("User Name: "+userName+" - User Owed: "+userOwed);
+            if(userOwed.equals(userName)) {
+                // transaction equalizing magic
+                System.out.println("Names match");
+
+                Log.i("Tab ID", b.getString("TAB_ID"));
+
+                long transactionId;
+                String[] updateProjection = {
+                        FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID
+                };
+                String filter = FeedReaderContract.FeedEntry._ID + " = \'" + b.getString("TAB_ID") + "\'";
+                c = db.query(
+                        FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
+                        updateProjection, filter, null, null, null, null
+                );
+                if(c.moveToFirst()) {
+                    transactionId = c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID));
+                    Log.i("Transaction ID from Tab", ""+transactionId);
+
+                    String[] transactionProjection = {
+                            FeedReaderContract.FeedEntry._ID,
+                            FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
+                    };
+                    filter = FeedReaderContract.FeedEntry._ID + " = \'" + transactionId + "\'";
+                    c = db.query(
+                            FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                            transactionProjection, filter, null, null, null, null
+                    );
+                    String transactionValue = "";
+                    if(c.moveToFirst()) {
+                        Log.i("Tran ID from Tran DB", c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)));
+                        transactionValue = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
+                        Log.i("Transaction Value", transactionValue);
+                    }
+                    BigDecimal oldValue = new BigDecimal(transactionValue);
+                    BigDecimal iouPayment = new BigDecimal(b.getString("AMOUNT"));
+                    BigDecimal balance = oldValue.add(iouPayment);
+                    Log.i("New Transaction Value", balance.toString());
+
+                    if(balance.toString().equals("0.00")) {
+                        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS, FeedReaderContract.FeedEntry._ID+"="+transactionId, null);
+                        Log.i("Transaction deleted", ""+transactionId);
+                    }
+                    else {
+                        ContentValues values = new ContentValues();
+                        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, balance.toString());
+                        filter = FeedReaderContract.FeedEntry._ID + " = \'" + transactionId + "\'";
+                        int numUpdated = db.update(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                                values, filter, null);
+                        Log.i("Transaction updated", ""+transactionId);
+                    }
+                }
+
+                finish();
+            }
             title.setText(b.getString("TITLE"));
             amount.setText(b.getString("AMOUNT"));
-            System.out.println("USER_OWED: " + b.getString("USER_OWED"));
             for (int i = 0; i < items2.size(); i++) {
-                if (b.getString("USER_OWED").equals(items2.get(i))) {
+                if (userOwed.equals(items2.get(i))) {
                     userSet.setSelection(i);
-                    user = b.getString("USER_OWED");
-                    System.out.println("User Spinner set to: " + b.getString("USER_OWED") + " (Item "+i+")");
+                    user = userOwed;
                 }
             }
         }
+
+        db.close();
 
     }
 

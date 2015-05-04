@@ -179,8 +179,8 @@ public class Act_PayPage extends Activity {
         if (c.moveToFirst()) {
             owedEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
         }
-
-        new GcmSendAsyncTask(this, userName, owedEmail,  userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()).execute();
+        String owedTabId = getIntent().getExtras().getString("OWED_TABID");
+        new GcmSendAsyncTask(this, userName, owedEmail,  userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()+owedTabId+"**").execute();
 
         if(newRowId >= 0) {
             AlertDialog dialog = builder.create();

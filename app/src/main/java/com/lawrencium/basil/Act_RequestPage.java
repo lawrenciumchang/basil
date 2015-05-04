@@ -175,7 +175,7 @@ public class Act_RequestPage extends Activity {
             owingEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
         }
 
-        new GcmSendAsyncTask(this, userName, owingEmail, userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()+"**"+newRowId).execute();
+        new GcmSendAsyncTask(this, userName, owingEmail, userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()+newRowId+"**").execute();
 
         if(newRowId >= 0) {
             AlertDialog dialog = builder.create();
