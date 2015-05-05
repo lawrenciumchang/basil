@@ -2,7 +2,6 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,8 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -40,12 +37,12 @@ public class Act_NewTransaction extends Activity {
         inputCategory = (Spinner)findViewById(R.id.spinnerCategories);
         inputValue.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
 
-        Bundle b = getIntent().getExtras();
-        isIOU = b.getBoolean("IOU");
-        if(isIOU) {
-            inputName.setText(b.getString("TITLE"));
-            inputValue.setText(b.getString("AMOUNT"));
-        }
+//        Bundle b = getIntent().getExtras();
+//        isIOU = b.getBoolean("IOU");
+//        if(isIOU) {
+//            inputName.setText(b.getString("TITLE"));
+//            inputValue.setText(b.getString("AMOUNT"));
+//        }
 
         String[] projection = {
             FeedReaderContract.FeedEntry._ID,

@@ -1,6 +1,7 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +9,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.text.Html;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -16,18 +16,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -266,7 +261,9 @@ public class Frag_GraphButton extends Fragment {
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        menu.add(Integer.parseInt(cat_id), 1, 0, "Delete");
+        if(!cat_name.equals("Uncategorized")) {
+            menu.add(Integer.parseInt(cat_id), 1, 0, "Delete");
+        }
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.menu_overview_category_floating, menu);
     }
@@ -276,7 +273,9 @@ public class Frag_GraphButton extends Fragment {
             System.out.println("\n id from menu: " + cat_id);
             switch (item.getItemId()) {
                 case 1:
-                    deleteCategory();
+                    if(!cat_name.equals("Uncategorized")) {
+                        deleteCategory();
+                    }
                     return true;
                 default:
                     return super.onContextItemSelected(item);
