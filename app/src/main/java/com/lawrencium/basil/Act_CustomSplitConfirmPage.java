@@ -279,8 +279,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
             public void onClick(DialogInterface dialog, int which) {
                 launchIntent();
             }});
-        Tabs = createTabs(prices, people, category, title);
-        addTabsToDatabase();
+        Tab.addTabsToDatabase(this, prices, people, category, title, amount);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -291,51 +290,4 @@ public class Act_CustomSplitConfirmPage extends Activity {
         startActivity(intent);
     }
 
-    private ArrayList<Tab> createTabs(double[] prices, String[] people, String category, String title){
-
-        ArrayList<Tab> Tabs = new ArrayList<Tab>();
-        int num = people.length;
-
-
-        for(int i = 1; i < num; i++ ) {
-            IouRequestTab.getInstance().createTab(people[0], people[i], prices[i], category, title);
-            Tabs.add(IouRequestTab.getInstance().getCreatedTab());
-        }
-
-        return Tabs;
-
-    }
-
-    private void addTabsToDatabase(){
-        SQLiteDatabase db = tabDbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        String tabId;
-        String date;
-        int temp;
-        String tempAmount; // = Double.parseDouble(amount);
-
-
-
-        for(Tab T : Tabs) {
-            DecimalFormat dec = new DecimalFormat("0.00");
-            temp = T.getTabId();
-            tabId = Integer.toString(temp);
-            date = T.getDate();
-            tempAmount = dec.format(T.getAmountOwed());
-
-            System.out.println("Amount Saved: "+tempAmount);
-
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, userName);
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING, T.getUserOwing());
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT, tempAmount);
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, category);
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
-            long newRowId = db.insert(
-                    FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
-                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                    values);
-        }
-    }
 }

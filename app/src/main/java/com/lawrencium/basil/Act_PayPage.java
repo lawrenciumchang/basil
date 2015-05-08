@@ -142,26 +142,11 @@ public class Act_PayPage extends Activity {
         amount = Double.toString(tempAmount);
         //System.out.println("Temp Amount: "+tempAmount);
 
-        Tab tempTab = new Tab(user, userName, tempAmount, category, title);
+
         tempAmount *= -1;
         amount = Double.toString(tempAmount);
-        Budget.newTransaction(db, title, amount, category);
-        /*temp = IouRequestTab.getInstance().getCreatedTab().getTabId();
-        tabId = Integer.toString(temp);
-        date = IouRequestTab.getInstance().getCreatedTab().getDate();
-
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, user);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING, userName);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT, amount);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, category);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
-
-        long newRowId = db.insert(
-                FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
-                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                values);*/
+        long newTransID = Budget.newTransaction(db, title, amount, category);
+        Tab tempTab = new Tab(user, userName, tempAmount, category, title, newTransID);
 
         // Get email of user
         String owedEmail = "";
@@ -185,10 +170,10 @@ public class Act_PayPage extends Activity {
         String owedTabId = getIntent().getExtras().getString("OWED_TABID");
         new GcmSendAsyncTask(this, userName, owedEmail,  userName+tempTab.sendTabMsg()+owedTabId+"**").execute();
 
-//        if(newRowId >= 0) {
+
             AlertDialog dialog = builder.create();
             dialog.show();
-//        }
+
 
     }
 

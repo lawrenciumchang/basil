@@ -1,7 +1,14 @@
 package com.lawrencium.basil;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.widget.Spinner;
+
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -14,7 +21,8 @@ public class Tab {
     private String Category;
     private String Title;
     private String Date;
-    private int TabId;
+    private long transactionId;
+
 
 
 
@@ -22,17 +30,14 @@ public class Tab {
 
     //May create constructor that makes a tab for only ID for Tab equals methods
 
-    public Tab(int tabId) {
-        TabId = tabId;
-    }
-
     //Normal Constructor
-    public Tab(String userOwed, String userOwing, double amountOwed, String category, String title) {
+    public Tab(String userOwed, String userOwing, double amountOwed, String category, String title, long transaction) {
         UserOwed = userOwed;
         UserOwing = userOwing;
         AmountOwed = amountOwed;
         Category = category;
         Title = title;
+        transactionId = transaction;
         Date tempDate = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd h:mm:ssa");
         Date = format.format(tempDate);
@@ -45,7 +50,7 @@ public class Tab {
         AmountOwed = T.getAmountOwed();
         Category = T.getCategory();
         Title = T.getTitle();
-        TabId = T.getTabId();
+        transactionId = T.getTransactionId();
         Date = T.getDate();
     }
 
@@ -89,14 +94,6 @@ public class Tab {
         Title = title;
     }
 
-    public int getTabId() {
-        return TabId;
-    }
-
-    public void setTabId(int tabId) {
-        TabId = tabId;
-    }
-
     public String getDate() {
         return Date;
     }
@@ -105,18 +102,24 @@ public class Tab {
         Date = date;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Tab tab = (Tab) o;
-
-        if (TabId != tab.TabId) return false;
-
-        return true;
+    public long getTransactionId() {
+        return transactionId;
     }
+
+    public void setTransactionId(long transactionId) {
+        this.transactionId = transactionId;
+    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        Tab tab = (Tab) o;
+//
+//        if (TabId != tab.TabId) return false;
+//
+//        return true;
+//    }
 
     public String reformatDate(String date){
 
@@ -166,4 +169,79 @@ public class Tab {
                "Date of Transaction: " + reformatDate(Date) + "\n";
     }
 
+//    public static long newTab(Context context, String title, String userName, String user, String amount, String category, String tabId, String date, String newTransactionId) {
+    public long newTab(Context context) {
+        SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(context);
+        SQLiteDatabase db = tabDbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, Title);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, UserOwed);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING, UserOwing);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT, AmountOwed);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, Category);
+
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, Date);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID, transactionId);
+        long newRowId = db.insert(
+                FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
+                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                values);
+
+        db.close();
+        return newRowId;
+    }
+
+    public static void addTabsToDatabase(Context context, double[] prices, String[] people, String category, String title, String amount){
+        SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(context);
+        SQLiteDatabase db = tabDbHelper.getWritableDatabase();
+
+        int num = people.length;
+        Tab tempTab;
+
+        long newTransactionId = Budget.newTransaction(db, title, amount, category);
+
+        for(int i = 1; i < num; i++ ) {
+            // Create new corresponding transaction
+            // Store tab in db
+            tempTab = new Tab(people[0], people[i], prices[i], category, title, newTransactionId);
+            long tabId = tempTab.newTab(context);
+        }
+    }
+
+    public static void fillFriendsSpinner(Context context, Spinner userSet, String user) {
+        SQLiteDbHelper mDbHelper = new SQLiteDbHelper(context);
+        SQLiteDatabase db = mDbHelper.getReadableDatabase();
+
+        ArrayList<String> items2 = new ArrayList<String>();
+        items2.add("Select User");
+
+        String[] userProjection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
+        };
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                userProjection,
+                null,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        if(c.moveToFirst()) {
+            do {
+                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+            } while (c.moveToNext());
+        }
+        if(user != null) {
+            for (int i = 0; i < items2.size(); i++) {
+                if (user.equals(items2.get(i))) {
+                    userSet.setSelection(i);
+                }
+            }
+        }
+
+        db.close();
+    }
 }

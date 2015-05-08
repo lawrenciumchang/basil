@@ -115,9 +115,7 @@ public class Act_RequestPage extends Activity {
     public void confirmRequest(View view){
         SQLiteDatabase db = tabDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        String tabId;
-        String date;
-        int temp;
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Your request has been sent.");
@@ -133,26 +131,17 @@ public class Act_RequestPage extends Activity {
 
         System.out.println("Temp Amount: "+tempAmount);
 
-        IouRequestTab.getInstance().createTab(userName, user, tempAmount, category, title);
-        temp = IouRequestTab.getInstance().getCreatedTab().getTabId();
-        tabId = Integer.toString(temp);
-        date = IouRequestTab.getInstance().getCreatedTab().getDate();
+
+
+
+
+
 
         // Create new corresponding transaction
         long newTransactionId = Budget.newTransaction(db, title, amount, category);
         // Store tab in db
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, title);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWED, userName);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_USEROWING, user);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT, amount);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES, category);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID, tabId);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
-        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID, newTransactionId);
-        long newRowId = db.insert(
-                FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
-                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                values);
+        Tab tempTab = new Tab(userName, user, tempAmount, category, title, newTransactionId);
+        long tabId =tempTab.newTab(this);
 
 
         // Get email of user
@@ -175,12 +164,12 @@ public class Act_RequestPage extends Activity {
             owingEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
         }
 
-        new GcmSendAsyncTask(this, userName, owingEmail, userName+IouRequestTab.getInstance().getCreatedTab().sendTabMsg()+newRowId+"**").execute();
+        new GcmSendAsyncTask(this, userName, owingEmail, userName+tempTab.sendTabMsg()+tabId+"**").execute();
 
-        if(newRowId >= 0) {
+
             AlertDialog dialog = builder.create();
             dialog.show();
-        }
+
 
     }
 

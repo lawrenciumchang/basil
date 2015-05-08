@@ -80,16 +80,16 @@ public class Act_TabVault extends Activity {
 
                 AmountOwed = Double.parseDouble(Amount);
                 Category = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORIES));
-                tabId = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TABID));
-                TabId = Integer.parseInt(tabId);
+
+
                 Date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
-                tempTab = new Tab(UserOwed, UserOwing, AmountOwed, Category, Title);
-                tempTab.setTabId(TabId);
+                tempTab = new Tab(UserOwed, UserOwing, AmountOwed, Category, Title,0);
+
                 tempTab.setDate(Date);
                 Tabs.add(tempTab);
 
                 DecimalFormat dec = new DecimalFormat("0.00");
-                System.out.println("TAB ID: " + TabId);
+
                 System.out.println("Tab Created: " + tempTab);
                 System.out.println("Amount: "+dec.format(AmountOwed));
 

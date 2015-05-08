@@ -24,8 +24,8 @@ public class IouRequestTab {
     }
 
     public void createTab(String userOwed, String userOwing, double amountOwed, String category, String title) {
-        createdTab = new Tab(userOwed, userOwing, amountOwed, category, title);
-        createdTab.setTabId(tabID);
+        createdTab = new Tab(userOwed, userOwing, amountOwed, category, title,0);
+
         tabID++;
     }
 
