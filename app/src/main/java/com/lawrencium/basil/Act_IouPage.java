@@ -41,6 +41,9 @@ public class Act_IouPage extends Activity {
     String user;
     String userName;
 
+    ArrayAdapter<String> categoryAdapter;
+    ArrayAdapter<String> userAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +56,6 @@ public class Act_IouPage extends Activity {
         SharedPreferences prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
                 getApplicationContext().MODE_PRIVATE);
         userName = prefs.getString("user_name", "");
-//        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
         title = intent.getStringExtra(Act_PayPage.PASS_TITLE);
         title = intent.getStringExtra(Act_RequestPage.PASS_TITLE);
         category = intent.getStringExtra(Act_PayPage.PASS_CATEGORY);
@@ -88,70 +90,11 @@ public class Act_IouPage extends Activity {
 
             }
         });
-        ArrayList<String> items = new ArrayList<String>();
-        items.add("Select Category");
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        String[] projection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
-        };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
-        Cursor c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
-        );
-        if(c.moveToFirst()) {
-            do {
-                items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
-            } while (c.moveToNext());
-        }
-        if(category != null) {
-            for (int i = 0; i < items.size(); i++) {
-                if (category.equals(items.get(i))) {
-                    categorySet.setSelection(i);
-                }
-            }
-        }
 
         EditText amountSet = (EditText)findViewById(R.id.editText);
         amountSet.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
         amountSet.setText(amount);
-
-        Spinner userSet = (Spinner)findViewById(R.id.spinner2);
-        //String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-        ArrayList<String> items2 = new ArrayList<String>();
-        items2.add("Select User");
-
-        String[] userProjection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
-        };
-        sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
-        c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
-                userProjection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
-        );
-        if(c.moveToFirst()) {
-            do {
-                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
-            } while (c.moveToNext());
-        }
-        if(user != null) {
-            for (int i = 0; i < items2.size(); i++) {
-                if (user.equals(items2.get(i))) {
-                    userSet.setSelection(i);
-                }
-            }
-        }
-
 
         EditText title = (EditText)findViewById(R.id.editText2);
         EditText amount = (EditText)findViewById(R.id.editText);
@@ -178,7 +121,7 @@ public class Act_IouPage extends Activity {
                         FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID
                 };
                 String filter = FeedReaderContract.FeedEntry._ID + " = \'" + b.getString("TAB_ID") + "\'";
-                c = db.query(
+                Cursor c = db.query(
                         FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
                         updateProjection, filter, null, null, null, null
                 );
@@ -227,12 +170,6 @@ public class Act_IouPage extends Activity {
             }
             title.setText(b.getString("TITLE"));
             amount.setText(b.getString("AMOUNT"));
-            for (int i = 0; i < items2.size(); i++) {
-                if (userOwed.equals(items2.get(i))) {
-                    userSet.setSelection(i);
-                    user = userOwed;
-                }
-            }
         }
 
         db.close();
@@ -242,77 +179,29 @@ public class Act_IouPage extends Activity {
     protected void onResume(){
         super.onResume();
 
-        ArrayList<String> items = new ArrayList<String>();
-        createDropdown();
         Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
-        items.add("Select Category");
-
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        String[] projection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
-        };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
-        Cursor c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
-        );
-        if(c.moveToFirst()) {
-            do {
-                items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
-            } while (c.moveToNext());
-        }
-
         if(category != null) {
-            for (int i = 0; i < items.size(); i++) {
-                if (category.equals(items.get(i))) {
+            for (int i = 0; i < categoryAdapter.getCount(); i++) {
+                if (category.equals(categoryAdapter.getItem(i))) {
                     categorySet.setSelection(i);
                 }
             }
         }
 
         Spinner userSet = (Spinner)findViewById(R.id.spinner2);
-        //String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-        ArrayList<String> items2 = new ArrayList<String>();
-        items2.add("Select User");
-
-        String[] userProjection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
-        };
-        sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
-        c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
-                userProjection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
-        );
-        if(c.moveToFirst()) {
-            do {
-                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
-            } while (c.moveToNext());
-        }
         if(user != null) {
-            for (int i = 0; i < items2.size(); i++) {
-                if (user.equals(items2.get(i))) {
+            for (int i = 0; i < userAdapter.getCount(); i++) {
+                if (user.equals(userAdapter.getItem(i))) {
                     userSet.setSelection(i);
                 }
             }
         }
-
-        db.close();
     }
 
     public void createDropdown(){
         Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
-        ArrayList<String> items = new ArrayList<String>();
-        items.add("Select Category");
+        ArrayList<String> categoryItems= new ArrayList<String>();
+        categoryItems.add("Select Category");
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String[] projection = {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
@@ -329,19 +218,18 @@ public class Act_IouPage extends Activity {
         );
         if(c.moveToFirst()) {
             do {
-                items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
+                categoryItems.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
             } while (c.moveToNext());
         }
-        items.add("Add New Category");
-        //use simple_spinner_item to make the spinner display smaller
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown.setAdapter(adapter);
+        categoryItems.add("Add New Category");
+        // Use simple_spinner_item to make the spinner display smaller
+        categoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categoryItems);
+        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdown.setAdapter(categoryAdapter);
 
         Spinner dropdown2 = (Spinner)findViewById(R.id.spinner2);
-        //String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-        ArrayList<String> items2 = new ArrayList<String>();
-        items2.add("Select User");
+        ArrayList<String> userItems = new ArrayList<String>();
+        userItems.add("Select User");
 
         String[] userProjection = {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
@@ -358,13 +246,13 @@ public class Act_IouPage extends Activity {
         );
         if(c.moveToFirst()) {
             do {
-                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+                userItems.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
                 Log.i(null, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
             } while (c.moveToNext());
         }
-        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items2);
-        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown2.setAdapter(adapter2);
+        userAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, userItems);
+        userAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdown2.setAdapter(userAdapter);
         db.close();
     }
 
