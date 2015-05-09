@@ -48,7 +48,6 @@ public class Act_IouPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__iou_page);
-        createDropdown();
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
@@ -76,20 +75,11 @@ public class Act_IouPage extends Activity {
 
         // Load categories from Budget side
         Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
-        categorySet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
-                if(parent.getItemAtPosition(pos).toString().equals("Add New Category")) {
-                    Intent intent = new Intent(parent.getContext(), Act_NewCategory.class);
-                    startActivity(intent);
-                }
-            }
+        categoryAdapter = Tab.createCategoriesDropdown(this, categorySet);
+        Spinner userSet = (Spinner)findViewById(R.id.spinner2);
+        userAdapter = Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
-        });
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         EditText amountSet = (EditText)findViewById(R.id.editText);
@@ -101,8 +91,8 @@ public class Act_IouPage extends Activity {
 
         Bundle b = getIntent().getExtras();
 
-         prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
-                getApplicationContext().MODE_PRIVATE);
+        prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
+               getApplicationContext().MODE_PRIVATE);
         String userName = prefs.getString("user_name", "");
         if(b.getBoolean("IOU")) {
             requestButton.setVisibility(View.INVISIBLE);

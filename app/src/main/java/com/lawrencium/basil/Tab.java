@@ -2,8 +2,13 @@ package com.lawrencium.basil;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import java.text.DecimalFormat;
@@ -209,20 +214,29 @@ public class Tab {
         }
     }
 
-    public static void fillFriendsSpinner(Context context, Spinner userSet, String user) {
+    /**
+     * createDown - blah blah
+     * @param context
+     * @param dropdown
+     * @param table
+     * @param column
+     * @param placeholder
+     * @return
+     */
+    public static ArrayAdapter<String> createDropdown(Context context, Spinner dropdown, String table, String column, String placeholder){
         SQLiteDbHelper mDbHelper = new SQLiteDbHelper(context);
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
-        ArrayList<String> items2 = new ArrayList<String>();
-        items2.add("Select User");
-
-        String[] userProjection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
+        ArrayList<String> categoryItems= new ArrayList<String>();
+        if(placeholder != null)
+            categoryItems.add(placeholder);
+        String[] projection = {
+                column
         };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
+        String sortOrder = column;
         Cursor c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
-                userProjection,
+                table,
+                projection,
                 null,
                 null,
                 null,
@@ -231,17 +245,37 @@ public class Tab {
         );
         if(c.moveToFirst()) {
             do {
-                items2.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
+                categoryItems.add(c.getString(c.getColumnIndexOrThrow(column)));
             } while (c.moveToNext());
         }
-        if(user != null) {
-            for (int i = 0; i < items2.size(); i++) {
-                if (user.equals(items2.get(i))) {
-                    userSet.setSelection(i);
-                }
-            }
-        }
+        // Use simple_spinner_item to make the spinner display smaller
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, categoryItems);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dropdown.setAdapter(adapter);
 
         db.close();
+        return adapter;
     }
+    public static ArrayAdapter<String> createCategoriesDropdown(Context context, Spinner dropdown) {
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
+                if(parent.getItemAtPosition(pos).toString().equals("Add New Category")) {
+                    Intent intent = new Intent(parent.getContext(), Act_NewCategory.class);
+                    parent.getContext().startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        ArrayAdapter<String> categoryAdapter = Tab.createDropdown(context, dropdown, FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, "Select Category");
+        categoryAdapter.add("Add New Category");
+        dropdown.setAdapter(categoryAdapter);
+
+        return categoryAdapter;
+    }
+
 }

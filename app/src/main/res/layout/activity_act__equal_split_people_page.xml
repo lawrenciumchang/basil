@@ -19,12 +19,13 @@
             android:layout_height="fill_parent"
             android:id="@+id/spinnerLayout">
 
-            <Spinner
+            <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/user1"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:editable="false"/>
 
             <Spinner
                 android:layout_width="fill_parent"

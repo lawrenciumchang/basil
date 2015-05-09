@@ -45,14 +45,15 @@
             android:focusable="true"
             android:focusableInTouchMode="true">
 
-            <Spinner
+            <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/userName"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
                 android:focusable="false"
-                android:focusableInTouchMode="false" />
+                android:focusableInTouchMode="false"
+                android:editable="false" />
 
             <EditText
                 android:layout_width="match_parent"

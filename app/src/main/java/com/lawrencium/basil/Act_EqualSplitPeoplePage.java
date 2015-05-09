@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
@@ -62,14 +63,17 @@ public class Act_EqualSplitPeoplePage extends Activity {
         System.out.println("Number of people: " + number);
         System.out.println("Current User: " + userName);
 
-        createUserDropdown();
+//        createUserDropdown();
+        EditText userHeader = (EditText)findViewById(R.id.user1);
+        userHeader.setText(userName);
 
-        createUserDropdown2();
+//        createUserDropdown2();
         Spinner user2Set = (Spinner)findViewById(R.id.user2);
-        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+        ArrayAdapter<String> friendsSet = Tab.createDropdown(this, user2Set, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
+//        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
         if(user2 != null) {
-            for (int i = 0; i < items2.length; i++) {
-                if (user2.equals(items2[i])) {
+            for (int i = 0; i < friendsSet.getCount(); i++) {
+                if (user2.equals(friendsSet.getItem(i))) {
                     user2Set.setSelection(i);
                 }
             }
@@ -79,11 +83,13 @@ public class Act_EqualSplitPeoplePage extends Activity {
         if(b.getString("2") != null) {
             for (int a = 0; a < numToCreate; a++) {
                 String id = Integer.toString(a+2);
-                for(int c = 0; c < items2.length; c++) {
-                    if (b.getString(id).equals(items2[c])) {
+                for(int c = 0; c < friendsSet.getCount(); c++) {
+                    if (b.getString(id).equals(friendsSet.getItem(c))) {
 //                        Spinner userSet = (Spinner)findViewById(a);
 //                        System.out.println("find spinner: " + userSet);
-                        Spinner userSet = createNewUserDropdown();
+//                        Spinner userSet = createNewUserDropdown();
+                        Spinner userSet = new Spinner(this);
+                        Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
                         ll.addView(userSet, ll.getChildCount(), lp);
                         userSet.setId(a+2);
                         userSet.setSelection(c);
@@ -94,7 +100,9 @@ public class Act_EqualSplitPeoplePage extends Activity {
         //dynamically creates Spinners for number of users
         else {
             for (int i = 0; i < numToCreate; i++) {
-                Spinner createNew = createNewUserDropdown();
+//                Spinner createNew = createNewUserDropdown();
+                Spinner createNew = new Spinner(this);
+                Tab.createDropdown(this, createNew, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
                 ll.addView(createNew, ll.getChildCount(), lp);
                 createNew.setId(i+2);
             }
