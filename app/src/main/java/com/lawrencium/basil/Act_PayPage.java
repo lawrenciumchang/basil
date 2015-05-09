@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 
 
+
 public class Act_PayPage extends Activity {
 
     String title;
@@ -30,6 +31,10 @@ public class Act_PayPage extends Activity {
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
     public final static String PASS_USER = "com.lawrencium.basil.USER";
 
+    /**
+     * Prints a confirmation of how much user is owing another user.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +71,11 @@ public class Act_PayPage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_IouPage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -99,6 +109,9 @@ public class Act_PayPage extends Activity {
         return true;
     }
 
+    /**
+     * Takes user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -111,6 +124,12 @@ public class Act_PayPage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Confirms the payment.
+     * Takes user to the Tabs home page so that the transaction can no longer be modified.
+     * Saves the information to the Tabs database.
+     * @param view
+     */
     public void confirmPay(View view){
         SQLiteDatabase db = tabDbHelper.getWritableDatabase();
 
@@ -160,6 +179,9 @@ public class Act_PayPage extends Activity {
         dialog.show();
     }
 
+    /**
+     * Sends user to the Tabs home page.
+     */
     public void launchIntent(){
         Intent intent = new Intent(this, Act_TabsPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);

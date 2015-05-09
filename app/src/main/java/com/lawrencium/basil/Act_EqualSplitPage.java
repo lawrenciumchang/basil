@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 
+
 public class Act_EqualSplitPage extends Activity {
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
@@ -31,6 +32,10 @@ public class Act_EqualSplitPage extends Activity {
 
     ArrayAdapter<String> categoryAdapter;
 
+    /**
+     * Allows user to input transaction information and select how many users are included.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,9 @@ public class Act_EqualSplitPage extends Activity {
 
     }
 
+    /**
+     * Resumes functionality after user has chosen to create a new Category.
+     */
     protected void onResume(){
         super.onResume();
 
@@ -77,6 +85,7 @@ public class Act_EqualSplitPage extends Activity {
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -84,6 +93,11 @@ public class Act_EqualSplitPage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_TabsPage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -113,6 +127,9 @@ public class Act_EqualSplitPage extends Activity {
         return true;
     }
 
+    /**
+     * Takes user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -121,6 +138,10 @@ public class Act_EqualSplitPage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Takes user to the next page to select users.
+     * @param view
+     */
     public void equalNext(View view){
         EditText equalTitle = (EditText)findViewById(R.id.equalTitle);
         String title = equalTitle.getText().toString();

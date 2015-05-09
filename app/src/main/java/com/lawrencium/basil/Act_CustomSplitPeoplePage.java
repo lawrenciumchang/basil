@@ -53,6 +53,11 @@ public class Act_CustomSplitPeoplePage extends Activity {
     int bundleTipID;
     int calcSubID;
 
+    /**
+     * Creates number of dropdowns and TextEdit views depending on how many users were selected on the previous page
+     * to allow user to enter in transactions.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -207,6 +212,12 @@ public class Act_CustomSplitPeoplePage extends Activity {
         }
     }
 
+
+
+    /**
+     * Creates field for user to enter subtotal.
+     * @return  EditText field for subtotal
+     */
     public EditText createNewUserSubtotal(){
         EditText newSubtotal = new EditText(this);
         newSubtotal.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -214,6 +225,10 @@ public class Act_CustomSplitPeoplePage extends Activity {
         return newSubtotal;
     }
 
+    /**
+     * Creates field for user to enter tip.
+     * @return EditText field for tip
+     */
     public EditText createNewUserTip(){
         EditText newTip = new EditText(this);
         newTip.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
@@ -228,6 +243,11 @@ public class Act_CustomSplitPeoplePage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_CustomSplitPage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -261,6 +281,9 @@ public class Act_CustomSplitPeoplePage extends Activity {
         return true;
     }
 
+    /**
+     * Takes user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -273,6 +296,12 @@ public class Act_CustomSplitPeoplePage extends Activity {
         startActivityForResult(i, 0);
     }
 
+
+
+    /**
+     * Takes user to the confirmation page.
+     * @param view
+     */
     public void customPeopleNext(View view){
 
         checkSpinID = 101;

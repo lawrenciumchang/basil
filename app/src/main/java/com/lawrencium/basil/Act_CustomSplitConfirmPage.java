@@ -2,10 +2,8 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.Menu;
@@ -52,6 +50,10 @@ public class Act_CustomSplitConfirmPage extends Activity {
     public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
     public final static String PASS_TAX_FLAG = "com.lawrencium.basil.TAXFLAG";
 
+    /**
+     * Prints on screen a confirmation page, showing the user the transaction totals for each user.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -211,6 +213,11 @@ public class Act_CustomSplitConfirmPage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_CustomSplitPeoplePage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -247,6 +254,9 @@ public class Act_CustomSplitConfirmPage extends Activity {
         return true;
     }
 
+    /**
+     * Takes user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -262,6 +272,12 @@ public class Act_CustomSplitConfirmPage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Confirms the payment.
+     * Takes user to the Tabs home page so that the transaction can no longer be modified.
+     * Saves the information to the Tabs database.
+     * @param view
+     */
     public void confirmCustom(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Your request has been sent.");
@@ -276,6 +292,9 @@ public class Act_CustomSplitConfirmPage extends Activity {
         dialog.show();
     }
 
+    /**
+     * Sends user to the Tabs home page.
+     */
     public void launchIntent(){
         Intent intent = new Intent(this, Act_TabsPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);

@@ -33,6 +33,10 @@ public class Act_EqualSplitPeoplePage extends Activity {
     int numToCreate;
 
 
+    /**
+     * Creates dropdown menus equal to the number of users selected on previous page.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +112,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
 
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -115,6 +120,11 @@ public class Act_EqualSplitPeoplePage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_EqualSplitPage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -148,6 +158,9 @@ public class Act_EqualSplitPeoplePage extends Activity {
         return true;
     }
 
+    /**
+     * Takes user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -160,6 +173,10 @@ public class Act_EqualSplitPeoplePage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Takes user to the confirmation page.
+     * @param view
+     */
     public void equalPeopleNext(View view){
 
         boolean check = true;

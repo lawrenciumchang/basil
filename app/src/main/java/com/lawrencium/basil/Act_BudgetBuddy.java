@@ -158,11 +158,19 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Negates the effect of a back button press on the home page.
+     */
     @Override
     public void onBackPressed() {
         //leave empty
     }
 
+    /**
+     * Takes the user to the Budget portion of the app.
+     * The user must be logged in in order to continue to the next page.
+     * @param view
+     */
     public void budgetView(View view){
         if(userName.isEmpty()){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -180,6 +188,11 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         }
     }
 
+    /**
+     * Takes the user to the Tabs portion of the app.
+     * The user must be logged in in order to continue to the next page.
+     * @param view
+     */
     public void tabsView(View view){
         if(userName.isEmpty()){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -578,6 +591,10 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
     // NOTIFICATION STUFF STARTS HERE -------------------------------------------------------------------
 
+    /**
+     * Used to set an interval for how often notifications repeat.
+     * @return  Time in ms of repeat interval
+     */
     private int getInterval(){
         int days = 1;
         int hours = 24;
@@ -589,6 +606,11 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         return repeatMS;
     }
 
+    /**
+     * Called when notification button clicked on home page. Used for testing.
+     * @param view  Once notification has been clicked, must send user to Act_BudgetManagerMain,
+     *              and preserve parent navigation functionality.
+     */
     public void notify(View view){
 
 //        int notificationId = new Random().nextInt();
@@ -645,6 +667,10 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
     // TESTING FOR FRIENDS STARTS HERE -------------------------------------------------------------------
 
+    /**
+     * Sends user to list of friends page.
+     * @param view
+     */
     public void friends(View view) {
 
         Intent intent = new Intent(this, Act_FriendsPage.class);

@@ -38,6 +38,10 @@ public class Act_EqualSplitConfirmPage extends Activity {
 
     int num;
 
+    /**
+     * Prints on screen a confirmation page, showing the user the transaction totals for each user.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +118,11 @@ public class Act_EqualSplitConfirmPage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_EqualSplitPeoplePage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -149,6 +158,9 @@ public class Act_EqualSplitConfirmPage extends Activity {
         return true;
     }
 
+    /**
+     * Takes user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -163,6 +175,12 @@ public class Act_EqualSplitConfirmPage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Confirms the payment.
+     * Takes user to the Tabs home page so that the transaction can no longer be modified.
+     * Saves the information to the Tabs database.
+     * @param view
+     */
     public void confirmEqual(View view){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Your request has been sent.");
@@ -178,6 +196,9 @@ public class Act_EqualSplitConfirmPage extends Activity {
         dialog.show();
     }
 
+    /**
+     * Sends user to Tabs home page.
+     */
     public void launchIntent(){
         Intent intent = new Intent(this, Act_TabsPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);

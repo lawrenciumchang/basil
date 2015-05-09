@@ -41,6 +41,10 @@ public class Act_IouPage extends Activity {
     ArrayAdapter<String> categoryAdapter;
     ArrayAdapter<String> userAdapter;
 
+    /**
+     * Allows user to input transaction information geared toward one user.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,6 +176,9 @@ public class Act_IouPage extends Activity {
 
     }
 
+    /**
+     * Resumes functionality after user has chosen to create a new Category.
+     */
     protected void onResume(){
         super.onResume();
 
@@ -197,7 +204,7 @@ public class Act_IouPage extends Activity {
             }
         }
     }
-    
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -205,6 +212,11 @@ public class Act_IouPage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_TabsPage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -234,6 +246,9 @@ public class Act_IouPage extends Activity {
         return true;
     }
 
+    /**
+     * Takes user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -242,6 +257,10 @@ public class Act_IouPage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Takes user to Request page.
+     * @param view
+     */
     public void requestClick(View view){
 
         EditText editText2 = (EditText)findViewById(R.id.editText2);
@@ -303,6 +322,10 @@ public class Act_IouPage extends Activity {
         }
     }
 
+    /**
+     * Takes user to Pay page.
+     * @param view
+     */
     public void payClick(View view){
 
         EditText editText2 = (EditText)findViewById(R.id.editText2);
