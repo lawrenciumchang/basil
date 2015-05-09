@@ -193,7 +193,30 @@ public class Tab {
                 FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
                 values);
 
+        // Get email of user
+        String owingEmail = "";
+        String[] projection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL
+        };
+        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND + " = \'" +
+               UserOwing + "\'";
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                projection,
+                filter,
+                null,
+                null,
+                null,
+                null
+        );
+        if (c.moveToFirst()) {
+            owingEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
+        }
+
         db.close();
+
+        new GcmSendAsyncTask(context, UserOwed, owingEmail, UserOwing+sendTabMsg()+newRowId+"**").execute();
+
         return newRowId;
     }
 
@@ -211,6 +234,7 @@ public class Tab {
             // Store tab in db
             tempTab = new Tab(people[0], people[i], prices[i], category, title, newTransactionId);
             long tabId = tempTab.newTab(context);
+
         }
     }
 

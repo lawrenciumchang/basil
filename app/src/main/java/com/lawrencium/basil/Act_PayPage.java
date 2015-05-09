@@ -142,9 +142,6 @@ public class Act_PayPage extends Activity {
         amount = Double.toString(tempAmount);
         //System.out.println("Temp Amount: "+tempAmount);
 
-
-        tempAmount *= -1;
-        amount = Double.toString(tempAmount);
         long newTransID = Budget.newTransaction(db, title, amount, category);
         Tab tempTab = new Tab(user, userName, tempAmount, category, title, newTransID);
 

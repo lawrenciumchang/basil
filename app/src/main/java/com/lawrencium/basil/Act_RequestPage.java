@@ -144,27 +144,27 @@ public class Act_RequestPage extends Activity {
         long tabId =tempTab.newTab(this);
 
 
-        // Get email of user
-        String owingEmail = "";
-        String[] projection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL
-        };
-        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND + " = \'" +
-                user + "\'";
-        Cursor c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
-                projection,
-                filter,
-                null,
-                null,
-                null,
-                null
-        );
-        if (c.moveToFirst()) {
-            owingEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
-        }
-
-        new GcmSendAsyncTask(this, userName, owingEmail, userName+tempTab.sendTabMsg()+tabId+"**").execute();
+//        // Get email of user
+//        String owingEmail = "";
+//        String[] projection = {
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL
+//        };
+//        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND + " = \'" +
+//                user + "\'";
+//        Cursor c = db.query(
+//                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+//                projection,
+//                filter,
+//                null,
+//                null,
+//                null,
+//                null
+//        );
+//        if (c.moveToFirst()) {
+//            owingEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
+//        }
+//
+//        new GcmSendAsyncTask(this, userName, owingEmail, userName+tempTab.sendTabMsg()+tabId+"**").execute();
 
 
             AlertDialog dialog = builder.create();

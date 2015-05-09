@@ -74,10 +74,10 @@ public class Act_IouPage extends Activity {
         payButton.setVisibility(View.INVISIBLE);
 
         // Load categories from Budget side
-        Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
-        categoryAdapter = Tab.createCategoriesDropdown(this, categorySet);
-        Spinner userSet = (Spinner)findViewById(R.id.spinner2);
-        userAdapter = Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
+//        Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
+//        categoryAdapter = Tab.createCategoriesDropdown(this, categorySet);
+//        Spinner userSet = (Spinner)findViewById(R.id.spinner2);
+//        userAdapter = Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
 
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -95,6 +95,9 @@ public class Act_IouPage extends Activity {
                getApplicationContext().MODE_PRIVATE);
         String userName = prefs.getString("user_name", "");
         if(b.getBoolean("IOU")) {
+            Spinner userSet = (Spinner)findViewById(R.id.spinner2);
+            userAdapter = Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
+
             requestButton.setVisibility(View.INVISIBLE);
             payButton.setVisibility(View.VISIBLE);
             String userOwed = b.getString("USER_OWED");
@@ -108,6 +111,7 @@ public class Act_IouPage extends Activity {
                 long transactionId;
                 String[] updateProjection = {
                         FeedReaderContract.FeedEntry._ID,
+                        FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT,
                         FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID
                 };
                 String filter = FeedReaderContract.FeedEntry._ID + " = \'" + b.getString("TAB_ID") + "\'";
@@ -117,6 +121,7 @@ public class Act_IouPage extends Activity {
                 );
                 if(c.moveToFirst()) {
                     Long tabId = c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
+                    String tabValue = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT));
                     transactionId = c.getLong(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TRANSACTIONID));
                     Log.i("Transaction ID from Tab", ""+transactionId);
 
@@ -135,19 +140,24 @@ public class Act_IouPage extends Activity {
                         transactionValue = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                         Log.i("Transaction Value", transactionValue);
                     }
-                    BigDecimal oldValue = new BigDecimal(transactionValue);
+                    BigDecimal oldTabValue = new BigDecimal(tabValue);
+                    BigDecimal oldTransValue = new BigDecimal(transactionValue);
                     BigDecimal iouPayment = new BigDecimal(b.getString("AMOUNT"));
-                    BigDecimal balance = oldValue.add(iouPayment);
-                    Log.i("New Transaction Value", balance.toString());
+                    BigDecimal tabBalance = oldTabValue.add(iouPayment);
+                    BigDecimal transBalance = oldTransValue.add(iouPayment);
+                    Log.i("New Transaction Value", transBalance.toString());
 
-                    if(balance.toString().equals("0.00")) {
-                        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS, FeedReaderContract.FeedEntry._ID+"="+transactionId, null);
+                    if(tabBalance.toString().equals("0.00")) {
                         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TABS, FeedReaderContract.FeedEntry._ID+"="+tabId, null);
+                        Log.i("Tab deleted", ""+tabId);
+                    }
+                    if(transBalance.toString().equals("0.00")) {
+                        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS, FeedReaderContract.FeedEntry._ID+"="+transactionId, null);
                         Log.i("Transaction deleted", ""+transactionId);
                     }
                     else {
                         ContentValues values = new ContentValues();
-                        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, balance.toString());
+                        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, transBalance.toString());
                         filter = FeedReaderContract.FeedEntry._ID + " = \'" + transactionId + "\'";
                         int numUpdated = db.update(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
                                 values, filter, null);
@@ -160,6 +170,12 @@ public class Act_IouPage extends Activity {
             }
             title.setText(b.getString("TITLE"));
             amount.setText(b.getString("AMOUNT"));
+            for (int i = 0; i < userAdapter.getCount(); i++) {
+                if (userOwed.equals(userAdapter.getItem(i))) {
+                    userSet.setSelection(i);
+                    user = userOwed;
+                }
+            }
         }
 
         db.close();
@@ -170,6 +186,11 @@ public class Act_IouPage extends Activity {
         super.onResume();
 
         Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
+        Spinner userSet = (Spinner)findViewById(R.id.spinner2);
+
+        categoryAdapter = Tab.createCategoriesDropdown(this, categorySet);
+        userAdapter = Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
+
         if(category != null) {
             for (int i = 0; i < categoryAdapter.getCount(); i++) {
                 if (category.equals(categoryAdapter.getItem(i))) {
@@ -178,7 +199,6 @@ public class Act_IouPage extends Activity {
             }
         }
 
-        Spinner userSet = (Spinner)findViewById(R.id.spinner2);
         if(user != null) {
             for (int i = 0; i < userAdapter.getCount(); i++) {
                 if (user.equals(userAdapter.getItem(i))) {
