@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -12,20 +12,8 @@ import java.util.Date;
  * Created by Evan on 3/23/2015.
  */
 public class Budget {
-    private volatile static Budget singleton;
-    //FeedReaderDbHelper mDbHelper = new FeedReaderDbHelper();
 
     private Budget() {
-    }
-    public static Budget getInstance() {
-        if (singleton == null) {
-            synchronized (Budget.class) {
-                if (singleton == null) {
-                    singleton = new Budget();
-                }
-            }
-        }
-        return singleton;
     }
 
     /**
@@ -101,9 +89,6 @@ public class Budget {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
         String date = dateFormat.format(tempDate);
         ContentValues values = new ContentValues();
-        /*String newName = inputName.getText().toString().trim();
-        String newBudget = inputValue.getText().toString().trim();
-        String newCategory = inputCategory.getSelectedItem().toString().trim();*/
 
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, name);
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, category);

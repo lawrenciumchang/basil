@@ -42,7 +42,6 @@ public class Act_BudgetManagerMain extends Activity {
         calendar.set(Calendar.SECOND, 0);
         today = calendar.getTime();
         calendar.set(Calendar.DAY_OF_MONTH, 1); // First day of this month
-        String dayOneThisMonth = format.format(calendar.getTime());
         calendar.setTime(today);     // Two months ago
         calendar.add(Calendar.MONTH, -1);
         String twoMonthsAgo = format.format(calendar.getTime());
@@ -74,16 +73,12 @@ public class Act_BudgetManagerMain extends Activity {
                 String value = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 String date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
                 TextView nextTransaction = getTransactionTextView(
-                        /*"["+id+"] "+*/c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         value,
                         date,
                         null);
                 ll.addView(nextTransaction);
 
-                /*if(date.compareTo(dayOneThisMonth) > 0) {
-                    BigDecimal transactionValue = new BigDecimal(value);
-                    total = total.add(transactionValue);
-                }*/
             } while (c.moveToNext());
         }
         c.close();
@@ -195,8 +190,6 @@ public class Act_BudgetManagerMain extends Activity {
         calendar.add(Calendar.MONTH, -1);
         String twoMonthsAgo = format.format(calendar.getTime());
 
-        LinearLayout ll = (LinearLayout) findViewById(R.id.lo_budgetmain);
-
         BigDecimal total = new BigDecimal(BigInteger.ZERO);
 
         // Get transactions from the last 60 days
@@ -221,15 +214,9 @@ public class Act_BudgetManagerMain extends Activity {
         );
         if(c.moveToFirst()) {
             do {
-                String id = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
                 String value = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 String date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
-                /*TextView nextTransaction = getTransactionTextView(
-                        *//*"["+id+"] "+*//*c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
-                        value,
-                        date,
-                        null);
-                ll.addView(nextTransaction);*/
+
                 if(date.compareTo(dayOneThisMonth) > 0) {
                     BigDecimal transactionValue = new BigDecimal(value);
                     total = total.add(transactionValue);
@@ -238,9 +225,7 @@ public class Act_BudgetManagerMain extends Activity {
         }
         c.close();
         // Get sum of category values
-        String[] catProjection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE
-        };
+
         c = db.rawQuery("SELECT SUM("+ FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE +
                 ") AS myTotal FROM " + FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, null);
         String catSum;

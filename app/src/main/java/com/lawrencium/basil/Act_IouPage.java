@@ -2,7 +2,6 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,15 +13,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
+
 
 
 public class Act_IouPage extends Activity {
@@ -74,12 +71,6 @@ public class Act_IouPage extends Activity {
         payButton.setVisibility(View.INVISIBLE);
 
         // Load categories from Budget side
-//        Spinner categorySet = (Spinner)findViewById(R.id.spinner1);
-//        categoryAdapter = Tab.createCategoriesDropdown(this, categorySet);
-//        Spinner userSet = (Spinner)findViewById(R.id.spinner2);
-//        userAdapter = Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
-
-
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         EditText amountSet = (EditText)findViewById(R.id.editText);
@@ -165,7 +156,6 @@ public class Act_IouPage extends Activity {
                     }
                 }
 
-
                 finish();
             }
             title.setText(b.getString("TITLE"));
@@ -207,66 +197,7 @@ public class Act_IouPage extends Activity {
             }
         }
     }
-
-    public void createDropdown(){
-        Spinner dropdown = (Spinner)findViewById(R.id.spinner1);
-        ArrayList<String> categoryItems= new ArrayList<String>();
-        categoryItems.add("Select Category");
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        String[] projection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
-        };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
-        Cursor c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
-        );
-        if(c.moveToFirst()) {
-            do {
-                categoryItems.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
-            } while (c.moveToNext());
-        }
-        categoryItems.add("Add New Category");
-        // Use simple_spinner_item to make the spinner display smaller
-        categoryAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, categoryItems);
-        categoryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown.setAdapter(categoryAdapter);
-
-        Spinner dropdown2 = (Spinner)findViewById(R.id.spinner2);
-        ArrayList<String> userItems = new ArrayList<String>();
-        userItems.add("Select User");
-
-        String[] userProjection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND
-        };
-        sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND;
-        c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
-                userProjection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
-        );
-        if(c.moveToFirst()) {
-            do {
-                userItems.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
-                Log.i(null, c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND)));
-            } while (c.moveToNext());
-        }
-        userAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, userItems);
-        userAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown2.setAdapter(userAdapter);
-        db.close();
-    }
-
-
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

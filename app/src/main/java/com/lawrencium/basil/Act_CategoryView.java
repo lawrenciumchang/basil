@@ -1,9 +1,8 @@
 package com.lawrencium.basil;
 
-import android.app.ActionBar;
+
 import android.app.Activity;
-import android.content.ContentValues;
-import android.content.Intent;
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.lawrencium.basil.R.id.txt_week1;
 
 
 public class Act_CategoryView extends Activity {
@@ -43,7 +40,6 @@ public class Act_CategoryView extends Activity {
 
         Bundle bundle = getIntent().getExtras();
         String catName = bundle.getString("CAT_NAME");
-        String catTotal = bundle.getString("CAT_TOTAL");
         int graphMax = bundle.getInt("GRAPH_MAX");
         int graphProgress = bundle.getInt("GRAPH_PROGRESS");
         int graphSecondary = bundle.getInt("GRAPH_SECONDARY");
@@ -155,11 +151,7 @@ public class Act_CategoryView extends Activity {
             do {
                 TextView nextTransaction;
                 String[] date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)).split("[ :/]");
-                /*String text = date[1]+"/"+date[2] + " " +
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)) + " " +
-                         " $" + c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
-                nextTransaction.setText(text);
-                nextTransaction.setTextSize(15);*/
+
                 nextTransaction = getTransactionTextView(
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)),
@@ -216,13 +208,10 @@ public class Act_CategoryView extends Activity {
 //
 //        return super.onOptionsItemSelected(item);
 
-        Intent i;
-
         switch (item.getItemId())
         {
             case android.R.id.home:
-//                i = new Intent(this, Act_BudgetManagerMain.class);
-//                startActivityForResult(i, 0);
+
                 finish();
                 break;
             default:
@@ -253,8 +242,6 @@ public class Act_CategoryView extends Activity {
                 lo_week4.setVisibility( lo_week4.isShown()
                         ? View.GONE
                         : View.VISIBLE );
-
-
         }
     }
 }

@@ -18,7 +18,6 @@ import java.util.logging.Logger;
  */
 class GcmSendAsyncTask extends AsyncTask<Void, Void, String> {
     private static Messaging msg = null;
-    private GoogleCloudMessaging gcm;
     private Context context;
     private String username;
     private String email;
@@ -46,17 +45,10 @@ class GcmSendAsyncTask extends AsyncTask<Void, Void, String> {
         String message = "";
         try {
 
-//            if (gcm == null) {
-//                gcm = GoogleCloudMessaging.getInstance(context);
-//            }
-//            String regId = gcm.register(SENDER_ID);
-//            msg = "Device registered, registration ID=" + regId+"/n"+"User Name is "+username;
-
             // You should send the registration ID to your server over HTTP,
             // so it can use GCM/HTTP or CCS to send messages to your app.
             // The request to your server should be authenticated if your app
             // is using accounts.
-//            regService.listDevices()
             msg.messagingEndpoint().sendMessage(tabMsg, email).execute();
 
         } catch (IOException ex) {

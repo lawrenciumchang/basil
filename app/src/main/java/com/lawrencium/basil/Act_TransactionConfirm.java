@@ -1,7 +1,6 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;

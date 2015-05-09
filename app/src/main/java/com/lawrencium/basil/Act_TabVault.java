@@ -34,16 +34,13 @@ public class Act_TabVault extends Activity {
 
         System.out.println("Current User from Tabs Vault page: " + userName);
 
-
         String Amount;
-        String tabId;
         Tab tempTab;
         String UserOwed;
         String UserOwing;
         double AmountOwed;
         String Category;
         String Title;
-        int TabId;
         String Date;
         String out = "";
         super.onCreate(savedInstanceState);
@@ -146,11 +143,5 @@ public class Act_TabVault extends Activity {
         i.putExtra(PASS_CURRENT_USER, userName);
         startActivityForResult(i, 0);
     }
-
-//    public void removeTab(Frag_GraphButton fragment) {
-//        SQLiteDatabase db = mDbHelper.getWritableDatabase();
-//        db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry._ID+"="+fragment.getCatId(), null);
-//
-//    }
 
 }

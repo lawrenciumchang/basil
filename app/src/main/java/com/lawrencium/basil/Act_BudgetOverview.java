@@ -1,6 +1,6 @@
 package com.lawrencium.basil;
 
-import android.app.ActionBar;
+
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -9,14 +9,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 
 
 public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnFragmentInteractionListener {
@@ -28,10 +23,6 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_overview);
         getActionBar().setDisplayHomeAsUpEnabled(true);
-
-        /*ActionBar actionBar = getActionBar();
-        if(actionBar != null)
-            actionBar.hide();*/
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -67,7 +58,6 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
     protected void onResume() {
         super.onResume();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        int lastId;
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
 
         String[] projection = {
@@ -131,8 +121,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         switch (item.getItemId())
         {
             case android.R.id.home:
-//                i = new Intent(this, Act_BudgetManagerMain.class);
-//                startActivityForResult(i, 0);
+
                 finish();
                 break;
             case R.id.action_new_category:

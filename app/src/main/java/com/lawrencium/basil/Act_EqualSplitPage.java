@@ -3,20 +3,14 @@ package com.lawrencium.basil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 
 public class Act_EqualSplitPage extends Activity {
@@ -41,7 +35,6 @@ public class Act_EqualSplitPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__equal_split_page);
-//        createDropdown();
         getActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
@@ -60,50 +53,6 @@ public class Act_EqualSplitPage extends Activity {
         Spinner categorySet = (Spinner)findViewById(R.id.equalCategory);
         categoryAdapter = Tab.createCategoriesDropdown(this, categorySet);
 
-//        categorySet.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parent, View view, int pos,long id) {
-//                if(parent.getItemAtPosition(pos).toString().equals("Add New Category")) {
-//                    Intent intent = new Intent(parent.getContext(), Act_NewCategory.class);
-//                    startActivity(intent);
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
-//        ArrayList<String> items = new ArrayList<String>();
-//        items.add("Select Category");
-//        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-//        String[] projection = {
-//                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
-//        };
-//        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
-//        Cursor c = db.query(
-//                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
-//                projection,
-//                null,
-//                null,
-//                null,
-//                null,
-//                sortOrder
-//        );
-//        if(c.moveToFirst()) {
-//            do {
-//                items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
-//            } while (c.moveToNext());
-//        }
-//        db.close();
-//        if(category != null) {
-//            for (int i = 0; i < items.size(); i++) {
-//                if (category.equals(items.get(i))) {
-//                    categorySet.setSelection(i);
-//                }
-//            }
-//        }
-
         EditText amountSet = (EditText)findViewById(R.id.equalAmount);
         amountSet.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
         amountSet.setText(amount);
@@ -116,39 +65,8 @@ public class Act_EqualSplitPage extends Activity {
     protected void onResume(){
         super.onResume();
 
-//        ArrayList<String> items = new ArrayList<String>();
-//        createDropdown();
         Spinner categorySet = (Spinner)findViewById(R.id.equalCategory);
-//        items.add("Select Category");
-//
-//        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-//        String[] projection = {
-//                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
-//        };
-//        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
-//        Cursor c = db.query(
-//                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
-//                projection,
-//                null,
-//                null,
-//                null,
-//                null,
-//                sortOrder
-//        );
-//        if(c.moveToFirst()) {
-//            do {
-//                items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
-//            } while (c.moveToNext());
-//        }
-//        db.close();
-//
-//        if(category != null) {
-//            for (int i = 0; i < items.size(); i++) {
-//                if (category.equals(items.get(i))) {
-//                    categorySet.setSelection(i);
-//                }
-//            }
-//        }
+
         if(category != null) {
             for (int i = 0; i < categoryAdapter.getCount(); i++) {
                 if (category.equals(categoryAdapter.getItem(i))) {
@@ -157,36 +75,6 @@ public class Act_EqualSplitPage extends Activity {
             }
         }
 
-    }
-
-    public void createDropdown(){
-        Spinner dropdown = (Spinner)findViewById(R.id.equalCategory);
-        ArrayList<String> items = new ArrayList<String>();
-        items.add("Select Category");
-        SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        String[] projection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE
-        };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE;
-        Cursor c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                sortOrder
-        );
-        if(c.moveToFirst()) {
-            do {
-                items.add(c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)));
-            } while (c.moveToNext());
-        }
-        db.close();
-        items.add("Add New Category");
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        dropdown.setAdapter(adapter);
     }
 
     @Override

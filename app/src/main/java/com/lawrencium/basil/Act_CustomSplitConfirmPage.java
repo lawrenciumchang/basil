@@ -41,8 +41,6 @@ public class Act_CustomSplitConfirmPage extends Activity {
     double tax = 0;
     double taxSum = 0;
 
-    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
-    ArrayList<Tab> Tabs = new ArrayList<Tab>();
     String[] people;
     double[] prices;
 
@@ -100,13 +98,12 @@ public class Act_CustomSplitConfirmPage extends Activity {
             //add user 1 and 2 to string first
             //check if no tip was added, make it display "0"
 
-
             String spinID = "";
             String subID ="";
             String tipID ="";
             double t;
             double s;
-            // for(int j = 0; j < numToCreate; j++){
+
             for(int j = 0; j < num; j++){
                 bundleSpinID += 1;
                 bundleSubID += 1;
@@ -128,7 +125,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 System.out.println(people[j]+" owes "+prices[j]);
             }
 
-                output += "Total Tip: $" + dec.format(tipSum) + "<br/>";
+            output += "Total Tip: $" + dec.format(tipSum) + "<br/>";
 
 
             double amnt = Double.parseDouble(amount);
@@ -165,9 +162,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
             //add user 1 and 2 to string first
 
             String spinID = "";
-            //String subID ="";
             String tipID ="";
-            //double s;
             double tx;
             double t;
 
@@ -179,7 +174,6 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 spinID = Integer.toString(bundleSpinID);
                 subID = Integer.toString(bundleSubID);
                 tipID = Integer.toString(bundleTipID);
-
 
                 s = Double.parseDouble(bun.getString(subID));
                 tx = s*(tax-1);
@@ -193,7 +187,6 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 System.out.println(people[l]+" owes "+prices[l]);
             }
             DecimalFormat perc = new DecimalFormat("0.##%");
-            //output += "Total Tax (" + dec.format((tax-1)*100) + "%): $" + dec.format(taxSum) + "<br/>";
             System.out.println("Tax Percentage: "+((tax-1)*100));
             output += "Subtotal: $" + dec.format(subtotalSum)+"<br/>";
 
@@ -207,7 +200,6 @@ public class Act_CustomSplitConfirmPage extends Activity {
 
             display.setText(Html.fromHtml(output));
         }
-
 
     }
 

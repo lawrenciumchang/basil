@@ -111,7 +111,6 @@ public class Frag_GraphButton extends Fragment {
             public void onClick(View v) {
                 // here you set what you want to do when user clicks your button,
                 // e.g. launch a new activity
-                //deleteCategory(v);
                 Intent intent = new Intent(getActivity(), Act_CategoryView.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("CAT_NAME", cat_name);
@@ -137,7 +136,6 @@ public class Frag_GraphButton extends Fragment {
         Date tempDate = new Date();
         Calendar calendar = Calendar.getInstance();
         int daysThisMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-        //System.out.println("Days this month: " + daysThisMonth);
         int quarter = Budget.calculateWeek(calendar.get(Calendar.DAY_OF_MONTH), daysThisMonth);
 
         BigDecimal[] totals = new BigDecimal[5];
@@ -182,14 +180,12 @@ public class Frag_GraphButton extends Fragment {
         BigDecimal categoryBudget = new BigDecimal(cat_total);
         categoryBudget.setScale(2);
         BigDecimal quarterBudget = categoryBudget.divide(new BigDecimal("4"), categoryBudget.scale(), BigDecimal.ROUND_HALF_DOWN);
-        //System.out.println(categoryBudget+"/4 = "+quarterBudget);
 
         for(int i=0; i<quarter; i++) {
             BigDecimal diff = quarterBudget.subtract(totals[i]);
             rollover = rollover.add(diff);
         }
-        //System.out.println("Rollover: $" + rollover);
-        catGraph.setMax(quarterBudget.intValue() /*+ rollover.intValue()*/);
+        catGraph.setMax(quarterBudget.intValue());
         catGraph.setProgress(totals[quarter].intValue());
         catGraph.setSecondaryProgress(totals[4].divide(new BigDecimal("4")).intValue());
         if(totals[4].intValue() > categoryBudget.intValue()) {
@@ -282,15 +278,6 @@ public class Frag_GraphButton extends Fragment {
             }
         }
         return false;
-        /*AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        switch (item.getItemId()) {
-            case R.id.category_delete:
-                //editNote(info.id);
-                deleteCategory();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }*/
     }
 
 

@@ -2,10 +2,8 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,7 +12,6 @@ import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Random;
 
@@ -29,13 +26,8 @@ public class Act_EqualSplitConfirmPage extends Activity {
     String userName;
     String user2;
     Bundle b;
-    String users = "";
-
-    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
-
-    ArrayList<Tab> Tabs = new ArrayList<Tab>();
     String[] ppl;
-    double[] pricesSPlit;
+    double[] pricesSplit;
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
@@ -45,7 +37,6 @@ public class Act_EqualSplitConfirmPage extends Activity {
     public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
 
     int num;
-    int numToCreate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +56,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
         b = intent.getExtras();
 
         num = Integer.parseInt(number);
-        numToCreate = num - 2;
 
-        double total = Double.parseDouble(amount);
         double[] tempArr;
         String[] tempPeople;
         String testString ="";
@@ -84,36 +73,26 @@ public class Act_EqualSplitConfirmPage extends Activity {
         //for 2 people total
         if(num == 2) {
             tempPeople = getPeople(b, num);
-            Double n = (double) num;
-            total = total/n;
-            DecimalFormat dec = new DecimalFormat("0.00");
-            String t = dec.format(total);
             TextView display = (TextView) findViewById(R.id.equalDisplay);
 
-            tempSet=ranPerson(num);
+            tempSet = ranPerson(num);
             tempArr = priceSplit(num, amount, tempSet);
             System.out.println("Random set: "+tempArr);
             testString = paymentOut(tempArr, tempPeople);
             System.out.println("Who Owes: "+testString);
             display.setText(testString+ " for " + title + " (" + category + ").");
-            //Tabs = createTabs(tempArr, tempPeople, category, title);
             ppl = tempPeople;
-            pricesSPlit = tempArr;
+            pricesSplit = tempArr;
         }
         //for 3 people or more total
         else{
             tempPeople = getPeople(b, num);
-            Double n = (double) num;
-            total = total/n;
             DecimalFormat dec = new DecimalFormat("0.00");
 
             TextView display = (TextView) findViewById(R.id.equalDisplay);
-
-            //users += " and " + b.getString("3");
-            tempSet=ranPerson(num);
+            tempSet = ranPerson(num);
             tempArr = priceSplit(num, amount,tempSet);
             System.out.println("Random set: "+tempArr);
-
 
             String t = dec.format(tempArr[1]);
             if(priceEqualCheck(tempArr))
@@ -122,8 +101,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
                 display.setText(paymentOut(tempArr, tempPeople)+ " for " + title + " (" + category + ").");
 
             ppl = tempPeople;
-            pricesSPlit = tempArr;
-            //Tabs = createTabs(tempArr, tempPeople, category, title);
+            pricesSplit = tempArr;
         }
 
     }
@@ -195,7 +173,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
                 launchIntent();
             }});
 
-        Tab.addTabsToDatabase(this, pricesSPlit, ppl, category, title, amount);
+        Tab.addTabsToDatabase(this, pricesSplit, ppl, category, title, amount);
         AlertDialog dialog = builder.create();
         dialog.show();
     }
@@ -223,7 +201,6 @@ public class Act_EqualSplitConfirmPage extends Activity {
 
     //ToDo: Handle the edge cases i.e. divide by zero
     private double[] priceSplit(int numPeople, String price, LinkedHashSet<Integer> tempSet){
-        //LinkedHashSet<Integer> tempSet=ranPerson(numPeople);
         System.out.println("Random People: "+tempSet);
 
         String tester = "Prices: ";
@@ -263,7 +240,6 @@ public class Act_EqualSplitConfirmPage extends Activity {
         return tempArr;
     }
 
-
     private String paymentOut(double[] prices, String[] people){
         String payments ="";
         int num = people.length;
@@ -286,7 +262,6 @@ public class Act_EqualSplitConfirmPage extends Activity {
     private String getNames(String[] names){
         String nameList ="";
         int num = names.length;
-        DecimalFormat dec = new DecimalFormat("0.00");
 
         if(num == 3){
             nameList = names[1]+" and "+names[2];
@@ -326,6 +301,5 @@ public class Act_EqualSplitConfirmPage extends Activity {
         }
         return true;
     }
-
 
 }

@@ -47,17 +47,13 @@ public class GcmIntentService extends IntentService {
                 String message = extras.getString("message");
                 String [] tokens = message.split("[**]+");
 
-                String m = /*tokens[0] +*/ "You owe " + tokens[2] + " $" + tokens[5] + " for " + tokens[3] + ".";
+                String m = "You owe " + tokens[2] + " $" + tokens[5] + " for " + tokens[3] + ".";
                 System.out.println(m);
 
                 Bundle b = new Bundle();
-                //b.putString("USER_NAME", tokens[0]);
-                //b.putString("USER_OWING", tokens[1]);
                 b.putString("USER_OWED", tokens[2]);
                 b.putString("TITLE", tokens[3]);
-                //b.putString("CATEGORY", tokens[4]);
                 b.putString("AMOUNT", tokens[5]);
-                //b.putString("DATE", tokens[6]);
                 b.putString("TAB_ID", tokens[7]);
 
                 b.putBoolean("IOU", true);
@@ -83,13 +79,12 @@ public class GcmIntentService extends IntentService {
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.basil_icon)
                         .setContentTitle("Your Budget Buddy")
-//                        .setContentText("You have overspent in eating out this week. Better hit the gym!")
                         .setAutoCancel(true)
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(m));
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, Act_IouPage.class);
         resultIntent.putExtras(b);
-        //resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
 
         // The stack builder object will contain an artificial back stack for the
         // started Activity.

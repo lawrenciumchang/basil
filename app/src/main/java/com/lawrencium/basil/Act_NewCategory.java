@@ -3,7 +3,6 @@ package com.lawrencium.basil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.InputFilter;
@@ -90,14 +89,4 @@ public class Act_NewCategory extends Activity {
         }
     }
 
-    public void fillFields(final String name, final String budget) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                //stuff that updates ui
-                inputName.setText(name);
-                inputBudget.setText(budget);
-            }
-        });
-    }
 }

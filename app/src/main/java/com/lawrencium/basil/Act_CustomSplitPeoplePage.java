@@ -96,7 +96,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
 
         //creates user 1 and 2 and adds information if back button was pressed to preserve information
         //else just format text box with decimal properly
-//        createUserDropdown();
         EditText userHeader = (EditText)findViewById(R.id.userName);
         userHeader.setText(userName);
         if(bun.getString("200") != null){
@@ -118,10 +117,9 @@ public class Act_CustomSplitPeoplePage extends Activity {
             t1.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
         }
 
-//        createUserDropdown2();
+
         Spinner user2Set = (Spinner)findViewById(R.id.user2);
         ArrayAdapter<String> friendsSet = Tab.createDropdown(this, user2Set, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
-//        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
         if(user2 != null) {
             for (int i = 0; i < friendsSet.getCount(); i++) {
                 if (user2.equals(friendsSet.getItem(i))) {
@@ -160,7 +158,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
                 String idA = Integer.toString(spinID);
                 for(int c = 0; c < friendsSet.getCount(); c++) {
                     if (bun.getString(idA).equals(friendsSet.getItem(c))) {
-//                        Spinner userSet = createNewUserDropdown();
                         Spinner userSet = new Spinner(this);
                         Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
                         ll.addView(userSet, ll.getChildCount(), lp);
@@ -189,7 +186,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
         else {
             //dynamically create based on number of people in transaction, starting with user 3
             for (int i = 0; i < numToCreate; i++) {
-//                Spinner createDrop = createNewUserDropdown();
                 Spinner createDrop = new Spinner(this);
                 Tab.createDropdown(this, createDrop, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
                 ll.addView(createDrop, ll.getChildCount(), lp);
@@ -210,31 +206,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
             }
         }
     }
-
-//    public void createUserDropdown(){
-//        Spinner user1 = (Spinner)findViewById(R.id.userName);
-//        String[] items = new String[]{userName};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-//        user1.setAdapter(adapter);
-//        user1.setClickable(false);
-//    }
-
-//    public void createUserDropdown2(){
-//        Spinner user2 = (Spinner)findViewById(R.id.user2);
-//        String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        user2.setAdapter(adapter);
-//    }
-//
-//    public Spinner createNewUserDropdown(){
-//        Spinner newUser = new Spinner(this);
-//        String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        newUser.setAdapter(adapter);
-//        return newUser;
-//    }
 
     public EditText createNewUserSubtotal(){
         EditText newSubtotal = new EditText(this);
@@ -302,14 +273,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
         startActivityForResult(i, 0);
     }
 
-//    public void itemClicked() {
-//        //code to check if this checkbox is checked!
-//        CheckBox checkBox = (CheckBox)findViewById(R.id.tax);
-//        if(checkBox.isChecked()){
-//            checked = true;
-//        }
-//    }
-
     public void customPeopleNext(View view){
 
         checkSpinID = 101;
@@ -364,8 +327,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
             }
         }
 
-//        Bundle bun = new Bundle();
-
         //pass user 1 and user 2 info into bundle
         bun.putString("100", userName);
 
@@ -403,8 +364,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
             bun.putString("301", dec.format(convertStrings));
         }
 
-
-
         //BUNDLE
         //put user3 and onwards [name, subtotal, tip] into Bundle
         for(int i = 0; i < numToCreate; i++){
@@ -432,7 +391,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
             }
 
         }
-
 
         //if check is true, carry out intent to next page
         //else, alert dialog
@@ -471,7 +429,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
                 }
 
                 Double amnt = Double.parseDouble(amount);
-                //DecimalFormat dec = new DecimalFormat("0.00");
                 String t = dec.format(total);
                 String aa = dec.format(amnt);
                 System.out.println("Total of Subtotals: " + t);
@@ -558,7 +515,6 @@ public class Act_CustomSplitPeoplePage extends Activity {
                     startActivity(intent);
                 }
             }
-
 
         }
 

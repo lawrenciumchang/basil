@@ -1,7 +1,6 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -37,7 +36,6 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.lawrencium.basil.james.backend.registration.Registration;
 
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -72,8 +70,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
     private String userName;
 
-
-
     /*Used for device Registration*/
     private static final String PROPERTY_USER_NAME ="user_name";
     public static final String PROPERTY_REG_ID = "registration_id";
@@ -83,7 +79,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
     private GoogleCloudMessaging gcm;
     private String regID;
     private Context context;
-    //SharedPreferences prefs;
     private static final String SENDER_ID = "508206130718";
     /*Used for device Registration*/
 
@@ -137,8 +132,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         alarmStartTime.set(Calendar.SECOND, 0);
         alarmManager.setRepeating(AlarmManager.RTC, alarmStartTime.getTimeInMillis(), getInterval(), pendingIntent);*/
         //NOTIFICATIONS----------------
-
-
     }
 
 
@@ -203,10 +196,8 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         }
     }
 
-
     //GOOGLE PLUS---------------------------------------- from this point onwards
     protected void onStart() {
-//        Toast.makeText(this, "START!", Toast.LENGTH_SHORT).show();
         super.onStart();
         if (!mGoogleApiClient.isConnected()) {
             mGoogleApiClient.connect();
@@ -215,7 +206,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
     }
 
     protected void onStop() {
-//        Toast.makeText(this, "STOP", Toast.LENGTH_SHORT).show();
         super.onStop();
 
         if (mGoogleApiClient.isConnected()) {
@@ -234,7 +224,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         findViewById(R.id.signOut).setVisibility(View.VISIBLE);
         findViewById(R.id.revokeAccess).setVisibility(View.VISIBLE);
 
-        //final Context gplusContext = this.getApplicationContext();
         AsyncTask task = new AsyncTask() {
             @Override
             protected Object doInBackground(Object... params) {
@@ -245,8 +234,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                     String code = GoogleAuthUtil.getToken(
                             context,                                              // Context context
                             Plus.AccountApi.getAccountName(mGoogleApiClient),  // String accountName
-                            scopes//,                                            // String scope
-//                    appActivities                                      // Bundle bundle
+                            scopes                                          // String scope
                     );
 
                 } catch (
@@ -302,12 +290,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 userName = currentPerson.getDisplayName();
                 String email = Plus.AccountApi.getAccountName(mGoogleApiClient);
 
-//            String personPhoto = currentPerson.getImage();
-//            String personGooglePlusProfile = currentPerson.getUrl();
-
-
                 if (regID.isEmpty()) {
-//                    new GcmRegistrationAsyncTask(this, userName, email).execute();
                     registerInBackground(userName, email);
                 }
             }
@@ -345,14 +328,11 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
                 mGoogleApiClient.disconnect();
                 mGoogleApiClient.connect();
-//                Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
-//                unRegisterInBackground(userName, regID);
                 unRegisterInBackground(userName, regID);
                 userName = "";
                 storeUserName(context, userName);
                 regID ="";
                 storeRegistrationId(context, regID);
-
 
                 isConnected = false;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -361,7 +341,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 builder.setPositiveButton("Okay", null);
                 AlertDialog dialog = builder.create();
                 dialog.show();
-
             }
             else {
                 Toast.makeText(this, "User was not logged in!", Toast.LENGTH_SHORT).show();
@@ -391,8 +370,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                             }
                         });
 
-
-//                Toast.makeText(this, "User is signed out!", Toast.LENGTH_SHORT).show();
                 isConnected = false;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle("You have been successfully signed out of Basil's server.");
@@ -411,7 +388,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
     @Override
     public void onConnectionFailed(ConnectionResult result) {
-//        Toast.makeText(this, "LOGIN FAILED!", Toast.LENGTH_SHORT).show();
         if (!mIntentInProgress) {
             if (mSignInClicked && result.hasResolution()) {
                 // The user has already clicked 'sign-in' so we attempt to resolve all
@@ -557,7 +533,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
             @Override
             protected void onPostExecute(String msg) {
-                //        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                 Logger.getLogger("REGISTRATION").log(Level.INFO, msg);
             }
         }.execute(null, null, null);
@@ -582,8 +557,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                     // The request to your server should be authenticated if your app
                     // is using accounts.
                     regService.unregister(regid).execute();
-//                    regID ="";
-//                    storeRegistrationId(context, regID);
+
                     Logger.getLogger("REGISTRATION").log(Level.INFO, "Device unregistered, registration ID=" + regid+"\n"+"User Name is "+username);
 
                 } catch (IOException ex) {
@@ -595,7 +569,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
             @Override
             protected void onPostExecute(String msg) {
-                //        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                 Logger.getLogger("REGISTRATION").log(Level.INFO, msg);
             }
         }.execute(null, null, null);

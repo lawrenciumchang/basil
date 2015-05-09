@@ -22,7 +22,6 @@ public class Act_NewTransaction extends Activity {
     protected EditText inputName;
     protected EditText inputValue;
     protected Spinner inputCategory;
-    protected boolean isIOU;
     SQLiteDbHelper SQLiteDbHelper = new SQLiteDbHelper(this);
 
     @Override
@@ -36,13 +35,6 @@ public class Act_NewTransaction extends Activity {
         inputValue = (EditText)findViewById(R.id.inputValue);
         inputCategory = (Spinner)findViewById(R.id.spinnerCategories);
         inputValue.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
-
-//        Bundle b = getIntent().getExtras();
-//        isIOU = b.getBoolean("IOU");
-//        if(isIOU) {
-//            inputName.setText(b.getString("TITLE"));
-//            inputValue.setText(b.getString("AMOUNT"));
-//        }
 
         String[] projection = {
             FeedReaderContract.FeedEntry._ID,
@@ -93,13 +85,10 @@ public class Act_NewTransaction extends Activity {
 //
 //        return super.onOptionsItemSelected(item);
 
-        Intent i;
-
         switch (item.getItemId())
         {
             case android.R.id.home:
-//                i = new Intent(this, Act_BudgetManagerMain.class);
-//                startActivityForResult(i, 0);
+
                 finish();
                 break;
             default:
@@ -154,19 +143,9 @@ public class Act_NewTransaction extends Activity {
             Date tempDate = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
             String date = dateFormat.format(tempDate);
-            //ContentValues values = new ContentValues();
             String newName = inputName.getText().toString().trim();
             String newBudget = inputValue.getText().toString().trim();
             String newCategory = inputCategory.getSelectedItem().toString().trim();
-
-            /*values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, newCategory);
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
-            long newRowId = db.insert(
-                    FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
-                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                    values);*/
 
             Budget.newTransaction(db, newName, newBudget, newCategory);
 

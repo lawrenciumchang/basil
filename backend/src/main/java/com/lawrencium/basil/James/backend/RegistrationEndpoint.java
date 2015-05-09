@@ -109,26 +109,9 @@ public class RegistrationEndpoint {
             temp.add(tempArr);
             tempArr = new ArrayList<String>();
 
-
         }
-//        temp.add(tempArr);
-
 
         return CollectionResponse.<ArrayList<String>>builder().setItems(temp).build();
     }
-
-//    public ArrayList<ArrayList<String>> listFriends(){
-//      public ArrayList<RegistrationRecord> listFriends(){
-//        List<RegistrationRecord> temp = ofy().load().type(RegistrationRecord.class).list();
-//        ArrayList<RegistrationRecord> list = new ArrayList<RegistrationRecord>(ofy().load().type(RegistrationRecord.class).list());
-//        ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
-//
-//        for(int i = 0; i < temp.size(); i++){
-//            list.get(i).add(0, temp.get(i).getUserName());
-//            list.get(i).add(1, temp.get(i).getEmailAddress());
-////        }
-//
-//        return list;
-//    }
 
 }

@@ -59,7 +59,7 @@ public class Act_LoginPage extends Activity implements GoogleApiClient.OnConnect
                 .addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
-//        mIntentInProgress = false;
+
         findViewById(R.id.sign_in_button).setOnClickListener(this);
         findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
         findViewById(R.id.sign_out_button).setOnClickListener(this);

@@ -2,7 +2,6 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -14,16 +13,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.lawrencium.basil.james.backend.messaging.Messaging;
-
-import java.io.IOException;
 
 
 public class Act_PayPage extends Activity {
 
-    private static Messaging msg = null;
     String title;
     String category;
     String amount;
@@ -120,10 +113,7 @@ public class Act_PayPage extends Activity {
 
     public void confirmPay(View view){
         SQLiteDatabase db = tabDbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        String tabId;
-        String date;
-        int temp;
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Your payment has been sent.");
@@ -140,7 +130,6 @@ public class Act_PayPage extends Activity {
         double tempAmount = Double.parseDouble(amount);
         tempAmount *= -1;
         amount = Double.toString(tempAmount);
-        //System.out.println("Temp Amount: "+tempAmount);
 
         long newTransID = Budget.newTransaction(db, title, amount, category);
         Tab tempTab = new Tab(user, userName, tempAmount, category, title, newTransID);
@@ -167,11 +156,8 @@ public class Act_PayPage extends Activity {
         String owedTabId = getIntent().getExtras().getString("OWED_TABID");
         new GcmSendAsyncTask(this, userName, owedEmail,  userName+tempTab.sendTabMsg()+owedTabId+"**").execute();
 
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
-
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     public void launchIntent(){

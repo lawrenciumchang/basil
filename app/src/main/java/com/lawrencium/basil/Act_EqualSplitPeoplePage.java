@@ -31,7 +31,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
     public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
 
     int numToCreate;
-//    boolean check = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +63,14 @@ public class Act_EqualSplitPeoplePage extends Activity {
         System.out.println("Number of people: " + number);
         System.out.println("Current User: " + userName);
 
-//        createUserDropdown();
+
         EditText userHeader = (EditText)findViewById(R.id.user1);
         userHeader.setText(userName);
 
-//        createUserDropdown2();
+
         Spinner user2Set = (Spinner)findViewById(R.id.user2);
         ArrayAdapter<String> friendsSet = Tab.createDropdown(this, user2Set, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
-//        String[] items2 = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
+
         if(user2 != null) {
             for (int i = 0; i < friendsSet.getCount(); i++) {
                 if (user2.equals(friendsSet.getItem(i))) {
@@ -85,9 +85,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
                 String id = Integer.toString(a+2);
                 for(int c = 0; c < friendsSet.getCount(); c++) {
                     if (b.getString(id).equals(friendsSet.getItem(c))) {
-//                        Spinner userSet = (Spinner)findViewById(a);
-//                        System.out.println("find spinner: " + userSet);
-//                        Spinner userSet = createNewUserDropdown();
+
                         Spinner userSet = new Spinner(this);
                         Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
                         ll.addView(userSet, ll.getChildCount(), lp);
@@ -100,7 +98,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
         //dynamically creates Spinners for number of users
         else {
             for (int i = 0; i < numToCreate; i++) {
-//                Spinner createNew = createNewUserDropdown();
+
                 Spinner createNew = new Spinner(this);
                 Tab.createDropdown(this, createNew, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
                 ll.addView(createNew, ll.getChildCount(), lp);
@@ -108,31 +106,6 @@ public class Act_EqualSplitPeoplePage extends Activity {
             }
         }
 
-    }
-
-    public void createUserDropdown(){
-        Spinner user1 = (Spinner)findViewById(R.id.user1);
-        String[] items = new String[]{userName};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        user1.setAdapter(adapter);
-        user1.setClickable(false);
-    }
-
-    public void createUserDropdown2(){
-        Spinner user2 = (Spinner)findViewById(R.id.user2);
-        String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        user2.setAdapter(adapter);
-    }
-
-    public Spinner createNewUserDropdown(){
-        Spinner newUser = new Spinner(this);
-        String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        newUser.setAdapter(adapter);
-        return newUser;
     }
 
     @Override
@@ -211,8 +184,6 @@ public class Act_EqualSplitPeoplePage extends Activity {
         b.putString("0", userName);
         String user2 = u2.getSelectedItem().toString();
         b.putString("1", user2);
-
-//        Bundle b = new Bundle();
 
         //put stuff into the Bundle
         for(int i = 0; i < numToCreate; i++){

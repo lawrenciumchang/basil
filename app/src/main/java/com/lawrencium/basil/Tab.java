@@ -29,8 +29,6 @@ public class Tab {
     private long transactionId;
 
 
-
-
     //Think of ways to identify different tabs
 
     //May create constructor that makes a tab for only ID for Tab equals methods
@@ -114,17 +112,7 @@ public class Tab {
     public void setTransactionId(long transactionId) {
         this.transactionId = transactionId;
     }
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (o == null || getClass() != o.getClass()) return false;
-//
-//        Tab tab = (Tab) o;
-//
-//        if (TabId != tab.TabId) return false;
-//
-//        return true;
-//    }
+
 
     public String reformatDate(String date){
 
@@ -134,14 +122,7 @@ public class Tab {
 
         tempString = date.substring(firstBackSlash+1, secondBackSlash)+"/";
         tempString += date.substring(secondBackSlash+1, secondBackSlash+3)+"/";
-        tempString += date.substring(2, firstBackSlash)/*+" "*/;
-
-//        firstBackSlash = date.indexOf(':');
-//        secondBackSlash = date.indexOf(':', firstBackSlash+1);
-//        tempString += date.substring(firstBackSlash-2, firstBackSlash)+":";
-//        tempString += date.substring(firstBackSlash+1, secondBackSlash)+" ";
-//        tempString += date.substring(secondBackSlash+3, date.length());
-
+        tempString += date.substring(2, firstBackSlash);
 
         return tempString;
     }
@@ -174,7 +155,6 @@ public class Tab {
                "Date of Transaction: " + reformatDate(Date) + "\n";
     }
 
-//    public static long newTab(Context context, String title, String userName, String user, String amount, String category, String tabId, String date, String newTransactionId) {
     public long newTab(Context context) {
         SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(context);
         SQLiteDatabase db = tabDbHelper.getWritableDatabase();

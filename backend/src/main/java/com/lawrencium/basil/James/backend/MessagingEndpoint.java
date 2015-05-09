@@ -15,7 +15,6 @@ import com.google.api.server.spi.config.ApiNamespace;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
 import javax.inject.Named;
@@ -56,14 +55,10 @@ public class MessagingEndpoint {
             message = message.substring(0, 1000) + "[...]";
         }
         Sender sender = new Sender(API_KEY);
-
         RegistrationRecord recs = ofy().load().type(RegistrationRecord.class).id(recipient).now();
         ArrayList<RegistrationRecord> records= new ArrayList<RegistrationRecord>();
         records.add(recs);
-        String email = recs.getUserName();
-        Message msg = new Message.Builder().addData("message", message+" "+recs.getUserName()).build();
-//        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).limit(10).list();
-//        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).filter("userName =", email).list();
+        Message msg = new Message.Builder().addData("message", message).build();
 //        List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class).filter("Id =", email).list();
         for (RegistrationRecord record : records) {
             Result result = sender.send(msg, record.getRegId(), 5);

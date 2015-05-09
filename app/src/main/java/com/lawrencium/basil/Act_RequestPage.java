@@ -2,10 +2,8 @@ package com.lawrencium.basil;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.math.BigDecimal;
 
 
 public class Act_RequestPage extends Activity {
@@ -114,8 +111,6 @@ public class Act_RequestPage extends Activity {
 
     public void confirmRequest(View view){
         SQLiteDatabase db = tabDbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Your request has been sent.");
@@ -131,45 +126,14 @@ public class Act_RequestPage extends Activity {
 
         System.out.println("Temp Amount: "+tempAmount);
 
-
-
-
-
-
-
         // Create new corresponding transaction
         long newTransactionId = Budget.newTransaction(db, title, amount, category);
         // Store tab in db
         Tab tempTab = new Tab(userName, user, tempAmount, category, title, newTransactionId);
-        long tabId =tempTab.newTab(this);
+        long tabId = tempTab.newTab(this);
 
-
-//        // Get email of user
-//        String owingEmail = "";
-//        String[] projection = {
-//                FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL
-//        };
-//        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND + " = \'" +
-//                user + "\'";
-//        Cursor c = db.query(
-//                FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
-//                projection,
-//                filter,
-//                null,
-//                null,
-//                null,
-//                null
-//        );
-//        if (c.moveToFirst()) {
-//            owingEmail = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL));
-//        }
-//
-//        new GcmSendAsyncTask(this, userName, owingEmail, userName+tempTab.sendTabMsg()+tabId+"**").execute();
-
-
-            AlertDialog dialog = builder.create();
-            dialog.show();
-
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
     }
 

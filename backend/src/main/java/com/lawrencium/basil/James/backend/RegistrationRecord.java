@@ -12,8 +12,6 @@ import com.googlecode.objectify.annotation.Index;
 @Entity
 public class RegistrationRecord {
 
-//    @Id
-//    Long id;
     @Id
     String emailAddress;
 
@@ -21,8 +19,6 @@ public class RegistrationRecord {
     private String regId;
     @Index
     private String userName;
-    //private String emailAddress;
-    /* you can add more fields... */
 
     public RegistrationRecord() {
     }

@@ -11,15 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+
 
 
 public class Act_TabsPage extends Activity {
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
     String userName;
-
-    private ArrayList<Tab> Tabs = new ArrayList<Tab>();
     SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
     @Override
@@ -32,16 +30,12 @@ public class Act_TabsPage extends Activity {
         SharedPreferences prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
                 getApplicationContext().MODE_PRIVATE);
         userName = prefs.getString("user_name", "");
-//        userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
 
         System.out.println("Current User from Tabs page: " + userName);
 
         TextView recent = (TextView)findViewById(R.id.recent1);
 
-        //
-
         String Amount;
-        String tabId;
         Tab tempTab;
         String UserOwed;
         String UserOwing;
@@ -51,8 +45,6 @@ public class Act_TabsPage extends Activity {
 
         String Date;
         String out = "";
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_act__tab_vault);
 
         SQLiteDatabase db = tabDbHelper.getReadableDatabase();
         String[] projection ={
@@ -91,14 +83,7 @@ public class Act_TabsPage extends Activity {
                 tempTab = new Tab(UserOwed, UserOwing, AmountOwed, Category, Title,0);
 
                 tempTab.setDate(Date);
-                //                Tabs.add(tempTab);
 
-                //                DecimalFormat dec = new DecimalFormat("0.00");
-                //                System.out.println("TAB ID: " + TabId);
-                //                System.out.println("Tab Created: " + tempTab);
-                //                System.out.println("Amount: "+dec.format(AmountOwed));
-
-                //                TextView recent = (TextView)findViewById(R.id.recent1);
                 out += tempTab.toString() + "\n";
                 recent.setText(out);
                 limitThree += 1;
