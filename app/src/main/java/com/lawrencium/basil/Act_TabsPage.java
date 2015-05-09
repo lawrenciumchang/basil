@@ -22,6 +22,14 @@ public class Act_TabsPage extends Activity {
     private ArrayList<Tab> Tabs = new ArrayList<Tab>();
     SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
+    /**
+     * Creates the layout for the Tabs home page.
+     * Link to pages:   Tabs Vault
+     *                  Equal Split
+     *                  Custom Split
+     *                  IOU
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,6 +126,11 @@ public class Act_TabsPage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_BudgetBuddy.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -148,6 +161,9 @@ public class Act_TabsPage extends Activity {
         return true;
     }
 
+    /**
+     * Returns user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -156,24 +172,40 @@ public class Act_TabsPage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Takes user to Equal Split page.
+     * @param view
+     */
     public void equalSplit(View view){
         Intent intent = new Intent(this, Act_EqualSplitPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
     }
 
+    /**
+     * Takes user to Custom Split page.
+     * @param view
+     */
     public void customSplit(View view){
         Intent intent = new Intent(this, Act_CustomSplitPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
     }
 
+    /**
+     * Takes user to IOU page.
+     * @param view
+     */
     public void iou(View view){
         Intent intent = new Intent(this, Act_IouPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
     }
 
+    /**
+     * Takes user to Tabs Vault page.
+     * @param view
+     */
     public void viewTabs(View view){
         Intent intent = new Intent(this, Act_TabVault.class);
         intent.putExtra(PASS_CURRENT_USER, userName);

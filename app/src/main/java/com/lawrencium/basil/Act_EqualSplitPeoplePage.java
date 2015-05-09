@@ -33,6 +33,10 @@ public class Act_EqualSplitPeoplePage extends Activity {
     int numToCreate;
 //    boolean check = true;
 
+    /**
+     * Creates dropdown menus equal to the number of users selected on previous page.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +114,9 @@ public class Act_EqualSplitPeoplePage extends Activity {
 
     }
 
+    /**
+     * Used to create a dropdown for the current user.
+     */
     public void createUserDropdown(){
         Spinner user1 = (Spinner)findViewById(R.id.user1);
         String[] items = new String[]{userName};
@@ -118,6 +125,9 @@ public class Act_EqualSplitPeoplePage extends Activity {
         user1.setClickable(false);
     }
 
+    /**
+     * Used to create a dropdown for selected the second user.
+     */
     public void createUserDropdown2(){
         Spinner user2 = (Spinner)findViewById(R.id.user2);
         String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
@@ -126,6 +136,10 @@ public class Act_EqualSplitPeoplePage extends Activity {
         user2.setAdapter(adapter);
     }
 
+    /**
+     * Used to dynamically add select user dropdowns.
+     * @return
+     */
     public Spinner createNewUserDropdown(){
         Spinner newUser = new Spinner(this);
         String[] items = new String[]{"Select User", "Annie", "Evan", "Lawrence", "James"};
@@ -142,6 +156,11 @@ public class Act_EqualSplitPeoplePage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_EqualSplitPage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -175,6 +194,9 @@ public class Act_EqualSplitPeoplePage extends Activity {
         return true;
     }
 
+    /**
+     * Takes user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -187,6 +209,10 @@ public class Act_EqualSplitPeoplePage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Takes user to the confirmation page.
+     * @param view
+     */
     public void equalPeopleNext(View view){
 
         boolean check = true;

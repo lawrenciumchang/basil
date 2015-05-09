@@ -22,6 +22,10 @@ public class Act_TabVault extends Activity {
     private ArrayList<Tab> Tabs = new ArrayList<Tab>();
     SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
+    /**
+     * Displays all tabs in user's database, showing the most recent at the top.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +113,11 @@ public class Act_TabVault extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_TabsPage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -139,6 +148,9 @@ public class Act_TabVault extends Activity {
 
     }
 
+    /**
+     * Returns user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;

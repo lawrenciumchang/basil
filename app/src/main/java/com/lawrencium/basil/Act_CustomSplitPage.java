@@ -10,7 +10,6 @@ import android.text.InputFilter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -36,6 +35,10 @@ public class Act_CustomSplitPage extends Activity {
 
     ArrayAdapter<String> categoryAdapter;
 
+    /**
+     * Allows user to input transaction information
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +115,9 @@ public class Act_CustomSplitPage extends Activity {
 
     }
 
+    /**
+     * Resumes functionality after user has chosen to create a new Category.
+     */
     protected void onResume(){
         super.onResume();
 
@@ -158,6 +164,9 @@ public class Act_CustomSplitPage extends Activity {
 
     }
 
+    /**
+     * Creates a dropdown for users and categories.
+     */
     public void createDropdown(){
         Spinner dropdown = (Spinner)findViewById(R.id.customCategory);
         ArrayList<String> items = new ArrayList<String>();
@@ -195,6 +204,11 @@ public class Act_CustomSplitPage extends Activity {
         return true;
     }
 
+    /**
+     * Creates a back action bar to take user to previous page.
+     * @param item  Back action bar
+     * @return      Act_TabsPage.class
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -224,6 +238,9 @@ public class Act_CustomSplitPage extends Activity {
         return true;
     }
 
+    /**
+     * Takes user to previous page.
+     */
     @Override
     public void onBackPressed() {
         Intent i;
@@ -232,6 +249,10 @@ public class Act_CustomSplitPage extends Activity {
         startActivityForResult(i, 0);
     }
 
+    /**
+     * Takes user to next page to select users and split transaction information.
+     * @param view
+     */
     public void customNext(View view){
         EditText customTitle = (EditText)findViewById(R.id.customTitle);
         String title = customTitle.getText().toString();
