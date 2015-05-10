@@ -495,6 +495,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
                     intent.putExtra(PASS_USER2, user2);
                     intent.putExtras(bun);
                     startActivity(intent);
+                    finish();
                 }
             }
             //if tax box is checked, mark a flag and hand off to next activity (will calculate math there)
@@ -547,6 +548,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
                     intent.putExtra(PASS_USER2, user2);
                     intent.putExtras(bun);
                     startActivity(intent);
+                    finish();
                 }
             }
 

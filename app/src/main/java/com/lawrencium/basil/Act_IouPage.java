@@ -332,6 +332,7 @@ public class Act_IouPage extends Activity {
             intent.putExtra(PASS_USER, user);
             intent.putExtra(PASS_CURRENT_USER, userName);
             startActivity(intent);
+            finish();
         }
     }
 
@@ -403,6 +404,7 @@ public class Act_IouPage extends Activity {
             bOut.putString("USER_OWED", bIn.getString("USER_OWED"));
             intent.putExtras(bOut);
             startActivity(intent);
+            finish();
         }
     }
 

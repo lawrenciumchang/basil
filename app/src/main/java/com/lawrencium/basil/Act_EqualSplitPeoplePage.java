@@ -223,6 +223,7 @@ public class Act_EqualSplitPeoplePage extends Activity {
             intent.putExtra(PASS_USER2, user2);
             intent.putExtras(b);
             startActivity(intent);
+            finish();
         }
         else{
             AlertDialog.Builder builder = new AlertDialog.Builder(this);

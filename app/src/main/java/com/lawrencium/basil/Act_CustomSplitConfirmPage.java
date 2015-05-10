@@ -303,6 +303,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
         Intent intent = new Intent(this, Act_TabsPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
+        finish();
     }
 
 }

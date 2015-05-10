@@ -215,6 +215,7 @@ public class Act_CustomSplitPage extends Activity {
             intent.putExtra(PASS_NUMBER, number);
             intent.putExtra(PASS_CURRENT_USER, userName);
             startActivity(intent);
+            finish();
         }
     }
 
