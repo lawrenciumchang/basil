@@ -122,6 +122,7 @@ public class Act_RequestPage extends Activity {
         i.putExtra(PASS_USER, user);
         i.putExtra(PASS_CURRENT_USER, userName);
         startActivityForResult(i, 0);
+        finish();
     }
 
     /**

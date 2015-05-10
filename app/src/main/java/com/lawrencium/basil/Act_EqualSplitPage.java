@@ -134,13 +134,13 @@ public class Act_EqualSplitPage extends Activity {
     /**
      * Takes user to previous page.
      */
-    @Override
-    public void onBackPressed() {
-        Intent i;
-        i = new Intent(this, Act_TabsPage.class);
-        i.putExtra(PASS_CURRENT_USER, userName);
-        startActivityForResult(i, 0);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent i;
+//        i = new Intent(this, Act_TabsPage.class);
+//        i.putExtra(PASS_CURRENT_USER, userName);
+//        startActivityForResult(i, 0);
+//    }
 
     /**
      * Takes user to the next page to select users.

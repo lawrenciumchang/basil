@@ -152,13 +152,13 @@ public class Act_TabsPage extends Activity {
     /**
      * Returns user to previous page.
      */
-    @Override
-    public void onBackPressed() {
-        Intent i;
-        i = new Intent(this, Act_BudgetBuddy.class);
-        i.putExtra(PASS_CURRENT_USER, userName);
-        startActivityForResult(i, 0);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent i;
+//        i = new Intent(this, Act_BudgetBuddy.class);
+//        i.putExtra(PASS_CURRENT_USER, userName);
+//        startActivityForResult(i, 0);
+//    }
 
     /**
      * Takes user to Equal Split page.

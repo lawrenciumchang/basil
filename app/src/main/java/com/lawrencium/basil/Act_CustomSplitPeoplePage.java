@@ -298,6 +298,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
         i.putExtra(PASS_NUMBER, number);
         i.putExtra(PASS_CURRENT_USER, userName);
         startActivityForResult(i, 0);
+        finish();
     }
 
 

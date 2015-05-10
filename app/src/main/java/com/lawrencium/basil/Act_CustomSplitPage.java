@@ -137,13 +137,13 @@ public class Act_CustomSplitPage extends Activity {
     /**
      * Takes user to previous page.
      */
-    @Override
-    public void onBackPressed() {
-        Intent i;
-        i = new Intent(this, Act_TabsPage.class);
-        i.putExtra(PASS_CURRENT_USER, userName);
-        startActivityForResult(i, 0);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent i;
+//        i = new Intent(this, Act_TabsPage.class);
+//        i.putExtra(PASS_CURRENT_USER, userName);
+//        startActivityForResult(i, 0);
+//    }
 
     /**
      * Takes user to next page to select users and split transaction information.

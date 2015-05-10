@@ -177,6 +177,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
         i.putExtra(PASS_USER2, user2);
         i.putExtras(b);
         startActivityForResult(i, 0);
+        finish();
     }
 
     /**

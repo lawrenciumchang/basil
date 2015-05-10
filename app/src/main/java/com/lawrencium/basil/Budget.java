@@ -3,6 +3,10 @@ package com.lawrencium.basil;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
@@ -143,8 +147,19 @@ class Budget {
 
         return bounds;
     }
-    public static TextView getTransactionTextView(Context context, String title, String value, String date) {
+    public static LinearLayout getTransactionRow(Context context, String title, String value, String date) {
+        LinearLayout transactionRow = new LinearLayout(context);
+        transactionRow.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        transactionRow.setOrientation(LinearLayout.HORIZONTAL);
+
         TextView nextTransaction = new TextView(context);
+        nextTransaction.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+        transactionRow.addView(nextTransaction);
+
+        TextView nextTransactionValue = new TextView(context);
+        nextTransactionValue.setLayoutParams(new TableLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+        nextTransactionValue.setGravity(Gravity.RIGHT);
+        transactionRow.addView(nextTransactionValue);
 
         BigDecimal bdValue = new BigDecimal(value);
         DecimalFormat df = new DecimalFormat();
@@ -154,10 +169,13 @@ class Budget {
 
         String[] splitDate = date.split("[ :/]");
         String text = splitDate[1]+"/"+splitDate[2] + " " +
-                title + " " +
-                " $" + valueStr;
+                title;
         nextTransaction.setText(text);
         nextTransaction.setTextSize(15);
-        return nextTransaction;
+
+        nextTransactionValue.setText("$" + valueStr);
+        nextTransactionValue.setTextSize(15);
+
+        return transactionRow;
     }
 }

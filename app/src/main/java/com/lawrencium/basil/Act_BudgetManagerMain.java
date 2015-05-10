@@ -75,7 +75,7 @@ public class Act_BudgetManagerMain extends Activity {
                 String id = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
                 String value = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 String date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
-                TextView nextTransaction = Budget.getTransactionTextView(this,
+                LinearLayout nextTransaction = Budget.getTransactionRow(this,
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         value,
                         date
@@ -105,7 +105,7 @@ public class Act_BudgetManagerMain extends Activity {
                     Bundle bundle = data.getExtras();
                     LinearLayout ll = (LinearLayout) findViewById(R.id.lo_budgetmain);
 
-                    TextView nextTransaction = Budget.getTransactionTextView(this,
+                    LinearLayout nextTransaction = Budget.getTransactionRow(this,
                             bundle.getString("TITLE"),
                             bundle.getString("VALUE"),
                             bundle.getString("DATE")

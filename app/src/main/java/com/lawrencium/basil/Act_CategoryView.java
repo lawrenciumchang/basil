@@ -8,11 +8,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.math.BigDecimal;
@@ -153,14 +156,15 @@ public class Act_CategoryView extends Activity {
         );
         if(c.moveToFirst()) {
             do {
-                TextView nextTransaction;
+                LinearLayout nextTransaction;
                 String[] date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)).split("[ :/]");
 
-                nextTransaction = Budget.getTransactionTextView(this,
+                nextTransaction = Budget.getTransactionRow(this,
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE))
                 );
+
 
                 switch(Budget.calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {
                     case 0: lo_week1.addView(nextTransaction); break;

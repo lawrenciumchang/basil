@@ -273,6 +273,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
         i.putExtra(PASS_TAX_FLAG, taxFlag);
         i.putExtras(bun);
         startActivityForResult(i, 0);
+        finish();
     }
 
     /**
