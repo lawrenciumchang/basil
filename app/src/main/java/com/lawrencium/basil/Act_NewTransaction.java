@@ -47,12 +47,10 @@ public class Act_NewTransaction extends Activity {
         Cursor c = db.query(
             FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
             projection,
-            null,
-            null,
-            null,
-            null,
+            null, null, null, null,
             sortOrder
         );
+        //create a spinner with all the categories the user has created
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item);
         adapter.add("Select Category");
         if(c.moveToFirst()) {
@@ -66,7 +64,11 @@ public class Act_NewTransaction extends Activity {
         inputCategory.setAdapter(adapter);
     }
 
-
+    /**
+     * This adds items to the action bar if it is present.
+     * @param menu button inflates the menu options on the top right corner of the screen
+     * @return returns true to display menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -74,19 +76,13 @@ public class Act_NewTransaction extends Activity {
         return true;
     }
 
+    /**
+     * For the back button on the top left button
+     * @param item back arrow used for parent functionality
+     * @return return needs to be true in order to return you to the previous page
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will.
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
 
         switch (item.getItemId())
         {
@@ -100,6 +96,11 @@ public class Act_NewTransaction extends Activity {
         return true;
     }
 
+    /**
+     * Create a transaction. This method is mindful of empty fields and will have an associated
+     * message for specific cases. The case where a category with a $0 budget is considered.
+     * @param view
+     */
     public void createTransaction(View view) {
         String name = inputName.getText().toString();
         String value = inputValue.getText().toString();

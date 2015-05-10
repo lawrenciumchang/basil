@@ -52,23 +52,6 @@ public class Act_BudgetManagerMain extends Activity {
         LinearLayout ll = (LinearLayout) findViewById(R.id.lo_budgetmain);
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-//        String[] projection = {
-//                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
-//                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
-//                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
-//                FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
-//        };
-//        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
-//        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + twoMonthsAgo + "\'";
-//        Cursor c = db.query(
-//                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
-//                projection,
-//                filter,
-//                null,
-//                null,
-//                null,
-//                sortOrder
-//        );
         Cursor c = Budget.getTransactions(db, FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + twoMonthsAgo + "\'");
         if(c.moveToFirst()) {
             do {
