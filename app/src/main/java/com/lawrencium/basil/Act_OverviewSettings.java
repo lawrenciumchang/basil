@@ -15,6 +15,11 @@ public class Act_OverviewSettings extends Activity {
     }
 
 
+    /**
+     * This adds items to the action bar if it is present.
+     * @param menu button inflates the menu options on the top right corner of the screen
+     * @return returns true to display menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -22,11 +27,14 @@ public class Act_OverviewSettings extends Activity {
         return true;
     }
 
+    /**
+     * Handles the action bar item clicks here. The action bar will automatically handle clicks on
+     * the Home/Up button so long as you specify a parent activity in AndroidManifest.xml
+     * @param item Home/Up button
+     * @return return needs to be true in order to return you to the previous page
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
