@@ -12,7 +12,7 @@ import android.os.Bundle;
  */
 public class NotificationActivity extends Activity {
 
-    public static final String NOTIFICATION_ID = "NOTIFICATION_ID";
+    private static final String NOTIFICATION_ID = "NOTIFICATION_ID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

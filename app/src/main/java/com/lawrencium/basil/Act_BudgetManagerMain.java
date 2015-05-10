@@ -23,14 +23,17 @@ import java.util.Date;
 
 public class Act_BudgetManagerMain extends Activity {
 
-    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
-    private BigDecimal MonthLeftOver;
+    private final SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_manager_main);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         // Save the dates for the first day of this month and two months ago
         Calendar calendar = Calendar.getInstance();
@@ -72,34 +75,16 @@ public class Act_BudgetManagerMain extends Activity {
                 String id = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
                 String value = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 String date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
-                TextView nextTransaction = getTransactionTextView(
+                TextView nextTransaction = Budget.getTransactionTextView(this,
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         value,
-                        date,
-                        null);
+                        date
+                );
                 ll.addView(nextTransaction);
 
             } while (c.moveToNext());
         }
         c.close();
-    }
-
-    private TextView getTransactionTextView(String title, String value, String date, String category) {
-        TextView nextTransaction = new TextView(this);
-
-        BigDecimal bdValue = new BigDecimal(value);
-        DecimalFormat df = new DecimalFormat();
-        df.setMinimumFractionDigits(2);
-        df.setMinimumIntegerDigits(1);
-        String valueStr = df.format(bdValue);
-
-        String[] splitDate = date.split("[ :/]");
-        String text = splitDate[1]+"/"+splitDate[2] + " " +
-                title + " " +
-                " $" + valueStr;
-        nextTransaction.setText(text);
-        nextTransaction.setTextSize(15);
-        return nextTransaction;
     }
 
     public void gotoNewTransaction(View view){
@@ -120,11 +105,11 @@ public class Act_BudgetManagerMain extends Activity {
                     Bundle bundle = data.getExtras();
                     LinearLayout ll = (LinearLayout) findViewById(R.id.lo_budgetmain);
 
-                    TextView nextTransaction = getTransactionTextView(
+                    TextView nextTransaction = Budget.getTransactionTextView(this,
                             bundle.getString("TITLE"),
                             bundle.getString("VALUE"),
-                            bundle.getString("DATE"),
-                            null);
+                            bundle.getString("DATE")
+                    );
 
                     ll.addView(nextTransaction, 3);
                 }
@@ -241,21 +226,21 @@ public class Act_BudgetManagerMain extends Activity {
 
         BigDecimal totalBudget = new BigDecimal(catSum);
         BigDecimal percentProgress = total.multiply(new BigDecimal(100));
-        MonthLeftOver = totalBudget.subtract(total);
+        BigDecimal monthLeftOver = totalBudget.subtract(total);
         //set text here monthLeftOver
-        if(MonthLeftOver.compareTo(new BigDecimal(BigInteger.ZERO)) == -1) {
-            MonthLeftOver = MonthLeftOver.negate();
+        if(monthLeftOver.compareTo(new BigDecimal(BigInteger.ZERO)) == -1) {
+            monthLeftOver = monthLeftOver.negate();
             TextView monthLeftOverView = (TextView) findViewById(R.id.monthLeftOverTxt);
-            monthLeftOverView.setText("$" + MonthLeftOver + " over");
+            monthLeftOverView.setText("$" + monthLeftOver + " over");
             monthLeftOverView.setTextColor(Color.parseColor("#ffd81500"));
         }else{
             TextView monthLeftOverView = (TextView) findViewById(R.id.monthLeftOverTxt);
-            monthLeftOverView.setText("$" + MonthLeftOver + " left");
+            monthLeftOverView.setText("$" + monthLeftOver + " left");
         }
         try {
             percentProgress = percentProgress.divide(totalBudget, BigDecimal.ROUND_HALF_DOWN);
         } catch(ArithmeticException e) {
-            if(e.getMessage() == "Division by zero"){
+            if(e.getMessage().equals("Division by zero")){
                 percentProgress = new BigDecimal(BigInteger.ZERO);
             }
         }

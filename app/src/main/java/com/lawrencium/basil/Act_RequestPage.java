@@ -15,17 +15,17 @@ import android.widget.TextView;
 
 public class Act_RequestPage extends Activity {
 
-    String title;
-    String category ;
-    String amount ;
-    String user;
-    String userName;
-    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
+    private String title;
+    private String category ;
+    private String amount ;
+    private String user;
+    private String userName;
+    private final SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
     public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
     public final static String PASS_USER = "com.lawrencium.basil.USER";
 
     /**
@@ -51,8 +51,11 @@ public class Act_RequestPage extends Activity {
         System.out.println("Current User: " + userName);
 
         setContentView(R.layout.activity_act__request_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
         TextView displayUser1 = (TextView)findViewById(R.id.requestMessage1);
         displayUser1.setText(userName + ", " + user + " owes you");
 
@@ -158,7 +161,7 @@ public class Act_RequestPage extends Activity {
     /**
      * Sends user to the Tabs home page.
      */
-    public void launchIntent(){
+    void launchIntent(){
         Intent intent = new Intent(this, Act_TabsPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);

@@ -29,29 +29,29 @@ public class Act_CustomSplitPeoplePage extends Activity {
     public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
     public final static String PASS_TAX_FLAG = "com.lawrencium.basil.TAXFLAG";
 
-    String title;
-    String category;
-    String amount;
-    String number;
-    String userName;
-    String user2;
+    private String title;
+    private String category;
+    private String amount;
+    private String number;
+    private String userName;
+    private String user2;
 
-    String taxFlag;
+    private String taxFlag;
 
-    int numToCreate;
-    double total;
+    private int numToCreate;
+    private double total;
 
-    Bundle bun;
+    private Bundle bun;
 
-    int spinID;
-    int subID;
-    int tipID;
-    int checkSpinID;
-    int checkSubID;
-    int bundleSpinID;
-    int bundleSubID;
-    int bundleTipID;
-    int calcSubID;
+    private int spinID;
+    private int subID;
+    private int tipID;
+    private int checkSpinID;
+    private int checkSubID;
+    private int bundleSpinID;
+    private int bundleSubID;
+    private int bundleTipID;
+    private int calcSubID;
 
     /**
      * Creates number of dropdowns and TextEdit views depending on how many users were selected on the previous page
@@ -62,7 +62,11 @@ public class Act_CustomSplitPeoplePage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__custom_split_people_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         Intent intent = getIntent();
 
@@ -218,7 +222,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
      * Creates field for user to enter subtotal.
      * @return  EditText field for subtotal
      */
-    public EditText createNewUserSubtotal(){
+    EditText createNewUserSubtotal(){
         EditText newSubtotal = new EditText(this);
         newSubtotal.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         newSubtotal.setHint("Subtotal");
@@ -229,7 +233,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
      * Creates field for user to enter tip.
      * @return EditText field for tip
      */
-    public EditText createNewUserTip(){
+    EditText createNewUserTip(){
         EditText newTip = new EditText(this);
         newTip.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         newTip.setHint("Tip (optional)");
@@ -423,7 +427,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
 
         //if check is true, carry out intent to next page
         //else, alert dialog
-        if(checkUsers == false){
+        if(!checkUsers){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Please select users for your transaction.");
             builder.setCancelable(true);
@@ -432,7 +436,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
             AlertDialog dialog = builder.create();
             dialog.show();
         }
-        else if(checkSubs == false){
+        else if(!checkSubs){
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Please enter amounts for your transaction.");
             builder.setCancelable(true);
@@ -443,7 +447,7 @@ public class Act_CustomSplitPeoplePage extends Activity {
         }
         else if(checkUsers && checkSubs){
             //if tax box not checked, make sure subtotals add up to total amount
-            if(taxChecked == false) {
+            if(!taxChecked) {
                 double u1Sub = Double.parseDouble(user1Subtotal.getText().toString());
                 total += u1Sub;
 

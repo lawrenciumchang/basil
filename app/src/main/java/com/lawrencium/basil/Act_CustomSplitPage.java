@@ -18,21 +18,21 @@ import android.widget.Spinner;
 
 public class Act_CustomSplitPage extends Activity {
 
-    public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
-    public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
-    public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
-    public final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
+    private final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
+    private final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
+    private final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
     SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
 
-    String title;
-    String category;
-    String amount;
-    String number;
-    String userName;
+    private String title;
+    private String category;
+    private String amount;
+    private String number;
+    private String userName;
 
-    ArrayAdapter<String> categoryAdapter;
+    private ArrayAdapter<String> categoryAdapter;
 
     /**
      * Allows user to input transaction information
@@ -43,7 +43,11 @@ public class Act_CustomSplitPage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__custom_split_page);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         Intent intent = getIntent();
 

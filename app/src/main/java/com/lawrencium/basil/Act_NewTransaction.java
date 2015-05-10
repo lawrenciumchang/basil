@@ -19,17 +19,20 @@ import java.util.Date;
 
 
 public class Act_NewTransaction extends Activity {
-    protected EditText inputName;
-    protected EditText inputValue;
-    protected Spinner inputCategory;
-    SQLiteDbHelper SQLiteDbHelper = new SQLiteDbHelper(this);
+    private EditText inputName;
+    private EditText inputValue;
+    private Spinner inputCategory;
+    private final SQLiteDbHelper SQLiteDbHelper = new SQLiteDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_transaction);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
         SQLiteDatabase db = SQLiteDbHelper.getReadableDatabase();
         inputName = (EditText)findViewById(R.id.inputName);
         inputValue = (EditText)findViewById(R.id.inputValue);

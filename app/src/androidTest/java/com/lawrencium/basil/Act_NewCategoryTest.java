@@ -10,7 +10,7 @@ import android.widget.EditText;
  * Created by Evan on 4/14/2015.
  */
 public class Act_NewCategoryTest extends ActivityInstrumentationTestCase2<Act_NewCategory> {
-    SQLiteDatabase db;
+    private SQLiteDatabase db;
 
     private Act_NewCategory newCategoryActivity;
     private EditText newCatName;

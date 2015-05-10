@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 
 public class Act_TransactionConfirm extends Activity {
-    SQLiteDbHelper transactionsDbHelper = new SQLiteDbHelper(this);
+    private final SQLiteDbHelper transactionsDbHelper = new SQLiteDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

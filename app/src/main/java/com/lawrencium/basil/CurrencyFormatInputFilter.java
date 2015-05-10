@@ -6,9 +6,9 @@ import android.text.Spanned;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CurrencyFormatInputFilter implements InputFilter {
+class CurrencyFormatInputFilter implements InputFilter {
 
-    Pattern mPattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?");
+    private final Pattern mPattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?");
 
     @Override
     public CharSequence filter(

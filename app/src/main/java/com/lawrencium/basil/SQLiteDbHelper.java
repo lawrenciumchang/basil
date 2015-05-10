@@ -8,7 +8,7 @@ import com.lawrencium.basil.FeedReaderContract.FeedEntry;
 /**
  * Created by Evan on 3/24/2015.
  */
-public class SQLiteDbHelper extends SQLiteOpenHelper {
+class SQLiteDbHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = " TEXT";
     private static final String CURRENCY_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
@@ -55,7 +55,7 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
             "CREATE TABLE " + FeedEntry.TABLE_NAME_FRIENDS + " (" +
                     FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FeedEntry.COLUMN_NAME_FRIEND + TEXT_TYPE + COMMA_SEP +
-                    FeedEntry.COLUMN_NAME_EMAIL + TEXT_TYPE + //COMMA_SEP +
+                    FeedEntry.COLUMN_NAME_EMAIL + TEXT_TYPE + " UNIQUE" + //COMMA_SEP +
                     // Any other options for the CREATE command
                     " )";
     private static final String SQL_DELETE_FRIENDS =
@@ -63,8 +63,8 @@ public class SQLiteDbHelper extends SQLiteOpenHelper {
 
     // If you change the database schema, you must increment the database version.
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "FeedReader.db";
+    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "FeedReader.db";
 
     public SQLiteDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

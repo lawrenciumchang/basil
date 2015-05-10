@@ -26,17 +26,21 @@ import java.util.Date;
 
 public class Act_CategoryView extends Activity {
 
-    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
-    LinearLayout lo_week1;
-    LinearLayout lo_week2;
-    LinearLayout lo_week3;
-    LinearLayout lo_week4;
+    private final SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
+    private LinearLayout lo_week1;
+    private LinearLayout lo_week2;
+    private LinearLayout lo_week3;
+    private LinearLayout lo_week4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_view);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         Bundle bundle = getIntent().getExtras();
         String catName = bundle.getString("CAT_NAME");
@@ -152,11 +156,11 @@ public class Act_CategoryView extends Activity {
                 TextView nextTransaction;
                 String[] date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)).split("[ :/]");
 
-                nextTransaction = getTransactionTextView(
+                nextTransaction = Budget.getTransactionTextView(this,
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE)),
-                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)),
-                        null);
+                        c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE))
+                );
 
                 switch(Budget.calculateWeek(Integer.parseInt(date[2]), daysThisMonth)) {
                     case 0: lo_week1.addView(nextTransaction); break;
@@ -167,24 +171,6 @@ public class Act_CategoryView extends Activity {
             } while (c.moveToNext());
         }
         db.close();
-    }
-
-    private TextView getTransactionTextView(String title, String value, String date, String category) {
-        TextView nextTransaction = new TextView(this);
-
-        BigDecimal bdValue = new BigDecimal(value);
-        DecimalFormat df = new DecimalFormat();
-        df.setMinimumFractionDigits(2);
-        df.setMinimumIntegerDigits(1);
-        String valueStr = df.format(bdValue);
-
-        String[] splitDate = date.split("[ :/]");
-        String text = splitDate[1]+"/"+splitDate[2] + " " +
-                title + " " +
-                " $" + valueStr;
-        nextTransaction.setText(text);
-        nextTransaction.setTextSize(15);
-        return nextTransaction;
     }
 
     @Override

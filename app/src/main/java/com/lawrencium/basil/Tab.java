@@ -56,7 +56,7 @@ public class Tab {
         Date = T.getDate();
     }
 
-    public String getUserOwed() {
+    String getUserOwed() {
         return UserOwed;
     }
 
@@ -64,7 +64,7 @@ public class Tab {
         UserOwed = userOwed;
     }
 
-    public String getUserOwing() {
+    String getUserOwing() {
         return UserOwing;
     }
 
@@ -72,7 +72,7 @@ public class Tab {
         UserOwing = userOwing;
     }
 
-    public double getAmountOwed() {
+    double getAmountOwed() {
         return AmountOwed;
     }
 
@@ -80,7 +80,7 @@ public class Tab {
         AmountOwed = amountOwed;
     }
 
-    public String getCategory() {
+    String getCategory() {
         return Category;
     }
 
@@ -88,7 +88,7 @@ public class Tab {
         Category = category;
     }
 
-    public String getTitle() {
+    String getTitle() {
         return Title;
     }
 
@@ -96,7 +96,7 @@ public class Tab {
         Title = title;
     }
 
-    public String getDate() {
+    String getDate() {
         return Date;
     }
 
@@ -104,7 +104,7 @@ public class Tab {
         Date = date;
     }
 
-    public long getTransactionId() {
+    long getTransactionId() {
         return transactionId;
     }
 
@@ -113,9 +113,9 @@ public class Tab {
     }
 
 
-    public String reformatDate(String date){
+    String reformatDate(String date){
 
-        String tempString = "";
+        String tempString;
         int firstBackSlash = date.indexOf('/');
         int secondBackSlash = date.indexOf('/', firstBackSlash+1);
 
@@ -195,7 +195,7 @@ public class Tab {
 
         db.close();
 
-        new GcmSendAsyncTask(context, UserOwed, owingEmail, UserOwing+sendTabMsg()+newRowId+"**").execute();
+        new GcmSendAsyncTask(context, UserOwed, owingEmail, UserOwed+sendTabMsg()+newRowId+"**").execute();
 
         return newRowId;
     }

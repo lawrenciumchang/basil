@@ -14,14 +14,17 @@ import android.widget.EditText;
 public class Act_SignInPage extends Activity {
     public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
-    String userName;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__sign_in_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
         Intent intent = getIntent();
 
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
@@ -107,7 +110,7 @@ public class Act_SignInPage extends Activity {
 //        startActivity(intent);
     }
 
-    public void launchIntent(){
+    void launchIntent(){
         Intent intent = new Intent(this, Act_BudgetBuddy.class);
         EditText editText = (EditText)findViewById(R.id.editText3);
         String userName = editText.getText().toString();

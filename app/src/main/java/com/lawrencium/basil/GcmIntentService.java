@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class GcmIntentService extends IntentService {
 
-    int notID = 0;
+    private int notID = 0;
 
     public GcmIntentService() {
         super("GcmIntentService");
@@ -47,7 +47,13 @@ public class GcmIntentService extends IntentService {
                 String message = extras.getString("message");
                 String [] tokens = message.split("[**]+");
 
-                String m = "You owe " + tokens[2] + " $" + tokens[5] + " for " + tokens[3] + ".";
+                String m;
+                if(tokens[0].equals(tokens[1])) {
+                    m = tokens[1] + " paid you $" + tokens[5] + " for " + tokens[3] + ".";
+                }
+                else {
+                    m = "You owe " + tokens[2] + " $" + tokens[5] + " for " + tokens[3] + ".";
+                }
                 System.out.println(m);
 
                 Bundle b = new Bundle();
@@ -64,7 +70,7 @@ public class GcmIntentService extends IntentService {
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-    protected void showToast(final String message) {
+    void showToast(final String message) {
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
             public void run() {
@@ -73,7 +79,7 @@ public class GcmIntentService extends IntentService {
         });
     }
 
-    public void notify(String m, Bundle b){
+    void notify(String m, Bundle b){
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)

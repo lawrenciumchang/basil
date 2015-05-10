@@ -15,22 +15,22 @@ import android.widget.Spinner;
 
 
 public class Act_EqualSplitPeoplePage extends Activity {
-    String title;
-    String category;
-    String amount;
-    String number;
-    String userName;
-    String user2;
-    Bundle b;
+    private String title;
+    private String category;
+    private String amount;
+    private String number;
+    private String userName;
+    private String user2;
+    private Bundle b;
 
     public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
     public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
     public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
     public final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
     public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
 
-    int numToCreate;
+    private int numToCreate;
 
 
     /**
@@ -41,7 +41,11 @@ public class Act_EqualSplitPeoplePage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__equal_split_people_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         Intent intent = getIntent();
 

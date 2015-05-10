@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteConstraintException;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -34,15 +37,18 @@ import com.google.android.gms.plus.model.people.Person;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.lawrencium.basil.james.backend.registration.Registration;
+import com.lawrencium.basil.james.backend.registration.model.CollectionResponseStringCollection;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConnectionFailedListener , GoogleApiClient.ConnectionCallbacks, View.OnClickListener{
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
-    int mId = 0;
+    private int mId = 0;
 
 
     //GOOGLE PLUS----
@@ -72,7 +78,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
     /*Used for device Registration*/
     private static final String PROPERTY_USER_NAME ="user_name";
-    public static final String PROPERTY_REG_ID = "registration_id";
+    private static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static Registration regService = null;
@@ -105,17 +111,18 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             findViewById(R.id.signIn).setOnClickListener(this);
             findViewById(R.id.signIn).setVisibility(View.VISIBLE);
             findViewById(R.id.signOut).setOnClickListener(this);
-            findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
+            findViewById(R.id.signOut).setVisibility(View.GONE);
             findViewById(R.id.revokeAccess).setOnClickListener(this);
-            findViewById(R.id.revokeAccess).setVisibility(View.INVISIBLE);
+            findViewById(R.id.revokeAccess).setVisibility(View.GONE);
+//            findViewById(R.id.friends).setVisibility(View.GONE);
         }
         else{ //userName != null
             findViewById(R.id.signIn).setOnClickListener(this);
-            findViewById(R.id.signIn).setVisibility(View.INVISIBLE);
+            findViewById(R.id.signIn).setVisibility(View.GONE);
             findViewById(R.id.signOut).setOnClickListener(this);
             findViewById(R.id.signOut).setVisibility(View.VISIBLE);
             findViewById(R.id.revokeAccess).setVisibility(View.VISIBLE);
-
+//            findViewById(R.id.friends).setVisibility(View.VISIBLE);
         }
         //GOOGLE PLUS----
 
@@ -156,14 +163,6 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Negates the effect of a back button press on the home page.
-     */
-    @Override
-    public void onBackPressed() {
-        //leave empty
     }
 
     /**
@@ -233,9 +232,10 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         mSignInClicked = false;
 
         // Hide the sign in button, show the sign out buttons.
-        findViewById(R.id.signIn).setVisibility(View.INVISIBLE);
+        findViewById(R.id.signIn).setVisibility(View.GONE);
         findViewById(R.id.signOut).setVisibility(View.VISIBLE);
         findViewById(R.id.revokeAccess).setVisibility(View.VISIBLE);
+//        findViewById(R.id.friends).setVisibility(View.VISIBLE);
 
         AsyncTask task = new AsyncTask() {
             @Override
@@ -317,6 +317,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
             builder.setPositiveButton("Continue", null);
             AlertDialog dialog = builder.create();
             dialog.show();
+            getFriends();
         }
     }
 
@@ -336,8 +337,9 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                 Log.e(TAG, "User signed out!");
                 // Hide the sign out buttons, show the sign in button.
                 findViewById(R.id.signIn).setVisibility(View.VISIBLE);
-                findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
-                findViewById(R.id.revokeAccess).setVisibility(View.INVISIBLE);
+                findViewById(R.id.signOut).setVisibility(View.GONE);
+                findViewById(R.id.revokeAccess).setVisibility(View.GONE);
+//                findViewById(R.id.friends).setVisibility(View.GONE);
                 Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
                 mGoogleApiClient.disconnect();
                 mGoogleApiClient.connect();
@@ -378,8 +380,9 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
                                 storeRegistrationId(context, regID);
 
                                 findViewById(R.id.signIn).setVisibility(View.VISIBLE);
-                                findViewById(R.id.signOut).setVisibility(View.INVISIBLE);
-                                findViewById(R.id.revokeAccess).setVisibility(View.INVISIBLE);
+                                findViewById(R.id.signOut).setVisibility(View.GONE);
+                                findViewById(R.id.revokeAccess).setVisibility(View.GONE);
+//                                findViewById(R.id.friends).setVisibility(View.GONE);
                             }
                         });
 
@@ -496,7 +499,7 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         // This sample app persists the registration ID in shared preferences, but
         // how you store the registration ID in your app is up to you.
         return getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
-                context.MODE_PRIVATE);
+                Context.MODE_PRIVATE);
     }
 
     private static int getAppVersion(Context context) {
@@ -676,6 +679,72 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
         Intent intent = new Intent(this, Act_FriendsPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
+
+    }
+
+    void getFriends(){
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                if (regService == null) {
+                    Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                            .setRootUrl("https://eternal-ruler-92119.appspot.com/_ah/api/");
+                    regService = builder.build();
+                }
+
+                String msg = "";
+                try {
+                    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(getApplicationContext());
+                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+
+                    CollectionResponseStringCollection registeredUsers = regService.listFriends().execute();
+                    List<List<String>> test = registeredUsers.getItems();
+
+                    ListIterator<List<String>> userIterator = test.listIterator();
+
+//                    friendsList = new ArrayList<ArrayList<String>>();
+//
+//                    ArrayList<String> nextFriend;
+                    List<String> nextUser;
+//
+//                    while (userIterator.hasNext()) {
+//                        tempArr = new ArrayList<String>(userIterator.next());
+//                        friendsList.add(tempArr);
+//                    }
+
+                    ContentValues values = new ContentValues();
+                    while(userIterator.hasNext()) {
+                        nextUser = userIterator.next();
+                        try {
+                            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, nextUser.get(0));
+                            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL, nextUser.get(1));
+                            long newRowId = db.insertOrThrow(
+                                    FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                                    values);
+                            Log.i(nextUser.get(0), nextUser.get(1));
+                        } catch (SQLiteConstraintException e) {
+                            // insert will throw an exception if one of the users retrieved is already in the friends list.
+                            // When this happens do nothing, the loop will continue on its own.
+                            Log.i("SQLiteConstraint", e.getMessage());
+                        }
+                    }
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                    msg = "Error: " + ex.getMessage();
+                }
+
+                return msg;
+            }
+
+            @Override
+            protected void onPostExecute(String msg) {
+                //        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                Logger.getLogger("REGISTRATION").log(Level.INFO, msg);
+            }
+        }.execute(null, null, null);
 
     }
 

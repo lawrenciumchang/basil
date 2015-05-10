@@ -10,7 +10,7 @@ import android.widget.EditText;
  * Created by Evan on 4/14/2015.
  */
 public class Act_BudgetOverviewTest extends ActivityInstrumentationTestCase2<Act_BudgetOverview> {
-    SQLiteDatabase db;
+    private SQLiteDatabase db;
 
     private Act_BudgetOverview newCategoryActivity;
     private EditText newCatName;

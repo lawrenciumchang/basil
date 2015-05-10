@@ -19,24 +19,24 @@ import java.util.Random;
 public class Act_EqualSplitConfirmPage extends Activity {
 
 
-    String title;
-    String category;
-    String amount;
-    String number;
-    String userName;
-    String user2;
-    Bundle b;
-    String[] ppl;
-    double[] pricesSplit;
+    private String title;
+    private String category;
+    private String amount;
+    private String number;
+    private String userName;
+    private String user2;
+    private Bundle b;
+    private String[] ppl;
+    private double[] pricesSplit;
 
-    public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
-    public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
-    public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
-    public final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
+    private final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
+    private final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
+    private final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
     public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
 
-    int num;
+    private int num;
 
     /**
      * Prints on screen a confirmation page, showing the user the transaction totals for each user.
@@ -46,7 +46,11 @@ public class Act_EqualSplitConfirmPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__equal_split_confirm_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         Intent intent = getIntent();
 
@@ -63,7 +67,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
 
         double[] tempArr;
         String[] tempPeople;
-        String testString ="";
+        String testString;
         LinkedHashSet tempSet;
 
         System.out.println("Current User from Equal Split Confirmation: " + userName);
@@ -199,7 +203,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
     /**
      * Sends user to Tabs home page.
      */
-    public void launchIntent(){
+    void launchIntent(){
         Intent intent = new Intent(this, Act_TabsPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
@@ -299,7 +303,7 @@ public class Act_EqualSplitConfirmPage extends Activity {
 
     private String[] getPeople(Bundle b, int numPpl){
         String[] people = new String[numPpl];
-        String temp ="";
+        String temp;
 
         String test = "People in Bundle: ";
 

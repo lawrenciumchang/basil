@@ -13,9 +13,9 @@ import android.widget.EditText;
 
 
 public class Act_NewCategory extends Activity {
-    protected EditText inputName;
-    protected EditText inputBudget;
-    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
+    private EditText inputName;
+    private EditText inputBudget;
+    final SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

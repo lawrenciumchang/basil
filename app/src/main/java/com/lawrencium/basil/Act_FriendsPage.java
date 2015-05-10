@@ -3,6 +3,7 @@ package com.lawrencium.basil;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteConstraintException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -27,41 +28,46 @@ import java.util.logging.Logger;
 
 public class Act_FriendsPage extends Activity {
 
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
-    Registration regService = null;
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private Registration regService = null;
     private static ArrayList<ArrayList<String>> friendsList;
-    String userName;
-    Boolean waitFriends = false;
-    SQLiteDbHelper SQLiteDbHelper = new SQLiteDbHelper(this);
+    private String userName;
+    private Boolean waitFriends = false;
+    private final SQLiteDbHelper SQLiteDbHelper = new SQLiteDbHelper(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__friends_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         Intent intent = getIntent();
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);
         viewAllFriends();
         while(!waitFriends){
-
+            // Wait for friends to be retrieved. Running this task in the background could not be figured out so we busy-wait for now.
         }
 
-        SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
+//        SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
+//
+//        for(ArrayList<String> aS: friendsList){
+//            ContentValues values = new ContentValues();
+//            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, aS.get(0));
+//            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL, aS.get(1));
+//            long newRowId = db.insert(
+//                    FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+//                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+//                    values);
+//            Log.v("Database", aS.get(0) + " " + aS.get(1));
+//        }
 
-        for(ArrayList<String> aS: friendsList){
-            System.out.println("sop: "+aS);
-            ContentValues values = new ContentValues();
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, aS.get(0));
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL, aS.get(1));
-            long newRowId = db.insert(
-                    FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
-                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                    values);
-            Log.v("Database", aS.get(0) + " " + aS.get(1));
-        }
+        //createDropdown();
 
-        createDropdown();
+
 
     }
 
@@ -72,7 +78,7 @@ public class Act_FriendsPage extends Activity {
         getMenuInflater().inflate(R.menu.menu_act__friends_page, menu);
         return true;
     }
-    public void createDropdown(){
+    void createDropdown(){
         Spinner dropdown = (Spinner)findViewById(R.id.spinFriends);
         ArrayList<String> items = new ArrayList<String>();
         items.add("Select Friend");
@@ -86,7 +92,7 @@ public class Act_FriendsPage extends Activity {
         dropdown.setAdapter(adapter);
     }
 
-    public void viewAllFriends(){
+    void viewAllFriends(){
         new AsyncTask<Void, Void, String>() {
 
             @Override
@@ -99,21 +105,42 @@ public class Act_FriendsPage extends Activity {
 
                 String msg = "";
                 try {
+                    SQLiteDatabase db = SQLiteDbHelper.getWritableDatabase();
 
-                    CollectionResponseStringCollection temp3 = regService.listFriends().execute();
-                    List<List<String>> test = temp3.getItems();
+                    CollectionResponseStringCollection registeredUsers = regService.listFriends().execute();
+                    List<List<String>> test = registeredUsers.getItems();
 
-                    ListIterator<List<String>> litr2 = test.listIterator();
+                    ListIterator<List<String>> userIterator = test.listIterator();
 
-                    friendsList = new ArrayList<ArrayList<String>>();
+//                    friendsList = new ArrayList<ArrayList<String>>();
+//
+//                    ArrayList<String> nextFriend;
+                    List<String> nextUser;
+//
+//                    while (userIterator.hasNext()) {
+//                        tempArr = new ArrayList<String>(userIterator.next());
+//                        friendsList.add(tempArr);
+//                    }
 
-                    ArrayList<String> tempArr = new ArrayList<String>();
-
-                    while (litr2.hasNext()) {
-                        tempArr = new ArrayList<String>(litr2.next());
-                        friendsList.add(tempArr);
+                    ContentValues values = new ContentValues();
+                    while(userIterator.hasNext()) {
+                        nextUser = userIterator.next();
+                        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, nextUser.get(0));
+                        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_EMAIL, nextUser.get(1));
+                        try {
+                            long newRowId = db.insert(
+                                    FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS,
+                                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                                    values);
+                        } catch (SQLiteConstraintException e) {
+                            // insert will throw an exception if one of the users retrieved is already in the friends list.
+                            // When this happens do nothing, the loop will continue on its own.
+                        }
+                        Log.i(nextUser.get(0), nextUser.get(1));
                     }
+
                     waitFriends = true;
+
 
                 }
                 catch (IOException ex) {

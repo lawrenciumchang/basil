@@ -12,42 +12,41 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 
 
 public class Act_CustomSplitConfirmPage extends Activity {
 
-    String title;
-    String category;
-    String amount;
-    String number;
-    String userName;
-    String user2;
-    Bundle bun;
-    String taxFlag;
-    String output = "";
+    private String title;
+    private String category;
+    private String amount;
+    private String number;
+    private String userName;
+    private String user2;
+    private Bundle bun;
+    private String taxFlag;
+    private String output = "";
 
-    int num;
-    int numToCreate;
+    private int num;
+    private int numToCreate;
 
-    int bundleSpinID;
-    int bundleSubID;
-    int bundleTipID;
+    private int bundleSpinID;
+    private int bundleSubID;
+    private int bundleTipID;
 
-    double tipSum = 0;
-    double subtotalSum = 0;
-    double tax = 0;
-    double taxSum = 0;
+    private double tipSum = 0;
+    private double subtotalSum = 0;
+    private double tax = 0;
+    private double taxSum = 0;
 
-    String[] people;
-    double[] prices;
+    private String[] people;
+    private double[] prices;
 
-    public final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
-    public final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
-    public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
-    public final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
-    public final static String PASS_USER2 = "com.lawrencium.basil.USER2";
+    private final static String PASS_TITLE = "com.lawrencium.basil.TITLE";
+    private final static String PASS_CATEGORY = "com.lawrencium.basil.CATEGORY";
+    private final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
+    private final static String PASS_NUMBER = "com.lawrencium.basil.NUMBER";
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private final static String PASS_USER2 = "com.lawrencium.basil.USER2";
     public final static String PASS_TAX_FLAG = "com.lawrencium.basil.TAXFLAG";
 
     /**
@@ -58,7 +57,11 @@ public class Act_CustomSplitConfirmPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__custom_split_confirm_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         Intent intent = getIntent();
 
@@ -100,9 +103,9 @@ public class Act_CustomSplitConfirmPage extends Activity {
             //add user 1 and 2 to string first
             //check if no tip was added, make it display "0"
 
-            String spinID = "";
-            String subID ="";
-            String tipID ="";
+            String spinID;
+            String subID;
+            String tipID;
             double t;
             double s;
 
@@ -163,8 +166,8 @@ public class Act_CustomSplitConfirmPage extends Activity {
 
             //add user 1 and 2 to string first
 
-            String spinID = "";
-            String tipID ="";
+            String spinID;
+            String tipID;
             double tx;
             double t;
 
@@ -295,7 +298,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
     /**
      * Sends user to the Tabs home page.
      */
-    public void launchIntent(){
+    void launchIntent(){
         Intent intent = new Intent(this, Act_TabsPage.class);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);

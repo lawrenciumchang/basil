@@ -1,8 +1,12 @@
 package com.lawrencium.basil;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.TextView;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.Calendar;
@@ -11,7 +15,7 @@ import java.util.Date;
 /**
  * Created by Evan on 3/23/2015.
  */
-public class Budget {
+class Budget {
 
     private Budget() {
     }
@@ -28,7 +32,7 @@ public class Budget {
         final int[] leapFeb = {8, 15, 26, 29};
         final int[] small = {8, 16, 23, 30};
         final int[] big = {8, 16, 24, 31};
-        int[] weekRange = big;
+        int[] weekRange;
 
         if(day > daysMax)
             throw new IllegalArgumentException("The date ["+day+"] cannot be greater than the number of days in the month");
@@ -50,7 +54,7 @@ public class Budget {
         final int[] leapFeb = {8, 7, 7, 7};
         final int[] small = {8, 8, 7, 7};
         final int[] big = {8, 8, 8, 7};
-        int[] weekRange = big;
+        int[] weekRange;
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
         String[] bounds = new String[5];
@@ -106,7 +110,7 @@ public class Budget {
         final int[] leapFeb = {8, 7, 7, 7};
         final int[] small = {8, 8, 7, 7};
         final int[] big = {8, 8, 8, 7};
-        int[] weekRange = big;
+        int[] weekRange;
 
 
         /*array of date bounds
@@ -138,5 +142,22 @@ public class Budget {
         }
 
         return bounds;
+    }
+    public static TextView getTransactionTextView(Context context, String title, String value, String date) {
+        TextView nextTransaction = new TextView(context);
+
+        BigDecimal bdValue = new BigDecimal(value);
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMinimumIntegerDigits(1);
+        String valueStr = df.format(bdValue);
+
+        String[] splitDate = date.split("[ :/]");
+        String text = splitDate[1]+"/"+splitDate[2] + " " +
+                title + " " +
+                " $" + valueStr;
+        nextTransaction.setText(text);
+        nextTransaction.setTextSize(15);
+        return nextTransaction;
     }
 }

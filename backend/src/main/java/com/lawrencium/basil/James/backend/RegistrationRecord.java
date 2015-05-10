@@ -13,7 +13,7 @@ import com.googlecode.objectify.annotation.Index;
 public class RegistrationRecord {
 
     @Id
-    String emailAddress;
+    private String emailAddress;
 
     @Index
     private String regId;

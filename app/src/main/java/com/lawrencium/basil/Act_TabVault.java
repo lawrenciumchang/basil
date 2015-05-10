@@ -15,12 +15,12 @@ import java.util.ArrayList;
 
 public class Act_TabVault extends Activity {
 
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
-    String userName;
+    private String userName;
 
-    private ArrayList<Tab> Tabs = new ArrayList<Tab>();
-    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
+    private final ArrayList<Tab> Tabs = new ArrayList<Tab>();
+    private final SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
     /**
      * Displays all tabs in user's database, showing the most recent at the top.
@@ -30,8 +30,11 @@ public class Act_TabVault extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_tabs_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
         Intent intent = getIntent();
 
         userName = intent.getStringExtra(Act_SignInPage.PASS_CURRENT_USER);

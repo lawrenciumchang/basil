@@ -1,6 +1,7 @@
 package com.lawrencium.basil;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -15,10 +16,10 @@ import android.widget.TextView;
 
 
 public class Act_TabsPage extends Activity {
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
-    String userName;
-    SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
+    private String userName;
+    private final SQLiteDbHelper tabDbHelper = new SQLiteDbHelper(this);
 
     /**
      * Creates the layout for the Tabs home page.
@@ -32,11 +33,13 @@ public class Act_TabsPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act_tabs_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-
-        Intent intent = getIntent();
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
         SharedPreferences prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
-                getApplicationContext().MODE_PRIVATE);
+                Context.MODE_PRIVATE);
         userName = prefs.getString("user_name", "");
 
         System.out.println("Current User from Tabs page: " + userName);

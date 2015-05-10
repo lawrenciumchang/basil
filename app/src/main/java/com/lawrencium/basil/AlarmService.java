@@ -17,7 +17,7 @@ public class AlarmService extends Service {
     private NotificationManager notificationManager;
     private PendingIntent pendingIntent;
 
-    int mId = 0;
+    private int mId = 0;
 
     @Override
     public IBinder onBind(Intent arg0)

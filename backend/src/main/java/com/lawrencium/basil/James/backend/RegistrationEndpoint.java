@@ -31,7 +31,7 @@ import static com.lawrencium.basil.James.backend.OfyService.ofy;
  * you'd like to add authentication, take a look at the documentation.
  */
 @Api(name = "registration", version = "v1", namespace = @ApiNamespace(ownerDomain = "backend.James.basil.lawrencium.com", ownerName = "backend.James.basil.lawrencium.com", packagePath = ""))
-public class RegistrationEndpoint {
+class RegistrationEndpoint {
 
     private static final Logger log = Logger.getLogger(RegistrationEndpoint.class.getName());
 

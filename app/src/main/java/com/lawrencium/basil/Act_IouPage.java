@@ -3,6 +3,7 @@ package com.lawrencium.basil;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -28,18 +29,18 @@ public class Act_IouPage extends Activity {
     public final static String PASS_AMOUNT = "com.lawrencium.basil.AMOUNT";
     public final static String PASS_USER = "com.lawrencium.basil.USER";
 
-    public final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
+    private final static String PASS_CURRENT_USER = "com.lawrencium.basil.CURRENTUSER";
 
-    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
+    private final SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
 
-    String title;
-    String category;
-    String amount;
-    String user;
-    String userName;
+    private String title;
+    private String category;
+    private String amount;
+    private String user;
+    private String userName;
 
-    ArrayAdapter<String> categoryAdapter;
-    ArrayAdapter<String> userAdapter;
+    private ArrayAdapter<String> categoryAdapter;
+    private ArrayAdapter<String> userAdapter;
 
     /**
      * Allows user to input transaction information geared toward one user.
@@ -49,12 +50,16 @@ public class Act_IouPage extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act__iou_page);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         Intent intent = getIntent();
 
         SharedPreferences prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
-                getApplicationContext().MODE_PRIVATE);
+                Context.MODE_PRIVATE);
         userName = prefs.getString("user_name", "");
         title = intent.getStringExtra(Act_PayPage.PASS_TITLE);
         title = intent.getStringExtra(Act_RequestPage.PASS_TITLE);
@@ -87,7 +92,7 @@ public class Act_IouPage extends Activity {
         Bundle b = getIntent().getExtras();
 
         prefs = getSharedPreferences(Act_BudgetBuddy.class.getSimpleName(),
-               getApplicationContext().MODE_PRIVATE);
+                Context.MODE_PRIVATE);
         String userName = prefs.getString("user_name", "");
         if(b.getBoolean("IOU")) {
             Spinner userSet = (Spinner)findViewById(R.id.spinner2);
@@ -138,13 +143,21 @@ public class Act_IouPage extends Activity {
                     BigDecimal oldTabValue = new BigDecimal(tabValue);
                     BigDecimal oldTransValue = new BigDecimal(transactionValue);
                     BigDecimal iouPayment = new BigDecimal(b.getString("AMOUNT"));
-                    BigDecimal tabBalance = oldTabValue.add(iouPayment);
-                    BigDecimal transBalance = oldTransValue.add(iouPayment);
+                    BigDecimal tabBalance = oldTabValue.subtract(iouPayment);
+                    BigDecimal transBalance = oldTransValue.subtract(iouPayment);
                     Log.i("New Transaction Value", transBalance.toString());
 
                     if(tabBalance.toString().equals("0.00")) {
                         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TABS, FeedReaderContract.FeedEntry._ID+"="+tabId, null);
                         Log.i("Tab deleted", ""+tabId);
+                    }
+                    else {
+                        ContentValues values = new ContentValues();
+                        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_AMOUNT, transBalance.toString());
+                        filter = FeedReaderContract.FeedEntry._ID + " = \'" + tabId + "\'";
+                        int numUpdated = db.update(FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
+                                values, filter, null);
+                        Log.i("Tab updated", ""+tabId);
                     }
                     if(transBalance.toString().equals("0.00")) {
                         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS, FeedReaderContract.FeedEntry._ID+"="+transactionId, null);

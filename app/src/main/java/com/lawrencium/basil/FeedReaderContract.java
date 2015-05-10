@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 /**
  * Created by Evan on 3/24/2015.
  */
-public final class FeedReaderContract {
+final class FeedReaderContract {
     // To prevent someone from accidentally instantiating the contract class,
     // give it an empty constructor.
     public FeedReaderContract() {}

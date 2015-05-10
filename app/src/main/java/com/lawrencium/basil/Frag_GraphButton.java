@@ -49,15 +49,10 @@ public class Frag_GraphButton extends Fragment {
     private String cat_total;
     private BigDecimal catAmountLeft;
     private BigDecimal quarterAmountLeft;
-    private String bZero;
-    private String bOne;
-    private String bTwo;
-    private String bThree;
-    private String bFour;
 
     private OnFragmentInteractionListener mListener;
-    SQLiteDbHelper mDbHelper;
-    ProgressBar catGraph;
+    private SQLiteDbHelper mDbHelper;
+    private ProgressBar catGraph;
 
     /**
      * Use this factory method to create a new instance of
@@ -204,11 +199,11 @@ public class Frag_GraphButton extends Fragment {
 
         catAmountLeft=categoryBudget.subtract(totals[4]);
         quarterAmountLeft=quarterBudget.subtract(totals[quarter]);
-        bZero = bounds[0];
-        bOne = bounds[1];
-        bTwo = bounds[2];
-        bThree = bounds[3];
-        bFour = bounds[4];
+        String bZero = bounds[0];
+        String bOne = bounds[1];
+        String bTwo = bounds[2];
+        String bThree = bounds[3];
+        String bFour = bounds[4];
         System.out.println("Quarter Budget: $"+quarterBudget);
         System.out.println("Quarter Total:  $"+totals[quarter]);
         System.out.println("Monthly Total:  $"+totals[4]);
@@ -284,7 +279,7 @@ public class Frag_GraphButton extends Fragment {
     public String getCatId() {
         return cat_id;
     }
-    public void deleteCategory() {
+    void deleteCategory() {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, "Uncategorized");

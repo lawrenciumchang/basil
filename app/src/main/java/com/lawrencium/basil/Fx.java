@@ -10,7 +10,7 @@ import android.view.animation.AnimationUtils;
  * Created by Annie on 4/15/2015.
  */
 
-public class Fx {
+class Fx {
     public static void slide_down(Context ctx, View v) {
 
         Animation a = AnimationUtils.loadAnimation(ctx, R.anim.slide_down);

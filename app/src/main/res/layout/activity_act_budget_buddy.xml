@@ -14,17 +14,6 @@
     <Button
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:layout_marginTop="50dp"
-        android:layout_alignParentTop="true"
-        android:text="Log In"
-        android:onClick="signIn"
-        android:id="@+id/button"
-        android:gravity="center_vertical|center_horizontal"
-        android:visibility="gone" />
-
-    <Button
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
         android:layout_marginBottom="50dp"
         android:layout_alignParentBottom="true"
         android:text="Budget"
@@ -51,19 +40,9 @@
         android:layout_below="@+id/signIn"
         android:layout_alignParentRight="true" />
 
-    <Button
-        android:id="@+id/sign_in_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:onClick="googleSignIn"
-        android:text="Sign In with Google+"
-        android:visibility="gone" />
-
     <com.google.android.gms.common.SignInButton
         android:id="@+id/signIn"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:onClick="onClick"
@@ -94,26 +73,16 @@
         android:visibility="visible"
         android:layout_below="@+id/signOut"
         android:layout_alignParentRight="true" />
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="I want to be notified!"
-        android:id="@+id/notify"
-        android:onClick="notify"
-        android:layout_above="@+id/button8"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="I like to think that I have friends."
-        android:id="@+id/friends"
-        android:layout_below="@+id/revokeAccess"
-        android:layout_alignRight="@+id/revokeAccess"
-        android:layout_alignParentLeft="true"
-        android:onClick="friends" />
+    <!--<Button-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Friends"-->
+        <!--android:id="@+id/friends"-->
+        <!--android:layout_below="@+id/revokeAccess"-->
+        <!--android:layout_alignRight="@+id/revokeAccess"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:onClick="friends" />-->
 
 </RelativeLayout>
 

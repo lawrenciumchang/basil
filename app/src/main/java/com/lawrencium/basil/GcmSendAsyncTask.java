@@ -2,9 +2,7 @@ package com.lawrencium.basil;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
-import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.lawrencium.basil.james.backend.messaging.Messaging;

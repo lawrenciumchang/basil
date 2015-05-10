@@ -15,14 +15,18 @@ import android.view.MenuItem;
 
 
 public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnFragmentInteractionListener {
-    SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
-    FragmentManager fragmentManager = getFragmentManager();
+    final SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
+    private final FragmentManager fragmentManager = getFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_budget_overview);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        try{
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (NullPointerException e) {
+            // Action bar not found, no action necessary
+        }
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
@@ -89,7 +93,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         fragmentTransaction.commit();
     }
 
-    public void gotoNewCategory(){
+    void gotoNewCategory(){
         Intent intent = new Intent(this, Act_NewCategory.class);
         startActivity(intent);
     }
