@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class CurrencyFormatInputFilter implements InputFilter {
-    //currency format, can't have decimals places past two 
+    //currency format, can't have decimals places past two
     private final Pattern mPattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?");
 
     @Override

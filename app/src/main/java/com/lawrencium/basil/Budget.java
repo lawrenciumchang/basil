@@ -56,9 +56,11 @@ class Budget {
     }
 
     /**
-     * This method takes
-     * @param d
-     * @return
+     * This method calculates the bounds for each quarter and stores it into an array called bounds.
+     * The value in each index represents the start of each quarter. This date stored in the array
+     * is formatted in yyyy/mm/dd k:mm:ss.
+     * @param d This is the current day.
+     * @return Returns the bounds array.
      */
     public static String[] calculateBounds(Date d) {
         final int[] feb = {7, 7, 7, 7};
@@ -99,6 +101,14 @@ class Budget {
         return bounds;
     }
 
+    /**
+     * Puts a newly made transaction into the database
+     * @param db database being pulled from.
+     * @param name item purchased.
+     * @param value cost of item.
+     * @param category category the item.
+     * @return newRowId, helps with table lookup.
+     */
     public static long newTransaction(SQLiteDatabase db, String name, String value, String category) {
         Date tempDate = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd k:mm:ss");
@@ -116,6 +126,12 @@ class Budget {
         return newRowId;
     }
 
+    /**
+     * This method returns a simpler date version of calculateBounds. The bounds array here only has
+     * day in index 0-3, index 4 contains the last day of the month, and index 5 has the current
+     * month
+     * @return bounds array
+     */
     public static int[] calculateBoundsDate() {
         final int[] feb = {7, 7, 7, 7};
         final int[] leapFeb = {8, 7, 7, 7};
@@ -123,15 +139,6 @@ class Budget {
         final int[] big = {8, 8, 8, 7};
         int[] weekRange;
 
-
-        /*array of date bounds
-        0) 1st day of the quarter
-        1) 1st day of the second quarter
-        2) 1st day of the third quarter
-        3) 1st day of the fourth quarter
-        4) last day of the month
-        5) current month
-        */
         int[] bounds = new int[6];
         Calendar c = Calendar.getInstance();
         bounds[5] = c.get(Calendar.MONTH);
@@ -154,6 +161,15 @@ class Budget {
 
         return bounds;
     }
+
+    /**
+     * Gets a specific transaction and puts it in a formatted transaction row.
+     * @param context
+     * @param title item purchased.
+     * @param value cost of item.
+     * @param date date purchased.
+     * @return
+     */
     public static LinearLayout getTransactionRow(Context context, String title, String value, String date) {
         LinearLayout transactionRow = new LinearLayout(context);
         transactionRow.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -168,11 +184,7 @@ class Budget {
         nextTransactionValue.setGravity(Gravity.RIGHT);
         transactionRow.addView(nextTransactionValue);
 
-        BigDecimal bdValue = new BigDecimal(value);
-        DecimalFormat df = new DecimalFormat();
-        df.setMinimumFractionDigits(2);
-        df.setMinimumIntegerDigits(1);
-        String valueStr = df.format(bdValue);
+        String valueStr = valueFormat(value);
 
         String[] splitDate = date.split("[ :/]");
         String text = splitDate[1]+"/"+splitDate[2] + " " +
@@ -186,6 +198,26 @@ class Budget {
         return transactionRow;
     }
 
+    /**
+     * Currency formatting for the cost of item purchased.
+     * @param value cost of item.
+     * @return formatted cost.
+     */
+    public static String valueFormat(String value){
+        BigDecimal bdValue = new BigDecimal(value);
+        DecimalFormat df = new DecimalFormat();
+        df.setMinimumFractionDigits(2);
+        df.setMinimumIntegerDigits(1);
+        String valueStr = df.format(bdValue);
+        return valueStr;
+    }
+
+    /**
+     * Gets transaction data from the database.
+     * @param db datebase where we're pulling data from.
+     * @param filter dates of purchased items
+     * @return table of transactions
+     */
     public static Cursor getTransactions(SQLiteDatabase db, String filter){
         String[] projection = {
                 FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
@@ -198,9 +230,7 @@ class Budget {
                 FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
                 projection,
                 filter,
-                null,
-                null,
-                null,
+                null, null, null,
                 sortOrder
         );
         return c;
