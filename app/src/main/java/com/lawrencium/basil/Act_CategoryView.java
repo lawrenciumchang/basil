@@ -52,6 +52,8 @@ public class Act_CategoryView extends Activity {
         TextView progress_overview = (TextView) findViewById(R.id.progress_overview);
         progress_overview.setText(graphSecondary*100/graphMax +"%");
 
+        //Calculates where the user is for their budget this month. Checks to see if they are
+        //over and by how much or how much is left for the month.
         if(catLeftOver.compareTo(new BigDecimal(BigInteger.ZERO)) == -1){
             catLeftOver = catLeftOver.negate();
             TextView catLeft = (TextView) findViewById(R.id.catAmountLeftTxt);
@@ -61,6 +63,9 @@ public class Act_CategoryView extends Activity {
             TextView overallCatLeft = (TextView) findViewById(R.id.catAmountLeftTxt);
             overallCatLeft.setText("Monthly: $" + catLeftOver + " left");
         }
+
+        //Calculates where the user is for their budget this quarter. Checks to see if they are
+        //over and by how much or how much is left for the quarter.
         if(quartLeftOver.compareTo(new BigDecimal(BigInteger.ZERO)) == -1){
             quartLeftOver = quartLeftOver.negate();
             TextView quartLeft = (TextView) findViewById(R.id.quartAmountLeftTxt);
@@ -152,6 +157,8 @@ public class Act_CategoryView extends Activity {
                 sortOrder
         );
         if(c.moveToFirst()) {
+            //creates transaction textViews in a linearLayout. The textViews are filtered into the
+            //correct quarter for viewing purposes
             do {
                 TextView nextTransaction;
                 String[] date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE)).split("[ :/]");
@@ -173,6 +180,11 @@ public class Act_CategoryView extends Activity {
         db.close();
     }
 
+    /**
+     * This adds items to the action bar if it is present.
+     * @param menu button inflates the menu options on the top right corner of the screen
+     * @return returns true to display menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -180,19 +192,13 @@ public class Act_CategoryView extends Activity {
         return true;
     }
 
+    /**
+     * For the back button on the top left button
+     * @param item back arrow used for parent functionality
+     * @return return needs to be true in order to return you to the previous page
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
 
         switch (item.getItemId())
         {
@@ -206,6 +212,11 @@ public class Act_CategoryView extends Activity {
         return true;
     }
 
+    /**
+     * This method allows you to hide and view selected content specifically quarterly
+     * transactions
+     * @param v selected view that you want to see or hide away
+     */
     public void toggle_contents(View v){
 
         switch(v.getId()){
