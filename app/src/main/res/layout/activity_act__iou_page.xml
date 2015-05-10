@@ -54,22 +54,22 @@
         android:layout_alignParentLeft="true">
 
         <Button
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Request"
             android:id="@+id/button"
-            android:layout_gravity="bottom|left"
-            android:layout_weight=".5"
+            android:layout_gravity="bottom"
             android:onClick="requestClick"/>
+        <!--android:layout_weight=".5"-->
 
         <Button
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Pay"
             android:id="@+id/button2"
-            android:layout_gravity="bottom|right"
-            android:layout_weight=".5"
+            android:layout_gravity="bottom"
             android:onClick="payClick"/>
+        <!--android:layout_weight=".5"-->
     </LinearLayout>
 
 </RelativeLayout>

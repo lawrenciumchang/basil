@@ -77,7 +77,7 @@ public class Act_IouPage extends Activity {
 
         Button requestButton = (Button) findViewById(R.id.button);
         Button payButton = (Button) findViewById(R.id.button2);
-        payButton.setVisibility(View.INVISIBLE);
+        payButton.setVisibility(View.GONE);
 
         // Load categories from Budget side
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
@@ -98,7 +98,7 @@ public class Act_IouPage extends Activity {
             Spinner userSet = (Spinner)findViewById(R.id.spinner2);
             userAdapter = Tab.createDropdown(this, userSet, FeedReaderContract.FeedEntry.TABLE_NAME_FRIENDS, FeedReaderContract.FeedEntry.COLUMN_NAME_FRIEND, "Select User");
 
-            requestButton.setVisibility(View.INVISIBLE);
+            requestButton.setVisibility(View.GONE);
             payButton.setVisibility(View.VISIBLE);
             String userOwed = b.getString("USER_OWED");
             System.out.println("User Name: "+userName+" - User Owed: "+userOwed);
