@@ -26,10 +26,10 @@ class Budget {
     }
 
     /**
-     * calculateWeek - calculates which week the given date is in
-     * @param day
-     * @param daysMax
-     * @return
+     * calculateWeek - calculates which week the given date is in.
+     * @param day current day.
+     * @param daysMax last day of the current month.
+     * @return returns which quarter the current day is in. 0 is the 1st quarter -> 3 is the 4th quarter
      * @throws java.lang.IllegalArgumentException If the date or number of days in the month is invalid
      */
     public static int calculateWeek(int day, int daysMax) {
@@ -54,6 +54,12 @@ class Budget {
         }
         return 0;
     }
+
+    /**
+     * This method takes
+     * @param d
+     * @return
+     */
     public static String[] calculateBounds(Date d) {
         final int[] feb = {7, 7, 7, 7};
         final int[] leapFeb = {8, 7, 7, 7};
