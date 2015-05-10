@@ -122,10 +122,6 @@
             android:label="@string/title_activity_act__category_view" >
         </activity>
         <activity
-            android:name=".Act_TransactionConfirm"
-            android:label="@string/title_activity_act__transaction_confirm" >
-        </activity>
-        <activity
             android:name=".Act_OverviewSettings"
             android:label="@string/title_activity_act__overview_settings" >
         </activity>
