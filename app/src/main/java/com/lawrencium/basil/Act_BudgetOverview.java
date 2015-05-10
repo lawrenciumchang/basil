@@ -40,14 +40,11 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         Cursor c = db.query(
                 FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
                 projection,
-                null,
-                null,
-                null,
-                null,
+                null, null, null, null,
                 sortOrder
         );
         if(c.moveToFirst()) {
-            do {
+            do { //adds category buttons created by user onto this page in a sorted order
                 Frag_GraphButton fragment = Frag_GraphButton.newInstance(
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID)),
                         c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE)),
@@ -59,6 +56,9 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         db.close();
     }
 
+    /**
+     * refreshes categories to resort and add a newly created category
+     */
     protected void onResume() {
         super.onResume();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -74,10 +74,7 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         Cursor c = db.query(
                 FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
                 projection,
-                null,
-                null,
-                null,
-                null,
+                null, null, null, null,
                 sortOrder,
                 limit
         );
@@ -93,11 +90,19 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         fragmentTransaction.commit();
     }
 
+    /**
+     * Goes to the category selected.
+     */
     void gotoNewCategory(){
         Intent intent = new Intent(this, Act_NewCategory.class);
         startActivity(intent);
     }
 
+    /**
+     * This adds items to the action bar if it is present.
+     * @param menu button inflates the menu options on the top right corner of the screen
+     * @return returns true to display menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -105,21 +110,13 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
         return true;
     }
 
+    /**
+     * For the back button on the top left button
+     * @param item back arrow used for parent functionality
+     * @return return needs to be true in order to return you to the previous page
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_new_category) {
-//            gotoNewCategory();
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-
         Intent i;
 
         switch (item.getItemId())
@@ -142,6 +139,11 @@ public class Act_BudgetOverview extends Activity implements Frag_GraphButton.OnF
 
     }
 
+    /**
+     * This method does the official deletion of a category. This includes the deletion of the
+     * graph and the data in the database.
+     * @param fragment
+     */
     public void removeCategory(Frag_GraphButton fragment) {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES, FeedReaderContract.FeedEntry._ID+"="+fragment.getCatId(), null);
