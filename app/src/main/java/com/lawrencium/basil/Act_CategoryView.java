@@ -141,24 +141,26 @@ public class Act_CategoryView extends Activity {
         txtWeek4.setTypeface(null, Typeface.BOLD);
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        String[] projection = {
-                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
-        };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE;
-        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + dateLastMonth + "\' AND " +
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + catName + "\'";
-        Cursor c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
-                projection,
-                filter,
-                null,
-                null,
-                null,
-                sortOrder
-        );
+//        String[] projection = {
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
+//        };
+//        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE;
+//        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + dateLastMonth + "\' AND " +
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + catName + "\'";
+//        Cursor c = db.query(
+//                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+//                projection,
+//                filter,
+//                null,
+//                null,
+//                null,
+//                sortOrder
+//        );
+        Cursor c = Budget.getTransactions(db, FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + dateLastMonth + "\' AND " +
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY + " = \'" + catName + "\'");
         if(c.moveToFirst()) {
             //creates transaction textViews in a linearLayout. The textViews are filtered into the
             //correct quarter for viewing purposes

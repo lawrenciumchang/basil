@@ -22,12 +22,17 @@ public class Act_NewCategory extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_category);
 
+        //set-up for category creation
         inputName = (EditText)findViewById(R.id.inputName);
         inputBudget = (EditText)findViewById(R.id.inputBudget);
         inputBudget.setFilters(new InputFilter[]{new CurrencyFormatInputFilter()});
     }
 
-
+    /**
+     * This adds items to the action bar if it is present.
+     * @param menu button inflates the menu options on the top right corner of the screen
+     * @return returns true to display menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -35,11 +40,14 @@ public class Act_NewCategory extends Activity {
         return true;
     }
 
+    /**
+     * Handles action bar item clicks here. The action bar will automatically handle clicks on the
+     * Home/Up button, so long as you specify a parent activity in AndroidManifest.xml.
+     * @param item back arrow used for parent functionality
+     * @return return needs to be true in order to return you to the previous page
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -50,6 +58,12 @@ public class Act_NewCategory extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Category creation. This method creates a category based off of user input. It also takes care
+     * of cases with empty fields and will give the user an error message. Data associated with the
+     * category will be stored into the database.
+     * @param view
+     */
     public void createCategory(View view){
         String name = inputName.getText().toString();
         String value = inputBudget.getText().toString();

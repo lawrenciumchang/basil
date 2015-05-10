@@ -52,27 +52,28 @@ public class Act_BudgetManagerMain extends Activity {
         LinearLayout ll = (LinearLayout) findViewById(R.id.lo_budgetmain);
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
-        String[] projection = {
-                FeedReaderContract.FeedEntry._ID,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
-                FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
-        };
-        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
-        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + twoMonthsAgo + "\'";
-        Cursor c = db.query(
-                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
-                projection,
-                filter,
-                null,
-                null,
-                null,
-                sortOrder
-        );
+//        String[] projection = {
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
+//                FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
+//        };
+//        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
+//        String filter = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + twoMonthsAgo + "\'";
+//        Cursor c = db.query(
+//                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+//                projection,
+//                filter,
+//                null,
+//                null,
+//                null,
+//                sortOrder
+//        );
+        Cursor c = Budget.getTransactions(db, FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " > \'" + twoMonthsAgo + "\'");
         if(c.moveToFirst()) {
             do {
-                String id = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry._ID));
+                //Transaction listed with the most recent transaction at the top for the past 2
+                //months, this falls under the expense heading.
                 String value = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE));
                 String date = c.getString(c.getColumnIndexOrThrow(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE));
                 LinearLayout nextTransaction = Budget.getTransactionRow(this,
@@ -87,15 +88,32 @@ public class Act_BudgetManagerMain extends Activity {
         c.close();
     }
 
+    /**
+     * Sends the user to the transaction page to create a new transaction.
+     * @param view
+     */
     public void gotoNewTransaction(View view){
         Intent intent = new Intent(this, Act_NewTransaction.class);
         startActivityForResult(intent, 0);
     }
+
+    /**
+     * Sends the user to the Overview page with all the categories that the user has created
+     * @param view
+     */
     public void gotoOverview(View view){
         Intent intent = new Intent(this, Act_BudgetOverview.class);
         startActivity(intent);
     }
 
+    /**
+     * This method checks to see if the transaction was created properly, if it did it takes the
+     * requestCode to see where the result is coming from and creates a transaction using the data
+     * the user entered in. This transaction will be added into the Expense Overview on the main page.
+     * @param requestCode Gets activity the result is coming from
+     * @param resultCode Checks to see if the activity was completed successfully
+     * @param data Data from creating a transaction
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -118,6 +136,11 @@ public class Act_BudgetManagerMain extends Activity {
         }
     }
 
+    /**
+     * This adds items to the action bar if it is present.
+     * @param menu button inflates the menu options on the top right corner of the screen
+     * @return returns true to display menu
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -125,22 +148,14 @@ public class Act_BudgetManagerMain extends Activity {
         return true;
     }
 
+    /**
+     * For the back button on the top left button
+     * @param item back arrow used for parent functionality
+     * @return return needs to be true in order to return you to the previous page
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-
         Intent i;
-
         switch (item.getItemId())
         {
             case android.R.id.home:
@@ -154,6 +169,13 @@ public class Act_BudgetManagerMain extends Activity {
         return true;
     }
 
+    /**
+     * This method does several things.
+     * It saves the dates for the first of the current month as well as current day a month ago.
+     * Gets transactions from the past 60 days.
+     * Creates the overall monthly budget but adding up all the category budget values.
+     * Set text for the the amount of money left or how much the user has gone over the budget.
+     */
     public void onResume(){
         super.onResume();
 
