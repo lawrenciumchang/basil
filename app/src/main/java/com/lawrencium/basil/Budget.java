@@ -2,6 +2,7 @@ package com.lawrencium.basil;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.Gravity;
 import android.view.ViewGroup;
@@ -177,5 +178,25 @@ class Budget {
         nextTransactionValue.setTextSize(15);
 
         return transactionRow;
+    }
+
+    public static Cursor getTransactions(SQLiteDatabase db, String filter){
+        String[] projection = {
+                FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE,
+                FeedReaderContract.FeedEntry.COLUMN_NAME_DATE
+        };
+        String sortOrder = FeedReaderContract.FeedEntry.COLUMN_NAME_DATE + " DESC";
+        Cursor c = db.query(
+                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                projection,
+                filter,
+                null,
+                null,
+                null,
+                sortOrder
+        );
+        return c;
     }
 }
