@@ -94,8 +94,6 @@ public class Frag_GraphButton extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //things a user sees
         View v = inflater.inflate(R.layout.fragment_graph_button, container, false);
         Button btn_budgetOverview = (Button) v.findViewById(R.id.btn_budgetOverview);
         TextView catName = (TextView) v.findViewById(R.id.catTitle);
@@ -104,8 +102,6 @@ public class Frag_GraphButton extends Fragment {
         btn_budgetOverview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // here you set what you want to do when user clicks your button,
-                // e.g. launch a new activity
                 Intent intent = new Intent(getActivity(), Act_CategoryView.class);
                 Bundle bundle = new Bundle();
                 bundle.putString("CAT_NAME", cat_name);
@@ -138,6 +134,7 @@ public class Frag_GraphButton extends Fragment {
         BigDecimal rollover = new BigDecimal(BigInteger.ZERO);
         String[] bounds = Budget.calculateBounds(tempDate);
 
+        //gets the total cost of purchases for a category
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         for(int i=0; i<4; i++) {
             String[] projection = {
@@ -152,9 +149,7 @@ public class Frag_GraphButton extends Fragment {
                     FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
                     projection,
                     filter,
-                    null,
-                    null,
-                    null,
+                    null, null, null,
                     sortOrder
             );
             if (c.moveToFirst()) {
@@ -173,9 +168,10 @@ public class Frag_GraphButton extends Fragment {
 
 
         BigDecimal categoryBudget = new BigDecimal(cat_total);
-        categoryBudget.setScale(2);
+        categoryBudget.setScale(2); //two decimal places out
         BigDecimal quarterBudget = categoryBudget.divide(new BigDecimal("4"), categoryBudget.scale(), BigDecimal.ROUND_HALF_DOWN);
 
+        //rollover calculation
         for(int i=0; i<quarter; i++) {
             BigDecimal diff = quarterBudget.subtract(totals[i]);
             rollover = rollover.add(diff);
@@ -199,11 +195,6 @@ public class Frag_GraphButton extends Fragment {
 
         catAmountLeft=categoryBudget.subtract(totals[4]);
         quarterAmountLeft=quarterBudget.subtract(totals[quarter]);
-        String bZero = bounds[0];
-        String bOne = bounds[1];
-        String bTwo = bounds[2];
-        String bThree = bounds[3];
-        String bFour = bounds[4];
         System.out.println("Quarter Budget: $"+quarterBudget);
         System.out.println("Quarter Total:  $"+totals[quarter]);
         System.out.println("Monthly Total:  $"+totals[4]);
@@ -248,6 +239,12 @@ public class Frag_GraphButton extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
+    /**
+     * Option to delete category when clicked
+     * @param menu
+     * @param v
+     * @param menuInfo
+     */
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -258,6 +255,12 @@ public class Frag_GraphButton extends Fragment {
         MenuInflater inflater = getActivity().getMenuInflater();
         inflater.inflate(R.menu.menu_overview_category_floating, menu);
     }
+
+    /**
+     * Delete selected category
+     * @param item
+     * @return
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         if (item.getGroupId() == Integer.parseInt(cat_id)) {
@@ -275,10 +278,17 @@ public class Frag_GraphButton extends Fragment {
         return false;
     }
 
-
+    /**
+     * Gets and returns category id.
+     * @return
+     */
     public String getCatId() {
         return cat_id;
     }
+
+    /**
+     * Deletes category and moves transactions into the Uncategorized category
+     */
     void deleteCategory() {
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
