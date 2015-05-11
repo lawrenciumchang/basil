@@ -88,16 +88,17 @@ public class Act_NewCategory extends Activity {
         }
         else {
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
-            ContentValues values = new ContentValues();
-            String newName = inputName.getText().toString().trim();
-            String newBudget = inputBudget.getText().toString().trim();
-
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
-            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
-            long newRowId = db.insert(
-                    FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
-                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
-                    values);
+//            ContentValues values = new ContentValues();
+//            String newName = inputName.getText().toString().trim();
+//            String newBudget = inputBudget.getText().toString().trim();
+//
+//            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
+//            values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
+//            long newRowId = db.insert(
+//                    FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+//                    FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+//                    values);
+            Budget.newCategory(db, inputName.getText().toString().trim(), inputBudget.getText().toString().trim());
 
             finish();
         }

@@ -109,6 +109,34 @@ class Budget {
                 values);
         return newRowId;
     }
+    public static long newTransaction(SQLiteDatabase db, String name, String value, String category, String date) {
+        // Date format: "yyyy/MM/dd k:mm:ss"
+        ContentValues values = new ContentValues();
+
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, name);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_CATEGORY, category);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, value);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_DATE, date);
+        long newRowId = db.insert(
+                FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS,
+                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                values);
+        return newRowId;
+    }
+
+    public static long newCategory(SQLiteDatabase db, String inputName, String inputBudget) {
+        ContentValues values = new ContentValues();
+        String newName = inputName;
+        String newBudget = inputBudget;
+
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_TITLE, newName);
+        values.put(FeedReaderContract.FeedEntry.COLUMN_NAME_VALUE, newBudget);
+        long newRowId = db.insert(
+                FeedReaderContract.FeedEntry.TABLE_NAME_CATEGORIES,
+                FeedReaderContract.FeedEntry.COLUMN_NULL_HACK,
+                values);
+        return newRowId;
+    }
 
     public static int[] calculateBoundsDate() {
         final int[] feb = {7, 7, 7, 7};

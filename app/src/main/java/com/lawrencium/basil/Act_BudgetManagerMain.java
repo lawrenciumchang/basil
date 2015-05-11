@@ -255,6 +255,10 @@ public class Act_BudgetManagerMain extends Activity {
             TextView monthLeftOverView = (TextView) findViewById(R.id.monthLeftOverTxt);
             monthLeftOverView.setText("$" + monthLeftOver + " over");
             monthLeftOverView.setTextColor(Color.parseColor("#ffd81500"));
+            TextView percentage = (TextView) findViewById(R.id.progress_overview);
+            percentage.setTextColor(Color.parseColor("#ff000000"));
+            ProgressBar graph = (ProgressBar) findViewById(R.id.graph_overview);
+            graph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_maxed));
         }else{
             TextView monthLeftOverView = (TextView) findViewById(R.id.monthLeftOverTxt);
             monthLeftOverView.setText("$" + monthLeftOver + " left");

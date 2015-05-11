@@ -53,10 +53,6 @@
                 android:value=".Act_BudgetBuddy" />
         </activity>
         <activity
-            android:name=".Act_LoginPage"
-            android:label="@string/title_activity_login" >
-        </activity>
-        <activity
             android:name=".Act_IouPage"
             android:label="IOU"
             android:parentActivityName=".Act_TabsPage">
