@@ -42,7 +42,7 @@ public class GcmIntentService extends IntentService {
             if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
                 Logger.getLogger("GCM_RECEIVED").log(Level.INFO, extras.toString());
 
-                showToast(extras.getString("message"));
+//                showToast(extras.getString("message"));
 
                 String message = extras.getString("message");
                 String [] tokens = message.split("[**]+");
@@ -89,6 +89,7 @@ public class GcmIntentService extends IntentService {
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(m));
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, Act_IouPage.class);
+        resultIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         resultIntent.putExtras(b);
 
 

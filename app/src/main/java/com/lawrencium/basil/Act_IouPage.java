@@ -18,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.math.BigDecimal;
 
@@ -149,7 +150,9 @@ public class Act_IouPage extends Activity {
 
                     if(tabBalance.toString().equals("0.00")) {
                         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TABS, FeedReaderContract.FeedEntry._ID+"="+tabId, null);
-                        Log.i("Tab deleted", ""+tabId);
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(this, "Tab cleared!", duration);
+                        toast.show();
                     }
                     else {
                         ContentValues values = new ContentValues();
@@ -157,7 +160,9 @@ public class Act_IouPage extends Activity {
                         filter = FeedReaderContract.FeedEntry._ID + " = \'" + tabId + "\'";
                         int numUpdated = db.update(FeedReaderContract.FeedEntry.TABLE_NAME_TABS,
                                 values, filter, null);
-                        Log.i("Tab updated", ""+tabId);
+                        int duration = Toast.LENGTH_SHORT;
+                        Toast toast = Toast.makeText(this, "Tab updated!", duration);
+                        toast.show();
                     }
                     if(transBalance.toString().equals("0.00")) {
                         db.delete(FeedReaderContract.FeedEntry.TABLE_NAME_TRANSACTIONS, FeedReaderContract.FeedEntry._ID+"="+transactionId, null);

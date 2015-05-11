@@ -250,6 +250,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
                 i.putExtra(PASS_TAX_FLAG, taxFlag);
                 i.putExtras(bun);
                 startActivityForResult(i, 0);
+                finish();
                 break;
             default:
                 break;
@@ -301,6 +302,7 @@ public class Act_CustomSplitConfirmPage extends Activity {
      */
     void launchIntent(){
         Intent intent = new Intent(this, Act_TabsPage.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra(PASS_CURRENT_USER, userName);
         startActivity(intent);
         finish();

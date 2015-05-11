@@ -124,6 +124,7 @@ public class Act_EqualSplitPage extends Activity {
                 i = new Intent(this, Act_TabsPage.class);
                 i.putExtra(PASS_CURRENT_USER, userName);
                 startActivityForResult(i, 0);
+                finish();
                 break;
             default:
                 break;
