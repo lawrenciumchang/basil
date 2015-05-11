@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.GoogleAuthException;
@@ -87,6 +88,8 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
     private Context context;
     private static final String SENDER_ID = "508206130718";
     /*Used for device Registration*/
+
+    private boolean sampleDataAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -748,4 +751,73 @@ public class Act_BudgetBuddy extends Activity implements GoogleApiClient.OnConne
 
     }
 
+    /**
+     * makeSampleData - Fills database with sample data to show off features
+     * @param view
+     */
+    public void makeSampleData(View view) {
+        if(!sampleDataAdded) {
+            SQLiteDbHelper mDbHelper = new SQLiteDbHelper(this);
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            Budget.newCategory(db, "$plurge", "600");
+            Budget.newCategory(db, "Groceries", "300");
+            Budget.newCategory(db, "Recreation", "100");
+            Budget.newCategory(db, "Rent and Utilities", "1000");
+            Budget.newCategory(db, "Shopping", "400");
+            Budget.newCategory(db, "Socializing", "300");
+            Budget.newCategory(db, "Uncategorized", "200");
+
+            // Date format: "yyyy/MM/dd k:mm:ss"
+            Budget.newTransaction(db, "HEB", "52.73", "Groceries", "2015/04/04 5:55:55");
+            Budget.newTransaction(db, "Apple", "3", "Groceries", "2015/04/07 5:55:55");
+            Budget.newTransaction(db, "Peanut Butter", "4.50", "Groceries", "2015/04/08 5:55:55");
+            Budget.newTransaction(db, "Bread", "2.99", "Groceries", "2015/04/08 5:55:55");
+            Budget.newTransaction(db, "Toilet Paper", "6", "Groceries", "2015/04/19 5:55:55");
+            Budget.newTransaction(db, "HEB", "65.39", "Groceries", "2015/05/10 5:55:55");
+            Budget.newTransaction(db, "Tooth Brush", "10.12", "Groceries", "2015/05/02 5:55:55");
+            Budget.newTransaction(db, "Sewing Kit", "1.50", "Groceries", "2015/05/03 5:55:55");
+            Budget.newTransaction(db, "Powerade", "3.99", "Groceries", "2015/05/03 5:55:55");
+            Budget.newTransaction(db, "AA Batteries", "8.55", "Groceries", "2015/05/05 5:55:55");
+
+            Budget.newTransaction(db, "April Rent", "850", "Rent and Utilities", "2015/04/01 5:55:55");
+            Budget.newTransaction(db, "March Utilities", "53.24", "Rent and Utilities", "2015/04/10 5:55:55");
+            Budget.newTransaction(db, "March Cable", "76.10", "Rent and Utilities", "2015/04/10 5:55:55");
+            Budget.newTransaction(db, "May Rent", "850", "Rent and Utilities", "2015/05/01 5:55:55");
+            Budget.newTransaction(db, "April Utilities", "61.77", "Rent and Utilities", "2015/05/10 5:55:55");
+            Budget.newTransaction(db, "April Cable", "76.10", "Rent and Utilities", "2015/05/10 5:55:55");
+
+            Budget.newTransaction(db, "Gym Membership", "30", "Recreation", "2015/04/09 5:55:55");
+            Budget.newTransaction(db, "Ping Pong Paddle", "37.21", "Recreation", "2015/04/21 5:55:55");
+            Budget.newTransaction(db, "Ping Pong Balls", "12.78", "Recreation", "2015/04/21 5:55:55");
+            Budget.newTransaction(db, "Slackline", "10.36", "Recreation", "2015/05/03 5:55:55");
+            Budget.newTransaction(db, "Gym Membership", "30", "Recreation", "2015/05/09 5:55:55");
+
+            Budget.newTransaction(db, "Boots", "250", "Shopping", "2015/04/11 5:55:55");
+            Budget.newTransaction(db, "Banana Republic", "70", "Shopping", "2015/04/25 5:55:55");
+            Budget.newTransaction(db, "Nordstrom's Rack", "400", "Shopping", "2015/05/01 5:55:55");
+            Budget.newTransaction(db, "Dillard's", "150", "Shopping", "2015/05/08 5:55:55");
+
+            Budget.newTransaction(db, "Top Golf", "15", "Socializing", "2015/04/09 5:55:55");
+            Budget.newTransaction(db, "Dancing", "15", "Socializing", "2015/04/16 5:55:55");
+            Budget.newTransaction(db, "Bowling", "12", "Socializing", "2015/05/01 5:55:55");
+            Budget.newTransaction(db, "Bubblies", "50", "Socializing", "2015/05/09 5:55:55");
+            Budget.newTransaction(db, "Mixers", "30", "Socializing", "2015/05/09 5:55:55");
+
+            Budget.newTransaction(db, "Alaska", "599.99", "$plurge", "2015/05/09 5:55:55");
+            sampleDataAdded = true;
+
+            CharSequence text = "Sample data populated!";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+            ((Button)findViewById(R.id.sampleData)).setVisibility(View.GONE);
+        }
+        else {
+            CharSequence text = "Sample data already added!";
+            int duration = Toast.LENGTH_LONG;
+            Toast toast = Toast.makeText(this, text, duration);
+            toast.show();
+            ((Button)findViewById(R.id.sampleData)).setVisibility(View.GONE);
+        }
+    }
 }

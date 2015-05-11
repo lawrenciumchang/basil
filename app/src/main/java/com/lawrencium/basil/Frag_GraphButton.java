@@ -186,15 +186,31 @@ public class Frag_GraphButton extends Fragment {
             catGraph.setProgressDrawable(getResources().getDrawable(R.drawable.progress_bar_warning));
         }
 
-        TextView budget = (TextView) getView().findViewById(R.id.textBudget);
-        switch(rollover.compareTo(BigDecimal.ZERO)) {
-            case -1: budget.setText(Html.fromHtml("$"+quarterBudget+"<font color=#D81500> +$"+rollover+"</font>")); break;
-            case 0: budget.setText("$"+quarterBudget); break;
-            case 1: budget.setText(Html.fromHtml("$"+quarterBudget+"<font color=#44AA00> +$"+rollover+"</font>"));
+        BigDecimal quarterBudgetOverBy = totals[quarter].subtract(quarterBudget);
+        if(quarterBudgetOverBy.compareTo(BigDecimal.ZERO) == 1) {
+            rollover = rollover.subtract(quarterBudgetOverBy);
         }
 
         catAmountLeft=categoryBudget.subtract(totals[4]);
         quarterAmountLeft=quarterBudget.subtract(totals[quarter]);
+
+        BigDecimal quarterAmountLeftShown = quarterAmountLeft;
+        if (quarterAmountLeft.compareTo(BigDecimal.ZERO) == -1) {
+            quarterAmountLeftShown = BigDecimal.ZERO;
+        }
+
+        TextView budget = (TextView) getView().findViewById(R.id.textBudget);
+        switch(rollover.compareTo(BigDecimal.ZERO)) {
+            case -1: budget.setText(Html.fromHtml("$"+quarterAmountLeftShown+"<font color=#D81500> -$"+rollover.negate()+"</font>")); break;
+            case 0: budget.setText("$"+quarterBudget); break;
+            case 1: budget.setText(Html.fromHtml("$"+quarterAmountLeftShown+"<font color=#44AA00> +$"+rollover+"</font>"));
+        }
+
+        String bZero = bounds[0];
+        String bOne = bounds[1];
+        String bTwo = bounds[2];
+        String bThree = bounds[3];
+        String bFour = bounds[4];
         System.out.println("Quarter Budget: $"+quarterBudget);
         System.out.println("Quarter Total:  $"+totals[quarter]);
         System.out.println("Monthly Total:  $"+totals[4]);
